@@ -12,7 +12,7 @@ All notable changes to TUM
 ### Fixed
 - Fixed able to recruite Castle creatures from other factions
 - Fixed the crash upon visiting Skeleton Transformer
-- Fixed a several frames of Winged Magog
+- Fixed several frames of Winged Magog
 - Removed unecessary main menu background
 
 ## [2.13.0] - 2021-10-11]

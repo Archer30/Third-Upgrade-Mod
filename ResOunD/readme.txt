@@ -19,7 +19,7 @@ Moriarty89: Graphics.
 Avatar: Sounds and Graphics resources.
 FirePaladin: Graphics.
 ElfbI: New Pandora Boxes.
-Hawaiing: 8th dwellings plugin author.
+Hawaiing: Eighth Monsters memory edits.
 Kongsuni: ERM scripter of some artifacts.
 
 Original authors of Tides of War mod which their assets were used to do this mod:

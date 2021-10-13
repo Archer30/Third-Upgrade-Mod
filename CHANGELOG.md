@@ -10,7 +10,7 @@ All notable changes to TUM
 - Export strings in Kongsuni Artifact to json
 
 ### Fixed
-- Fixed being able to recruite Castle creatures from other factions
+- Fixed able to recruite Castle creatures from other factions
 - Fixed the crash upon visiting Skeleton Transformer
 - Fixed a several frames of Winged Magog
 - Removed unecessary main menu background

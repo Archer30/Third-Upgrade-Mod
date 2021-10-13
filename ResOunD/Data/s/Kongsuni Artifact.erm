@@ -346,8 +346,8 @@ ZVSE
 !!BG:S?y2;
 !!FU&y2<>38/y2<>39:E;
 !!BG:A0;
-!!IF&y2=38:M^You can't cast resurrection because of the Ring of Oblivion^;
-!!IF&y2=39:M^You can't cast animate dead because of the Ring of Oblivion^;
+!!IF&y2=38:M^%T(kongArt.oblivionResurrect)^;
+!!IF&y2=39:M^%T(kongArt.oblivionAniDead)^;
 !!en:;
 
 !!if&y1=10:;
@@ -355,7 +355,7 @@ ZVSE
 !!BMy2:T?y3;
 !!FU&y3<>13/y3<>150/y3<>202:E;
 !!BG:A0;
-!!IF:M^You can't cast resurrection because of the Ring of Oblivion^;
+!!IF:M^%T(kongArt.oblivionResurrect)^;
 !!en:;
 
 

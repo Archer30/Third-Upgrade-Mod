@@ -31,7 +31,7 @@ ZVSE2
 !?OB(OBJ_NEW_WOG_OBJECTS)/118&1000;
 ; Open Skeleton Transformer dialogue for human visitor
 !!HE(CURRENT_HERO):N?(hero:y) O?(owner:y);
-!!SN:L^new_advmap_objects.era^/?(value:y) A(value)/^AdvSkelet_transformer^/?(value2:y) E(value)/1/(hero);
+!!SN:L^new_advmap_objects.era^/?(value:y) A(value)/^AdvSkelet_transformer^/?(value2:y) E(value2)/1/(hero);
 
 ; Set Pyramid as visited to stop AI from non-stop visiting
 !!PM998:P(owner)/(TRUE);

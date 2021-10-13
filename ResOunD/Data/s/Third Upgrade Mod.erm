@@ -337,10 +337,9 @@ visit www.heroescommunity.com for updates and news
 ; Demolish upgrade guild if fort is not built
 !!if&-1;
   !!CA(CURRENT_TOWN):U?(townId:y) T?(townType:y); [get town id and type]
-  !!VRi^tum_upgGuild_%(townId)^:S(FALSE);[set flag]
+  !!VRi^tum_upgGuild_%(townId)^:S(FALSE);
+  !!FU(tum_ResetSlotSettings):P(townId)/(townType);
 !!en;
-
-!!FU(tum_ResetSlotSettings):P(townId)/(townType);
 
 !?FU(tum_ResetSlotSettings);
 !#VA(townId:x) (townType:x);

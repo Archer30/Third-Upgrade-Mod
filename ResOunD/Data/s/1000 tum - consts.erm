@@ -1,0 +1,90 @@
+ZVSE2
+; Author:   Archer30
+; Engine:   ERM 2.0+
+; Requires: ERA 3.0+
+
+; Constants for Third Upgrade Mod.
+
+
+; ===============  MONSTERS  ===============
+!#DC(MON_FIRST_TUM)             = 197;
+!#DC(MON_ROYAL_HALBERDIER)      = 197;
+!#DC(MON_CROSSBOWMAN)           = 198;
+!#DC(MON_ARCANE_GENIE)          = 210;
+!#DC(MON_LICH_KING)             = 222;
+!#DC(MON_MEDUSA_EMPRESS)        = 228;
+!#DC(MON_ELITE_LIZARD)          = 240;
+!#DC(MON_VOID_ELEMENTAL)        = 251;
+!#DC(MON_SHARPSHOOTER_ELF)      = 256;
+!#DC(MON_SUPREME_ARCH_MAGE)     = 257;
+!#DC(MON_SPELLWEAVER)           = 259;
+!#DC(MON_WILL_O_WISP)           = 317;
+!#DC(MON_HIGH_PRIEST)           = 320;
+
+!#DC(MON_SERAPH)                = 202;
+!#DC(MON_PURE_DIAMOND_DRAGON)   = 207;
+!#DC(MON_GUARDIAN_OF_ZEUS)      = 212;
+*#DC(MON_ANTICHRIST)            = 219;  [WIP]
+!#DC(MON_RED_BONES_DRAGON)      = 224;
+!#DC(MON_CHASM_DRAGON)          = 231;
+!#DC(MON_SPECTRAL_BEHEMOTH)     = 238;
+!#DC(MON_NIGHTMARE_HYDRA)       = 245;
+!#DC(MON_DIVINE_PHOENIX)        = 252;
+
+!#DC(MON_TEMPLAR)               = 269;
+!#DC(MON_DRYAD)                 = 270;
+!#DC(MON_DRAKE_GOLEM)           = 271;
+!#DC(MON_SUCCUBUS)              = 272;
+!#DC(MON_WEREWOLF_TOW)          = 273;
+!#DC(MON_WEREWOLF_TUM)          = 273;
+!#DC(MON_ILLITHID)              = 274;
+!#DC(MON_COATL)                 = 275;
+!#DC(MON_TROLL_HAG)             = 276;
+!#DC(MON_TRITON)                = 277;
+
+!#DC(MON_PALADIN)               = 278;
+!#DC(MON_OAK_DRYAD)             = 279;
+!#DC(MON_DRAGON_GOLEM)          = 280;
+!#DC(MON_LILIM)                 = 281;
+!#DC(MON_DIRE_WEREWOLF)         = 194;
+!#DC(MON_AHOON)                 = 282;
+!#DC(MON_QUERZALCOATL)          = 283;
+!#DC(MON_TROLL_WITCH)           = 284;
+!#DC(MON_ABYSSAL_TRITON)        = 285;
+
+!#DC(MON_SKELETON_ARCHER)       = 295;
+!#DC(MON_MANA_SKELETON)         = 297;
+!#DC(MON_SHARPSHOOTER_SKELETON) = 299;
+; =============  END MONSTERS  =============
+
+
+; ==============  ARTIFACTS  ===============
+!#DC(ART_RING_OF_ELEMENTS)      = 197;
+
+!#DC(ART_LAST_TUM)              = 267;  [Updated to TUM 2.11.7]
+; ============  END ARTIFACTS  =============
+
+
+; ===========  OBJECT SUBTYPES  ============
+!#DC(OBJ_SUB_CATHEDRAL)         = 110;
+!#DC(OBJ_SUB_TREEHOUSE)         = 111;
+!#DC(OBJ_SUB_DRAGON_FACTORY)    = 112;
+!#DC(OBJ_SUB_LUST_CHAMBERS)     = 113;
+!#DC(OBJ_SUB_WOLF_CAVE)         = 114;
+!#DC(OBJ_SUB_PRIMEVEL_MAW)      = 115;
+!#DC(OBJ_SUB_ZIGGURAT)          = 116;
+!#DC(OBJ_SUB_SWAMP_HUT)         = 117;
+!#DC(OBJ_SUB_DROWNED_HALL)      = 118;
+; =========  END OBJECT SUBTYPES  ==========
+
+
+; =============  WOG OPTIONS  ==============
+!#DC(WOG_OPT_4TH_UPGRADES)      = 300; 
+!#DC(WOG_OPT_8TH_MONSTERS)      = 301; 
+; ===========  END WOG OPTIONS  ============
+
+
+; ==========  EIGHTH CREATURES  ============
+!#DC(EIGHTH_BTN_DEFAULT_X_COORD) = 183;
+!#DC(EIGHTH_BTN_DEFAULT_Y_COORD) = 542;
+; ========  END EIGHTH CREATURES  ==========

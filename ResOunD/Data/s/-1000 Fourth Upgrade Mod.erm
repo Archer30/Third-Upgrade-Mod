@@ -1,0 +1,62 @@
+ZVSE2
+; Author:   Archer30
+; Engine:   ERM 2.0+
+; Requires: ERA 3.3+, Third Upgrade Mod
+
+; A cheat mod for Third Upgrade Mod. 
+; Allows the 4th upgrade of 7/8th level creatures to be recruited or to be upgraded in town if the third upgrade buiilding has been built.
+; The upgrade of 8th level creatures is now set in Third Upgrade Mod.erm
+
+; Recruite Dialogue
+!?FU(newup_ExtendTownDwellings)&i^Typhon_Third_Upgrade_Mod_Active^;
+!#VA(townId:x) (townType:x); 
+
+!!UN:P(WOG_OPT_4TH_UPGRADES)/?(fourthUpgOn:y);
+!!FU&(fourthUpgOn)<>(TRUE):E;
+
+!!if&(townType)=(TOWN_CASTLE);          [Castle]
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/3/12/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/2/13/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/1/150/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/0/202/100;
+!!el&(townType)=(TOWN_RAMPART);         [Rampart]
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/3/26/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/2/27/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/1/151/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/0/207/100;
+!!el&(townType)=(TOWN_TOWER);           [Tower]
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/3/40/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/2/41/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/1/152/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/0/212/100;
+!!el&(townType)=(TOWN_INFERNO);         [Inferno]
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/3/54/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/2/55/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/1/153/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/0/219/100;
+!!el&(townType)=(TOWN_NECROPOLIS);      [Necropolis]
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/3/68/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/2/69/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/1/154/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/0/224/100;
+!!el&(townType)=(TOWN_DUNGEON);         [Dungeon]
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/3/82/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/2/83/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/1/155/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/0/231/100;
+!!el&(townType)=(TOWN_STRONGHOLD);      [Stronghold]
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/3/96/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/2/97/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/1/156/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/0/238/100;
+!!el&(townType)=(TOWN_FORTRESS);        [Fortress]
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/3/110/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/2/111/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/1/157/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/0/245/100;
+!!el&(townType)=(TOWN_CONFLUX);         [Conflux]
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/3/130/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/2/131/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/1/158/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/0/252/100;
+!!en;

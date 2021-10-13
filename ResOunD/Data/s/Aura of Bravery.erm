@@ -1,0 +1,71 @@
+ZVSE
+****************************************************************************************************
+Author Perry R, Script for ERA 3
+* Aura of Bravery for Centaure Leaders (or any other creature)*
+*all creatures standing next to the aura gain certain bonuses*
+
+The script loops through all battlefield positions (after every battle action) and checks if the monsters standing at that positions are next to a centaur.
+If yes bonus is given. After that the script loops after every battle action trough all monsters on the battlefield and checks if they are still standing next to the centaur,
+if no the bonus is removed.
+
+!#SN:W^Aura_Bravery_Creature_ID_293^/293; Set here the creature ID that should get the Aura
+
+
+!?FU(OnCombatRound)&v997=0; Before every battle resets variables
+!!re y1/0/41:;
+    !!SN:W^Aura_Bravery_Stack_%Y1^/0;
+!!en:;
+
+!?FU(OnBeforeBattleAction);
+!!FU(Check_Aura_Bravery):P;
+
+!?FU(OnAfterBattleAction);
+!!FU(Check_Aura_Bravery):P;
+
+
+!?FU(Check_Aura_Bravery);
+!!BG:Q?f;                               [Quick Combat flag]
+!!FU&f=1:E;                             [Exit in quick combat]
+
+!!SN:W^Aura_Bravery_Creature_ID_293^/?y50;[Get creature ID that should emit Aura]
+
+!!re y1/0/41:;                          [Reset the speed and flag every combat action]
+    !!SN:W^Aura_Bravery_Stack_%Y1^/?y2;
+    !!BMy1&y2=1:Sd-1;
+    !!SN&y2=1:W^Aura_Bravery_Stack_%Y1^/0;
+!!en:;
+
+
+!!re y1/0/186:;                         [Loop all battlefield positions]
+!!BU:Ey1/?y4;                           [Check if create stands on this hex]
+    !!if&y4>=0:;                        [if a monster is at a given position]
+    !!BMy4:T?y10 P?y11 I?y12 B?y13 N?y14 H?y15 F?y16; [Get Creature Type and Position]
+        !!if&y13>=1/y14>=1/y15>=1/y10<>145/y10<>146/y10<>147/y10<>148/y10<>149/y10<>y50:; [If any valid creature, execlude Warmachines]
+            !!re i/0/5:;                [loop around the creatures in cirlce 0-6 positions]
+            !!FU(Calc_neighbouring_hex_2):Py1/i/?y3; [Pass position and return first neighbouring hex field]
+            !!BU&y3>=0/y3<=186:Ey3/?y5; [Check if create stands on this hex]
+            !!BMy5&y5>=0/y5<=41:I?y6 T?y20 S?y7; [Get the creatures side and speed and type]
+            !!SN&y5>=0/y5<=41:W^Aura_Bravery_Stack_%Y4^/?y8; [Check creature bravery flag]
+               !!if&y5>=0/y5<=41/y6=y12/y7>=1/y20=y50/y8=0:; [If creature is Centaure, belongs to same hero and has speel >1 and does not have bonus]
+                    !!BMy4:Sd1;         [increase speed by +1]
+                    !!SN:W^Aura_Bravery_Stack_%Y4^/1; [Set flag to true for creature to remember that bonus was given]
+                !!en:;
+            !!en:;
+        !!en:;
+    !!en:;
+!!en:;
+
+!!re y1/0/41:;
+    !!SN:W^Aura_Bravery_Stack_%Y1^/?y2;
+    !!BMy1&y2=1:F?y3;
+    !!VRy3&y2=1:&131072;                [just look at no morlae bit]
+    !!BMy1&y3=0/y2=1:G212/d1/d;         [Increase +1 Morale]
+!!en:;
+
+
+!?FU(Calc_neighbouring_hex_2);          [Funktion to calculate neighbouring Hex cells]
+!!UN:C6919200/4/?y1;                    [Y1 = combatManager]
+!!VRx2:*2;
+!!VRx1:*12+ y1+ 78952+ x2;
+!!UN:Cx1/2/?x3;
+

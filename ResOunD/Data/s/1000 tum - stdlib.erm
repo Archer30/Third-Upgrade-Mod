@@ -1,0 +1,119 @@
+ZVSE2
+; Author:   Archer30
+; Engine:   ERM 2.0+
+; Requires: ERA 3.0+, Era Erm Framework
+
+; Standard library for Third Upgrade Mod
+
+
+*************************
+**** Global Settings ****
+*************************
+; set up global vars
+!?FU(tum_SetUpGlobalVars);
+!!FU(tum_CheckRandMap):P?i^tum_isRandMap^;
+!!UN:P195/?i^tum_replaceObj_on^;
+
+!#FU(tum_SetUpGlobalVars):P;
+
+!?FU(OnStartOrLoad);
+!!SN:L^emerald3_3.era^/?(emer3:y);
+!!SN:L^emerald_v202a.era^/?(emer2:y);
+!!VRi^tum_emerald_on^|(emer2)<>0/(emer3)<>0:S(TRUE);
+
+; Set up town screen variable (to prevent triggering several events)
+!?FU(OnOpenTownScreen);
+!!VRi^tum_onTownScreen^:S(TRUE);
+
+!?FU(OnCloseTownScreen);
+!!VRi^tum_onTownScreen^:S(FALSE);
+
+; special settings
+!?FU(OnAfterErmInstructions);
+!!VRi^wog78_howlingHollow_on^:S(FALSE); [disable generation of Howling Hollow]
+!!VRi^colmagi_chance^:S25;              [reduce the chance of Colosseum replacement]
+
+; Set up hook for opening creature info dialogue
+!?FU(OnStartOrLoad);
+!!SN:L^erm_hooker.era^/?(ermHooker:y);
+!!FU&(ermHooker)=(FALSE):E;
+
+!!SN:A(ermHooker)/^SetHook^/?(value:y);
+!!FU(tum_CreateERMHook):P(value);
+
+*******************************************************
+**** Function to get the latest creature ID of TUM ****
+*******************************************************
+; For Amethyst 2 by Majaczek only
+!?FU(GetMaxMonsterId);
+!#VA(result:x);
+
+!!SN:L^amethyst2_4.dll^/?(amet:y);
+
+!!if&(amet)<>0;
+  !!UN:C5509220/(UNC_INT)/?(result);
+  !!VR(result):-1;
+!!el;
+  !!VR(result):S(MON_LAST_WOG);
+!!en;
+
+*******************************************************
+**** Function to get the latest artifact ID of TUM ****
+*******************************************************
+; For Emerald 3 by Majaczek only
+!?FU(GetMaxArtifactId);
+!#VA(result:x);
+
+!!if&i^tum_emerald_on^;
+  !!re i/(ART_LAST_WOG)/999;
+    ; get the first character of the name of the artifact
+    !!SN:H^art^/i/0/?z1;
+    !!UN:C9597928/1/?(firstChar:y);
+
+    ; end the loop if the first character is #
+    !!br&(firstChar)=35;
+  !!en;
+
+  !!VR(result):Si -1;
+!!el;
+  !!VR(result):S(ART_LAST_WOG);
+!!en;
+
+****************************************************
+**** Function to check if WoG Sctipts is loaded ****
+****************************************************
+!?FU(tum_CheckWoGScripts);
+!#VA(result:x);
+
+!!VR(result):S(FALSE);
+!!UN:J8/1/^wog scripts.pac^;            [check and export result to 1]
+!!VR(result)&1:S(TRUE);
+
+*********************************************************
+**** Function to check whether a map is a random map ****
+*********************************************************
+!?FU(tum_CheckRandMap);
+!#VA(result:x);
+
+!!VR(result):S(FALSE);
+!!UN:C6919480/4/?(value:y);
+!!VR(add:y):S(value) +128980;
+!!UN:C(add)/1/?(value2:y);               [(value2)=114 -> random map]
+!!VR(result)&(value2)=114:S(TRUE);
+
+*******************************************************************
+**** Function to gernerate a random Heroes 3 / WoG artifact ID ****
+*******************************************************************
+; Used when emerald 3 is disabled
+!?FU(tum_GetRandH3WoGArt);
+!#VA(artClass:x) (art:x);
+
+!!UN:J6/(artClass)/?(art);
+
+!!VR(flag:y):S(TRUE);
+!!VR(flag)&(art)<=(ART_FIRST_AID_TENT):S(FALSE); [warmachines and spells]
+!!VR(flag)&(art)>=(ART_ANGELIC_ALLIANCE)/(art)<=(ART_CORNUCOPIA):S(FALSE); [combi]
+!!VR(flag)&(art)>=(ART_HIGHLIGHTED_SLOT)/(art)<=(ART_ARTIFACT_LOCK):S(FALSE); [unused]
+!!VR(flag)&(art)>=(ART_BLANK_HELMET)/(art)<=(ART_LAST_WOG):S(FALSE); [unused]
+
+!!FU(tum_GetRandH3WoGArt)&(flag)=(FALSE):P(artClass)/?(art);

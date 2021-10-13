@@ -1,0 +1,14 @@
+{
+  "umt": {
+    // Each time game tries to play music theme like "dirt" or "combat", the mod uses playlist of theme tracks,
+    // produced by scanning Mp3 directory recursively and removing numeric suffixes from files, so that
+    // dirt.mp3, dirt007.mp3 and dirt1000.mp3 are placed in "dirt" theme playlist.
+    // The options below control, how fast theme tracks will be rotated and how they will be chosen.
+    // Mainly, either random track will be used or next track in a randomly shuffled playlist.
+    "randomizationIntervalDays": "1",    // Number of days after which new track is selected for each H3 music theme
+    "minTrackPlaybackTime":      "40",   // Minimal time in seconds each track should be played before allowing to select another theme track
+    "playThemeTracksSequently":  "TRUE", // If 1, all theme tracks will be played sequently in a shuffled order, as opposed to random track selection
+    "treatCombatThemeSpecially": "TRUE", // If 1, combat track will be changed with every new battle.
+    "treatAiThemeSpecially":     "TRUE", // If 1, AI track will be changed with after each human player turn.
+  }
+}

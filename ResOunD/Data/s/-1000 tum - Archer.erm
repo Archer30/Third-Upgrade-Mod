@@ -1,0 +1,71 @@
+ZVSE2
+; Author:   Archer30
+; Engine:   ERM 2.0+
+; Requires: ERA 3.0+, Era Erm Framework, Third Upgrade Mod, WoG Scripts
+
+; (Tiny little bit of) Archer's hacks for TUM
+
+
+*****************************
+**** Replace map objects ****
+*****************************
+!?FU(OnAfterErmInstructions)&i^tum_replaceObj_on^;
+; deleting the sound in the delete object function
+; because it causes a crash
+!!UN:C4893167/2/?(patch:y);
+!!UN:C4893167/2/24555;
+; get size of the map
+!!UN:X?(mapSize:y)/?(hasUnderground:y); 
+; pass once through all cells of the map
+!!re l/0/(hasUnderground)/1;  coord z
+  !!re k/0/(mapSize)/1/-1;    coord y
+    !!re i/0/(mapSize)/1/-1;  coord x
+      !!OBi/k/l:T?(objType:y) U?(objSubtype:y);
+      !!TRi/k/l:E?(isYellowSquare:y) P?(isPassable:y); 
+      !!VR(isYellowSquare):X1;  reverse param isYellowSquare
+      !!FU(tum_OnIterateAllMapObjects):Pi/k/l/(objType)/(objSubtype)/(isYellowSquare)/(isPassable);
+    !!en;
+  !!en;
+!!en;
+; restoring the source code of the sound
+; in the delete objects function
+!!UN:C4893167/2/(patch);
+
+******************************
+**** Fix Ring of Elements ****
+******************************
+; Allow summoning different elementals with Ring of Elements.
+!?FU(OnGameEnter);
+!!UN:C5896327/1/?i^tum_origElemLimit^;
+
+!?FU(OnBattleRound)&i^battle_round^=0;
+!!VRi^tum_elemRingDiff^:S(FALSE);
+
+!!BA:A?(isOnlyAi:y) Q?(isQuick:y);
+!!FU|(isOnlyAi)/(isQuick):E;
+
+!!BA:H0/?(attacker:y) H1/?(defender:y);
+
+!!HE(attacker):A2/(ART_RING_OF_ELEMENTS)/?(qty:y)/?(atkEquipped:y);
+!!HE(defender)&(defender)>(NO_HERO):A2/(ART_RING_OF_ELEMENTS)/?(qty)/?(defEquipped:y);
+
+!!FU(tum_ActivateElemRing)&(atkEquipped)/(defEquipped):P(TRUE);
+!!FU(tum_ActivateElemRing)&(atkEquipped)=(FALSE)/(defEquipped)=(FALSE):P(FALSE);
+
+!!VRi^tum_elemRingDiff^&(atkEquipped)<>(defEquipped):S(TRUE);
+
+!?FU(OnBattleStackObtainsTurn)&i^tum_elemRingDiff^;
+!#VA(stackSide:x) (stackInd:x);
+
+!!BH(stackSide):N?(hero:y);
+
+!!if&(hero)>(NO_HERO);
+  !!HE(hero):A2/(ART_RING_OF_ELEMENTS)/?(qty:y)/?(equipped:y);
+  !!FU(tum_ActivateElemRing):P(equipped);
+!!en;
+
+!?FU(tum_ActivateElemRing);
+!#VA(equipped:x);
+
+!!UN&(equipped)<>(FALSE):C5896327/1/235;
+!!UN&(equipped)=(FALSE):C5896327/1/i^tum_origElemLimit^;

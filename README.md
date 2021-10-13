@@ -1,5 +1,5 @@
 # Third Upgrade Mod
- Third Upgrade Mod for ERA 3
+ Third Upgrade Mod for HoMM 3 ERA
 
 ## Links
 - [Heroes Community](http://heroescommunity.com/viewthread.php3?TID=46241)

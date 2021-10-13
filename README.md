@@ -1,7 +1,7 @@
 # Third Upgrade Mod
  Third Upgrade Mod for Era 3
 
-# Contributors
+## Contributors
  VMaiko
  Archer30
  Knightmarevive

@@ -15,5 +15,5 @@ All notable changes to TUM
 - Fixed several frames of Winged Magog
 - Removed unecessary main menu background
 
-## [2.13.0] - 2021-10-11]
+## [2.13.0] - 2021-10-11
 [Change log of TUM 2.13.0](http://heroescommunity.com/viewthread.php3?TID=46241&PID=1553538#focus)

@@ -7,7 +7,7 @@ All notable changes to TUM
 ### Added
 
 ### Changed
-- Export strings in Kongsuni Artifact to json
+- Export strings from Kongsuni Artifact to json
 
 ### Fixed
 - Fixed being able to recruite Castle creatures from other factions

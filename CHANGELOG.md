@@ -13,7 +13,7 @@ All notable changes to TUM
 - Fixed being able to recruite Castle creatures from other factions
 - Fixed the crash upon visiting Skeleton Transformer
 - Fixed several frames of Winged Magog
-- Fixed not able to upgrade Cavaliers to Archer Riders with Crossbow 
+- Fixed not being able to upgrade Cavaliers to Archer Riders with Crossbow 
 - Removed unecessary main menu background
 
 ## [2.13.0] - 2021-10-11

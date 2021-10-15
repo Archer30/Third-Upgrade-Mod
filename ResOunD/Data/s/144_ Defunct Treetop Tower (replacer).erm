@@ -95,7 +95,7 @@ Parameter Settings:
 ********************************************************************************
 !?FU(CB_144_Replace);
 
-!!UN:Ux1/-1/-1/2;
+!!UN:Ux1/-1/-1/2; !!FU|v2<0/v3<0/v4<0:E; [Archer]
 
 !!VRy2:S0T99;                           (Calc chance to replace)
 !!if&x5>y2:;

@@ -64,7 +64,6 @@ ZVSE
 !!VRvx16:Vzx16;
 
 !#VRz959:S^{Mysterious Cave} (visited)^;
-!#TM2:S1/999/1/255; [compatible with 78.erm]
 !#TM94:S1/999/7/255;
 !#SN:W^R99builderID^/-1;
 
@@ -105,7 +104,7 @@ ZVSE
 !!IF:Wx16;
 !!SN&w127>1:W^R99IDscourge^/x16; set to that hero
 
-!?TM2;
+!?FU(OnEveryDay);
 !!OW:C?y2; [get current player]
 !!OW:Iy2/?y3;  [get if AI or human]
 !!SN&y3=0:W^R99humanplayer^/y2; set human player to y2
@@ -168,7 +167,7 @@ ZVSE
   !!UN:U62/-1/?y-1;
   !!VRv1:S-1;
   !!DO32456132/1/y-1/1&y-1>0:P62/y3;  Run through
-  *!DO32466132/0/155/1:P; run all heroes to fix prisoners levels [Archer - disabled]
+  *!DO32466132/0/155/1:P; run all heroes to fix prisoners levels [disabled - Archer]
   !!SN:W^dreams^/99;  [run only once
   !!VRz958:S^{Mysterious Cave} (not visited)^;
   !!HT63/55:T958; set name
@@ -219,7 +218,7 @@ ZVSE
 !!SN:W^R99movement^/y1;
 !!VRy1:S1R6;
 !!SN:W^R99OV^/y1;
-!!DO45696526/0/155/1:P; loop heroes for w vars
+!!DO45696526/0/155/1:P; loop heroes for w vars / scourge and builder
 !!UN:U98/-1/?y-1;
 !!VRv1:S-1;
 !!DO32456140/1/y-1/1:P98;
@@ -936,27 +935,27 @@ PESTILENCE: no enemy will be able to approach %Z3 for 7 days^;
 !!VRw123&w123>0:-1;
 !!VRw125&w125>0:-1;
 !!VRw126&w126>0:-1;
-!!VRw127&w127>1:-1;
-!!VRw124&w124>1:-1; builder
-!!VRy1&w127=1:Sw127;
-!!if&y1=1:; scourge
-!!HEx16:B0/?z2;
-!!HEx16:L3/x16; restore
-!!VRw127:-1;
-!!IF:M^%Z2 has been healed from Scourge and can be attacked again^;
-!!SN:W^R99IDscourge^/-1;  initialize scourge
-!!HOx16:R; hero can be attacked again
+!!VRw127&w127>1:-1;                     [scourge]
+!!VRw124&w124>1:-1;                     [builder]
+
+!!if&w127=1:; scourge
+  !!HEx16:B0/?z2;
+  !!HEx16:L3/x16; restore
+  !!VRw127:-1;
+  !!IF:L^%Z2 has been healed from Scourge and can be attacked again.^;
+  !!SN:W^R99IDscourge^/-1;  initialize scourge
+  !!HOx16:R;                            [hero can be attacked again - WIP. not HO:S?]
 !!en:;
-!!VRy2:Sw124;  Builder
-  !!if&w124=1:;
+
+!!if&w124=1:;
   !!SN:W^R99ID5^/?y5; !!SN:W^R99ID6^/?y6; !!SN:W^R99ID7^/?y7; !!SN:W^R99ID8^/?y8; !!SN:W^R99ID9^/?y9; !!SN:W^R99ID10^/?y10;  !!SN:W^R99ID11^/?y11;
   !!HEx16:Xy5/y6/y7/y8/y9/y10/y11;
   !!UN:G0/d/d/0; restore
   !!VRw124:-1;
   !!SN:W^R99builderID^/-1;
   !!HEx16:B0/?z1;
-  !!IF:L^%Z1 is no longer a BUILDER and retrieved his original specialty^;
-  !!en:;
+  !!IF:L^%Z1 is no longer a BUILDER and retrieved his original specialty.^;
+!!en:;
 
 !?FU654789321;
 ;x1 hero ID

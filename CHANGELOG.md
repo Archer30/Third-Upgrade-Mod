@@ -14,4 +14,4 @@ All notable changes to TUM
 - Fixed not being able to upgrade Cavaliers to Archer Riders with Crossbow 
 
 ## [2.13.1] - 2021-10-11
-[Change log of TUM 2.13.0](http://heroescommunity.com/viewthread.php3?TID=46241&PID=1553538#focus)
+[Change log of TUM 2.13.1](http://heroescommunity.com/viewthread.php3?TID=46241&PID=1553538#focus)

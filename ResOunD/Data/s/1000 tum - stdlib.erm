@@ -32,6 +32,7 @@ ZVSE2
 !?FU(OnAfterErmInstructions);
 !!VRi^wog78_howlingHollow_on^:S(FALSE); [disable generation of Howling Hollow]
 !!VRi^colmagi_chance^:S25;              [reduce the chance of Colosseum replacement]
+!!VRi^pandora_on^&i^tum_replaceObj_on^=(FALSE):S(FALSE); [disable ElfbI's Pandora script if object replacement is disabled]
 
 ; Set up hook for opening creature info dialogue
 !?FU(OnStartOrLoad);

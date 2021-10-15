@@ -7,7 +7,8 @@ All notable changes to TUM
 ### Added
 
 ### Changed
-- Export strings from Kongsuni Artifact to json
+- Export strings from erm (Kongsuni Artifact and Third Upgrade Mod) to json
+- ElfbI's Pandora's Box Mod will now be enabled only if Replace Objects During WoGifiation is enabled. 
 
 ### Fixed
 - Fixed several frames of Winged Magog

@@ -1,7 +1,8 @@
-ZVSE
+ZVSE2
 ERMS_ScriptDate=20.1(January).2019
 ERMS_PoweredBy=ERM Scripter v. 2005.9.7.814
 *by ElfbI
+*updated by Archer30 for the compatibility with TUM
 *Pandora's Box
 *used flags 203
 **************
@@ -9,32 +10,33 @@ ERMS_PoweredBy=ERM Scripter v. 2005.9.7.814
 !#SN:W^Bless_variant_90^/-1;                            init
 !#SN:W^Hero_level_90^/1;                                init
 !#SN:W^init_pandora_90^/-1;                             [haven't initialized boxes]
+
+!#VRi^pandora_on^:S(TRUE);
 *************************************************Initial Timer Set******************************************************
-!?TM2;
-!!VRy11:S$day$;
-!!if&y11=1:;
- !!UN:U6/-1/?y1;                       [count boxes->count_pandora_90]
- !!SN:W^count_pandora_90^/y1;          [write pandora numb]
-!!en:;
-!!SN:W^init_pandora_90^/?y2;                [get init numb]
-!!if&y1>0/y2<0:;
+!?FU(OnAfterErmInstructions)&i^pandora_on^;
+!!UN:U6/-1/?y1;                         [count boxes->count_pandora_90]
+!!SN:W^count_pandora_90^/y1;            [write pandora numb]
+
+!!if&y1>0:;
  !!VRv2:S-1;
+
  !!re i/1/y1/1:;
-   !!UN:U6/-1/-1/2;       [get x/y/level v2-v4]
-   !!VRy10:S1 R15;         [random box variants - 16 parts.]
-   !!VRy11:S2 R3;         [random bless/curse variants - 4 parts.]
-   !!FU(PackedCoords):Py10/y11/0/?y2;  [pack vars]
-   !!SN:W^%V2_%V3_%V4_pandora90^/y2;   [write vars]
-   !!if&y10>=6:;         [настраиваем "призрачное" содержание ящика для ИИ, только сингл или хот-сит, команда нестабильна по сети]
+   !!UN:U6/-1/-1/2;                     [get x/y/level v2-v4]
+   !!VRy10:S1 R15;                      [random box variants - 16 parts.]
+   !!VRy11:S2 R3;                       [random bless/curse variants - 4 parts.]
+   !!FU(PackedCoords):Py10/y11/0/?y2;   [pack vars]
+   !!SN:W^%V2_%V3_%V4_pandora90^/y2;    [write vars]
+
+   !!if&y10>=6:;                        [настраиваем "призрачное" содержание ящика для ИИ, только сингл или хот-сит, команда нестабильна по сети]
+
     !!if|y10<=10/y10=16:;
-     !!PA2:E200000;    [если в ящике что-то полезное, ИИ "подсмотрит" 200к опыта]
+     !!PA2:E200000;                     [если в ящике что-то полезное, ИИ "подсмотрит" 200к опыта]
     !!el:;
-     !!PA2:X1;          [если в ящике что-то вредное, ИИ "подсмотрит" охрану]
-     !!PA2:G1/196/10000;[и увидит 10к драколичей]
+     !!PA2:X1;                          [если в ящике что-то вредное, ИИ "подсмотрит" охрану]
+     !!PA2:G1/196/10000;                [и увидит 10к драколичей]
     !!en:;
   !!en:;
  !!en:;
- !!SN:W^init_pandora_90^/1;                 [write that we've initializated]
 !!en:;
 *
 *************************************************Main Trigger Section****************************************************
@@ -354,7 +356,7 @@ ERMS_PoweredBy=ERM Scripter v. 2005.9.7.814
 !!IF:V203/0;
 *****************************END MAIN TRIGGER*****************************
 **************************** Pre-battle trigger
-!?BA52&203;
+!?BA52&203/i^pandora_on^;
 !!SN:W^Box_variant_90^/?y34 W^Bless_variant_90^/?y35;
 !!if&y34=12:;
  !!BA&y35=0:B9;                                                   set field
@@ -362,7 +364,7 @@ ERMS_PoweredBy=ERM Scripter v. 2005.9.7.814
 !!en:;
 **************************
 *****************************Sets up special battlefield
-!?BF&203;
+!?BF&203/i^pandora_on^;
 !!SN:W^Box_variant_90^/?y34 W^Bless_variant_90^/?y35;
 !!if&y34=12:;
  !!BF:C;                                                           Clear the battlefield
@@ -371,7 +373,7 @@ ERMS_PoweredBy=ERM Scripter v. 2005.9.7.814
 !!en:;
 ****************************************************
 *****************************BG  trigger
-!?BG&203;
+!?BG&203/i^pandora_on^;
 !!SN:W^Box_variant_90^/?y34 W^Bless_variant_90^/?y35;
 !!if&y34=12:;
  !!BU&y35=0:G1;
@@ -379,7 +381,7 @@ ERMS_PoweredBy=ERM Scripter v. 2005.9.7.814
 !!en:;
 **************************
 ************************** Battlefield round trigger**********************
-!?BR&203/1000;
+!?BR&203/1000/i^pandora_on^;
 !!SN:W^Box_variant_90^/?y34 W^Bless_variant_90^/?y35 W^Hero_level_90^/?y36;
 !!if&y34=12:;
  !!if&v997=0:;                    Round Zero
@@ -518,7 +520,7 @@ ERMS_PoweredBy=ERM Scripter v. 2005.9.7.814
  !!en:;
 !!en:;
 *****************************Post-battle trigger**************************
-!?BA53&203;
+!?BA53&203/i^pandora_on^;
 !!SN:W^Box_variant_90^/?y34 W^Bless_variant_90^/?y35 W^Hero_level_90^/?y36;
 !!if&y34=12:;
  !!HE-1:O?t;           Выясняем, жив ли герой, в переменную t
@@ -800,7 +802,7 @@ ERMS_PoweredBy=ERM Scripter v. 2005.9.7.814
 !!VRx1:+1;                       [Increase v-var                                       |
 !!VRx2:+1;                       [Increase z-var index]                                |
 ****************
-!?GM0;                                  [Archer - Fix battle save compatibility]
+!?FU(OnAfterLoadGame)&i^pandora_on^;    [Fix battle save compatibility - Archer]
 !!SN:W^Box_variant_90^/-1;                              init
 *****************************************************End******************************************************************
 

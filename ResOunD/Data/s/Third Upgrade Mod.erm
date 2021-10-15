@@ -1494,37 +1494,19 @@ for Third Upgrade Mod by VMaiko
  184 (Shaman's Puppet) -2 Luck to Enemies
  219 (Compendium of Magic)
 
-!?FU(tum_SetUpComnbiArts);
-!!UN:A34/238/79/80/81/82;
-!!UN:A35/258/23/11/29/17;
-
-!!UN:A31/179/115/116/117;               [Combi Artifact ID 31 (Golden Goose 179) consists of]
-;115 Endless Sack of Gold
-;116 Endless Bag of Gold
-;117 Endless Purse of Gold
-
-!!UN:A30/180/66/67/68;                  [Combi Artifact ID 30 (Diplomat's Cloak 180) consists of]
-;66  Statesman's Medal
-;67  Diplomat's Ring
-;68  Ambassador's Sash
-
-!!UN:A29/181/57/58/59;                  [Combi Artifact ID 29 (Pendant of Reflection 181) consists of]
-;57  Garniture of Interference
-;58  Surcoat of Counterpoise
-;59  Boots of Polarity
-
-!!UN:A25/219/86/87/88/89;               [Combi Artifact ID 28 (Compendium of Magic 219) consists of]
-;86 Tome of Fire Magic
-;87 Tome of Air Magic
-;88 Tome of Water Magic
-;89 Tome of Earth Magic
-
 !#FU(tum_SetUpComnbiArts)&i^tum_emerald_on^:P;
 
 !?FU(OnGameEnter)&i^tum_emerald_on^;
 !!FU(tum_SetUpComnbiArts2):P;
 
 !?FU(tum_SetUpComnbiArts2);
+
+!!UN:A34/238/79/80/81/82;
+!!UN:A35/258/23/11/29/17;
+!!UN:A31/179/115/116/117;
+!!UN:A30/180/66/67/68;
+!!UN:A29/181/57/58/59;
+!!UN:A25/219/86/87/88/89;
 !!UN:A32/182/171/172/173/174;
 !!UN:A33/232/128/235/236/237;
 !!UN:A36/259/175/176/177/178;

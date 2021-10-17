@@ -7,22 +7,9 @@ created 2020
 Scripts by Perry, Archer30 and Berseker 
 visit www.heroescommunity.com for updates and news
 ****************************************************************************************************
-!#SN:W^Typhon_Third_Upgrade_Mod_Active^/1;
 
 !#VRv9500:S-1;                          [Initialize v9500 to -1]
 !#VRv9520:S0;
-
-!#UN:P67/0;                             [DISABLE Neutral Town]
-!#UN:P173/0;                            [DISABLE Extended Upgrades]
-!#UN:P174/0;                            [DISABLE Universal Upgrades]
-!#UN:P125/0;                            [DISABLE the rule if the rule upg level 7 become level 8]
-!#UN:P820/0;                            [DISABLE Adittional Uprades]
-!#UN:P37/0;                             [DISABLE Rebalanced Creatures]
-!#UN:P50/0;                             [DISABLE Enhanced Monsters]
-!#UN:P0/1;                              [ENABLE Level 8 dwellings function as normal]
-!#UN:P137/1;                            [ENABLE Level 8 dwellings]
-!#UN:P281/0;                            [DISABLE buckler of Beelzebub]
-
 
 !?FU(OnGameEnter);
 !#VA(newtowns:y); !!SN:L^new_towns.era^/?(newtowns); !!FU&(newtowns)=0:E;

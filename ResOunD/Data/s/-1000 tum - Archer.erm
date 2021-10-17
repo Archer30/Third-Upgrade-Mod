@@ -69,3 +69,9 @@ ZVSE2
 
 !!UN&(equipped)<>(FALSE):C5896327/1/235;
 !!UN&(equipped)=(FALSE):C5896327/1/i^tum_origElemLimit^;
+
+***************************************
+**** Fix TUM werewolf faction with ****
+***************************************
+!?FU(OnAfterErmInited);
+!!MA:O(MON_DIRE_WEREWOLF)/(TOWN_NECROPOLIS);

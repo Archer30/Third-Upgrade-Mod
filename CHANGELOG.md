@@ -18,7 +18,6 @@ All notable changes to TUM
 - Fixed double dialogues when chooding the type of attack for Magog
 - Fixed the faction of Dire Werewolf when Mixed Neutral faction option is enabled
 - Fixed Neutral Town option didn't get disabled correctly
-- Fixed an occasional crash at calculating spell damage
 
 ## [2.13.1] - 2021-10-14
 [Change log of TUM 2.13.1](http://heroescommunity.com/viewthread.php3?TID=46241&PID=1553538#focus)

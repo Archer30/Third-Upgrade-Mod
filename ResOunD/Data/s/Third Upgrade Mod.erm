@@ -87,12 +87,11 @@ visit www.heroescommunity.com for updates and news
   !!VR(upgType)&i^tum_upgGuild_%(town)^:S(thirdUpgMon);
 !!en;
 
-; If the monster is a third upgrade, get fourth upgrades if 4th upgrade option is enabled/monster is levle 7/upgraded level 7 dwelling, upgrade guild is built
+; If the monster is a 3rd upgrade, get 4th upgrades if 4th upgrade option is enabled/monster is levle 7/upgraded level 7 dwelling, upgrade guild is built
 !!UN:P(WOG_OPT_4TH_UPGRADES)/?(fourthUpgOn:y);
 
 !!if&(fourthUpgOn)/(monType)=(thirdUpgMon)/(level)=6/i^tum_upgGuild_%(town)^;
-  !!SN:E7662803/1/(monType);            [check for upgrade and return result on v1]
-  !!VR(upgType)&v1<>(NO_MON):Sv1;
+  !!FU(GetUpgradedMonster):P(monType)/?(upgType);
 !!en;
 
 !?FU(tum_GetTownMon);
@@ -115,8 +114,7 @@ visit www.heroescommunity.com for updates and news
 !!VR(mon):S(upgMon) -1;
 
 ; get third upgraded creatures
-!!SN:E7662803/1/(upgMon);  result into v1 (or -1, if can't be upgraded)
-!!VR(thirdUpgMon):Sv1;
+!!FU(GetUpgradedMonster):P(upgMon)/?(thirdUpgMon);
 
 ------------------------------------------------------------------------------------------------------------------
 
@@ -299,8 +297,8 @@ visit www.heroescommunity.com for updates and news
       !!UN:P(WOG_OPT_4TH_UPGRADES)/?(fourthUpgOn:y);
 
       !!if&(fourthUpgOn);
-        !!SN:E7662803/1/(thirdUpgMon);
-        !!UN&v1<>(NO_MON):T(townType)/i/1/v1;
+        !!FU(GetUpgradedMonster):P(thirdUpgMon)/?(fourthUpgMon:y);
+        !!UN&(fourthUpgMon)<>(NO_MON):T(townType)/i/1/(fourthUpgMon);
       !!en;
     !!en;
   !!el;
@@ -1533,14 +1531,14 @@ for Third Upgrade Mod by VMaiko
 *Morale and Luck reducing artefacts*
 Script by PerryR
 
-!?FU(OnCombatRound)&v997=0;             [At the start of each battle]
+!?FU(OnCombatRound)&v997=0/i^tum_emerald_on^; [At the start of each battle]
 !!BA:Q?f; !!FU&f=1:E;                   [Exit if Quick Combat]
 !!BA:H0/?y1;                            [Attacking Hero]
 !!FU(TUM_Luck_Morale_Artefacts)&y1>=0/y1<=155:Py1/21/41;
 !!BA:H1/?y1;   Defending Hero
 !!FU(TUM_Luck_Morale_Artefacts)&y1>=0/y1<=155:Py1/0/20;
 
-!?FU(OnAfterBattleAction);              [After every Battle Action]
+!?FU(OnAfterBattleAction)&i^tum_emerald_on^; [After every Battle Action]
 !!BA:Q?f; !!FU&f=1:E;                   [Exit in Quick Combat]
 !!BG:H?y1; !!FU&y1<0:E;                 [Get acting Hero and Exit if no Hero]
 !!BG:Q?y8;                              [Battle Side]
@@ -1605,18 +1603,7 @@ Script by PerryR
 !!en;
 ****************************************************************************************************
 
-!?FU1073963008;
-!!UN:P281/?y1;                          [y1 - Status Options]
-!!FU&y1=0:E;                            [If option is disabled]
-!!MO998:R?y1/1;                         [y1 - level of aggression]
-!!HE(CURRENT_HERO):A2/180/?y3/?y4;      [y3 - the number of copies of the artifact, y4 - whether the artifact is wearing]
-!!if&y1>1/y1<10/y3>0/y4=1;
-  !!VRy1::2;
-  !!MO998:R1/1;
-!!en;
-
-
-!?FU(OnEveryDay);         [Runs once each Turn]
+!?FU(OnEveryDay)&i^tum_emerald_on^;         [Runs once each Turn]
 
 !!DO(Golden_Goose_Shit)/0/155/1&x3=1/x1>1:P;      [loop through heroes]
 
@@ -1628,21 +1615,23 @@ Script by PerryR
 !!OW&y40=1:Ry1/6/d7000;                 [Add Gold resource to player]
 
 
-!?MR2;                                  [Magic Resistance Trigger]
+!?MR2&i^tum_emerald_on^;                [Magic Resistance Trigger]
 
 !!MR:N?y1;                              [Get Creature Number]
 !!BMy1:I?y1;                            [Get Creature Side]
 !!BA:Hy1/?y1;                           [Get Hero Number of creature side]
+
 !!if&y1>=0/y1<=155;                     [if valid hero]
-!!HEy1:A2/181/?y3/?y4;                  [Check for Pendant of Reflection]
-!!if&y4=1;                              [if equipped]
-!!MR:F?y2;                              [get chance to resist spell]
-!!VRy2:+19;                             [add +20% chance to resist]
-!!VRy2&y2>=100:S100;                    [chance cannot be higher than 100% (Immune)]
-!!MR:Fy2;                               [Apply increased resistance chance to that stack temporarily]
-*!MR:F?y2;
-*!IF:L^Resistance %Y2^;
-!!en;
+  !!HEy1:A1/?y4/(ART_SLOT_NECK);        [Check for Pendant of Reflection]
+
+  !!if&y4=181;                              [if equipped]
+    !!MR:F?y2;                              [get chance to resist spell]
+    !!VRy2:+19;                             [add +20% chance to resist]
+    !!VRy2&y2>=100:S100;                    [chance cannot be higher than 100% (Immune)]
+    !!MR:Fy2;                               [Apply increased resistance chance to that stack temporarily]
+    *!MR:F?y2;
+    *!IF:L^Resistance %Y2^;
+  !!en;
 !!en;
 ****************************************************************************************************
 *Cutthroats script for creature ID 260*

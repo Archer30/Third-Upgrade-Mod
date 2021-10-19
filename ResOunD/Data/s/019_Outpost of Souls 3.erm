@@ -136,7 +136,7 @@ Random Artifacts can also be generated in a certain range x1-x2. If you want to 
 
 
 ******Misc********
-!#VRi^CB_019_Revisit^:S0;               (Write here the number of days after which the CB can be visited again for example after 28 days)
+!#VRi^CB_019_Revisit^:S28;              (Write here the number of days after which the CB can be visited again for example after 28 days)
 !#VRi^CB_019_Custom_Growth^:S0;         (Write here the number in percent% in which the CB should increase its guard EVERY week. If you write 10 the growth is exactly like neutrals grow)
 !#VRi^CB_019_Custom_Sound^:S1;          (1=yes, 0=no, if activated you need to find the correct sound file of the object you want to replace, use the SN trigger for it. That is necessary so that it can be replaced and your custom file can be played.)
 !#VRs^CB_019_CB_Sound^:S^ROGUE.wav^;    (Set the name of the sound file that should be played when visiting the object, only works when CB_019_Custom_Sound is set active)

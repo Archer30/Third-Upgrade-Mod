@@ -202,15 +202,14 @@ Neutrals:
 
 Necromancy has now been adapted and works as follows:
 
-Basic 10% -Expert 30% Necromancy 
-- always raises skeletons
-- if Skeleton Warriors are present in the army it will raise them instead of normal skeletons
-- if Skeleton Knights are present in the army it will raise them instead of Skeleton Warriors
+Basic Necromancy: always raises skeletons
+Advanced Necromancy: if Skeleton Warriors are present in the army it will raise them instead of normal skeletons
+Expert Necromancy: if Skeleton Knights are present in the army it will raise them instead of Skeleton Warriors
 
 If the hero wears Cloak of the Unbalanced King
-with Basic Necromancy raises Ghouls immediately 
-with Advanced Necromancy raises Spectres immediately 
-with Expert Necromancy raises Lich King immediately 
+Basic Necromancy: raises Ghouls immediately 
+Advanced Necromancy: raises Spectres immediately 
+Expert Necromancy: raises Lich King immediately 
 
 5. Additional Units
 

@@ -63,6 +63,9 @@ visit www.heroescommunity.com for updates and news
 !#VA(monType:x) (upgType:x) (town:x) (hero:x);
 !#VA(newtowns:y); !!SN:L^new_towns.era^/?(newtowns); !!FU&(newtowns)<>0:E;
 
+; Exit if Gelu or Dracon
+!!FU|(hero)=(HERO_GELU)/(hero)=(HERO_DRACON):E;
+
 ; Exit if not from town screen
 !!FU&(town)<=(NO_TOWN):E;
 

@@ -32,7 +32,7 @@ Parameter Settings:
 
 !#VRi^CB_144_Replace_0_Type_Number^:S17;(Write here type number of the objects you want to search and replace. Input 0-231. Check ERM Help OB)
 !#VRi^CB_144_Replace_0_SubType_Number^:S67; (Write here subtype number of the objects you want to search and replace. Input 0-max Subtype. Check ERM Help OB)
-!#VRi^CB_144_Replace_0_Percentage^:S25; (The chance in % by which each object is replaced by the new Creature Bank. Input 0-100)
+!#VRi^CB_144_Replace_0_Percentage^:S15; (The chance in % by which each object is replaced by the new Creature Bank. Input 0-100)
 !#VRi^CB_144_Replace_0_X_Offset^:S0; (Offset for the yellow entrance +-)
 
 !#VRi^CB_144_Replace_1_Type_Number^:S-1;

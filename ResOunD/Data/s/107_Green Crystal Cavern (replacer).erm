@@ -30,8 +30,8 @@ Parameter Settings:
 
 !#VRi^CB_107_Replace_Objects^:S1;       (1=yes, 0=no. You should only chose "No" if you plan to create a custom map and place your CB yourself. With "No" the replace settings below will have no effect)
 
-!#VRi^CB_107_Replace_0_Type_Number^:S16;(Write here type number of the objects you want to search and replace. Input 0-231. Check ERM Help OB)
-!#VRi^CB_107_Replace_0_SubType_Number^:S3; (Write here subtype number of the objects you want to search and replace. Input 0-max Subtype. Check ERM Help OB)
+!#VRi^CB_107_Replace_0_Type_Number^:S17;(Write here type number of the objects you want to search and replace. Input 0-231. Check ERM Help OB)
+!#VRi^CB_107_Replace_0_SubType_Number^:S63; (Write here subtype number of the objects you want to search and replace. Input 0-max Subtype. Check ERM Help OB)
 !#VRi^CB_107_Replace_0_Percentage^:S5; (The chance in % by which each object is replaced by the new Creature Bank. Input 0-100)
 !#VRi^CB_107_Replace_0_X_Offset^:S0; (Offset for the yellow entrance +-)
 

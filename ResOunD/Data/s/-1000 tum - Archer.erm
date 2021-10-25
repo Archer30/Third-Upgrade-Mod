@@ -9,6 +9,7 @@ ZVSE2
 *****************************
 **** Replace map objects ****
 *****************************
+
 !?FU(OnAfterErmInstructions)&i^tum_replaceObj_on^;
 ; deleting the sound in the delete object function
 ; because it causes a crash
@@ -69,3 +70,21 @@ ZVSE2
 
 !!UN&(equipped)<>(FALSE):C5896327/1/235;
 !!UN&(equipped)=(FALSE):C5896327/1/i^tum_origElemLimit^;
+
+*************************************************************
+**** Fix TUM werewolf faction with Mixed Neutrals option ****
+*************************************************************
+
+!?FU(OnAfterErmInited);
+!!MA:O(MON_DIRE_WEREWOLF)/(TOWN_NECROPOLIS);
+
+************************************************
+**** Disable unused artifacts from the game ****
+************************************************
+; All the blank artifacts would be disabled if ACM is not presented
+!?FU(tum_DisableUnusedArtifacts)&i^Advanced_Classes_Mod_Active^=(FALSE);
+!!re i/(ART_BLANK_HELMET)/(ART_BLANK_HORN);
+  !!UN:Ai/1;
+!!en;
+
+!#FU(tum_DisableUnusedArtifacts):P;

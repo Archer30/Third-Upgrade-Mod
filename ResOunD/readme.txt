@@ -1,7 +1,7 @@
 
 
                    ************** Third Upgrades Mod *****************
-                 ****************** Version: v2.13.0********************
+                 ****************** Version: v2.13.1********************
                  ***************** Amethyst Edition ******************
 
 --------------------------------------------------------------------------------------------------
@@ -200,18 +200,16 @@ Neutrals:
 
 4. Necromancy
 
-Thanks to amethyst, something that has been asked for so much is now possible and it is necromancy compatibility with Third Upgrades Mod.
 Necromancy has now been adapted and works as follows:
 
-Basic Necromancy: Raise Skeletons
-Advanced Necromancy: Raise Skeleton Warriors
-Expert Necromancy: Raise Skeleton Knights
+Basic Necromancy: always raises skeletons
+Advanced Necromancy: if Skeleton Warriors are present in the army it will raise them instead of normal skeletons
+Expert Necromancy: if Skeleton Knights are present in the army it will raise them instead of Skeleton Warriors
 
-Cloak of the Undead King has also been made compatible with Third Upgrades Mod and Necromancy:
-
-Basic Necromancy: Raise Ghouls
-Advanced necromancy: Raise Ghosts
-Necromancy Expert: Raise King Liches
+If the hero wears Cloak of the Unbalanced King
+Basic Necromancy: raises Ghouls immediately 
+Advanced Necromancy: raises Spectres immediately 
+Expert Necromancy: raises Lich King immediately 
 
 5. Additional Units
 

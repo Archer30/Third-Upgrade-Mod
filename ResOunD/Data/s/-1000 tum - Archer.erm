@@ -88,3 +88,10 @@ ZVSE2
 !!en;
 
 !#FU(tum_DisableUnusedArtifacts):P;
+
+*************************************************
+**** Fix Lightning Immune of Thunder Warrior ****
+*************************************************
+; Bad fix. Should have been done without stack exp ability
+!?FU(OnAfterErmInstructions);
+!!EA292:F0/-1/?(firstEmptySlot:y) B(firstEmptySlot)/1/119/76/1/1/1/1/1/1/1/1/1/1/1;

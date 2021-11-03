@@ -10,7 +10,7 @@ All notable changes to TUM
 - Export strings from erm (Kongsuni Artifact and Third Upgrade Mod) to json
 - ElfbI's Pandora's Box Mod will now be enabled only if Replace Objects During WoGifiation is enabled. 
 - Removed Magog Fireball Attack Fix.erm to resolve the conflict with GEM.
-- Removed Maiko's hotkey to victory.erm as the feature is included in TrainerX (F6)
+- Removed Maiko's hotkey to victory.erm as the feature is included in TrainerX
 - Disabled Artic/Lava Sharpshooter's ability to cast
 
 ### Fixed

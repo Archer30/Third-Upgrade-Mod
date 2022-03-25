@@ -1,143 +1,203 @@
-ZVSE
+ZVSE2
+; Author:   Archer30
+; Special thanks to Hawaiing
+; Engine:   ERM 2.0+
+; Requires: ERA 3.8.5+, Era Erm Framework
 
-!?MF1;
-!!BA:H0/?y11;
-!!BA:H1/?y12;
-!!VRy57:S0;
-!!VRy23:S0;
-!!VRy24:S0;
-!!HEy11:A2/266/?y22/?y23;
-!!HEy12&y12>=0:A2/266/?y22/?y24;
-
-!!FU&y23=0/y24=0:E;
-
-!!VRy99&y23=1/y24=0:S0;
-!!VRy99&y23=0/y24=1:S1;
-!!FU&y23=1/y24=1:E;
+; Horn of the Abyss (artifact) for TUM
 
 
-!!MF:N?y51;
-!!BMy51:P?y52;
+// Summon fangarms if a living stack is killed by a hero with HotA equipped
+!?FU(OnBeforeBattleAction);
+!!BG:E?i^hota_defStack^;
 
-!!BMy51:B?y53;
-!!BMy51:H?y54;
-!!BMy51:N?y55;
-!!BMy51:T?y61;
-!!BMy51:L?y50;
-!!BMy51:F?y78;                           [read flags]
-!!BMy51:O?y79;
-!!VRy78:&4194304;                       [just look summoned bit]
-!!FU&y78>0:E;                           [Exit if cloned or summoned]
-!!FU|y61=263/y61=145/y61=146/y61=147/y61=148/y61=149:E;
-!!FU&y79<0:E;
-!!VRy59:Sy54-y50;
+!?FU(OnBattleActionEnd)&i^hota_defStack^>(NO_STACK);
+; Check if it was an action that could result in casualties
+!!BG:A?(action:y);
 
-!!VRy55:-1;
-!!VRy56:Sy55*y54;
-!!VRy56:+y59;
-!!MF:F?y57;
-!!FU&y57<y56:E;
+!!if|(action)=(BATTLE_ACTION_HERO_CAST)/(action)=(BATTLE_ACTION_WALK_AND_ATTACK)/(action)=(BATTLE_ACTION_SHOOT)/(action)=(BATTLE_ACTION_MONSTER_CAST);
+  ; Check if it was an event one player act against the other
+  !!BG:N?(atkStack:y) Q?(atkSide:y);
+  !!VR(defStack:y):Si^hota_defStack^;
+  !!BM(defStack):I?(defSide:y);
 
-!!VRy56:Sy54*y53;
-!!VRy56::5;
-!!VRy56&y56>y53:Sy53;
-!!VRy56&y56<1:S1;
+  !!if&(atkSide)<>(defSide);
+    ; Execute function for both sides
+    !!FU(hota_SummonFangarmsOnTheBattlefield):P(atkSide)/(defStack);
+    !!FU(hota_SummonFangarmsOnTheBattlefield):P(defSide)/(atkStack);
+  !!en;
+!!en;
 
-!!UN:C6919200/4/?y1;
-!!VRy2:Sy51*1352+21708+y1;
-!!VRy3:Sy2+234;
-!!UN:Cy3/1/1;
-!!BMy51:F?y4;
-!!VRy4:|268435456;
-!!BMy51:N0 Fy4;
-!!SN:E4621680/2/y1/51/1;
-!!SN:E4797616/2/y1/0/1;
+!?FU(hota_SummonFangarmsOnTheBattlefield);
+!#VA(atkSide:x) (defStack:x);
 
+; Check if HotA is equipped
+!!HEi^battle_hero_%(atkSide)^:A2/(ART_HORN_OF_THE_ABYSS)/?(num:y)/?(equipped:y);
 
-!!BU:S263/y56/y52/y99/-1/1;
-!!BMy51:V70;
+!!if&(equipped);
+  ; Check if the defending stack was killed
+  !!BM(defStack):B?(startNum:y) N?(currNum:y) T?(type:y) F?(flags:y);
+  !!VR(isAlive:y)S(flags) &(MON_FLAG_ALIVE);
+  !!FU(hota_CheckIfEligibleToSummon):P(atkSide)/?(isEligible:y);
 
-!!SN:W^KO_Horn^/dy56;
-!!SN&y23=1:W^KO_Horn_Hero^/y11;
-!!SN&y24=1:W^KO_Horn_Hero^/y12;
+  !!if&(startNum)>0/(currNum)<=0/(type)<>(MON_FANGARM)/(isAlive)/(isEligible);
+    ; Calculate the number of fangarm summoning
+    !!BM(defStack):P?(defHp:y);
+    !!VR(defTotalHp:y):S(startNum) *(defHp);
+    !!MA:P(MON_FANGARM)/?(fangarmHp:y);
+    !!VR(maxNum:y):S(startNum) :2;
+    !!VR(summNum:y):S(defTotalHp) :(fangarmHp) F0/(maxNum);
 
+    ; Summon the fangarms if the result is more than 0
+    !!if&(summNum)>0;
+      !!FU(hota_RemoveDeadBody):P(defStack)/(FALSE);
+      !!SN:P^FNGRSUMM.wav^;
+      !!BM(defStack):P?(pos:y);
+      !!FU(hota_PlayCustomAnimation):P^SP16.def^/(pos);
+      !!BU:S(MON_FANGARM)/(summNum)/(pos)/(atkSide)/-1/1 E(pos)/?(stack:y);
+      !!BM(stack):B0 Fd|(MON_FLAG_SUMMONED);
+    !!en;
+  !!en;
+!!en;
 
+!?FU(hota_CheckIfEligibleToSummon);
+!#VA(side:x) (isEligible:x);
 
-!?MR1;
-!!BG:A?y96;
-!!FU&y96<>1/y96<>10:E;
-!!BA:H0/?y11;
-!!BA:H1/?y12;
-!!VRy23:S0;
-!!VRy24:S0;
-!!VRy57:S0;
-!!HEy11:A2/266/?y22/?y23;
-!!HEy12&y12>=0:A2/266/?y22/?y24;
+!!VR(isEligible):S(FALSE);
 
-!!FU&y23=0/y24=0:E;
+!!UN:C6919200/4/?(value:y);
+!!VR(address:y):S(side) *4 +21692 +(value);
+!!UN:C(address)/4/?(stackNum:y);
 
-!!VRy99&y23=1/y24=0:S0;
-!!VRy99&y23=0/y24=1:S1;
-!!FU&y23=1/y24=1:E;
+!!VR(isEligible)&(stackNum)<=20:S(TRUE);
 
-!!MR:N?y51;
-!!BMy51:P?y52;
+// Get the number of increased Fangarms after battle
+!?FU(OnAfterBattleAction);
+!!BU:C?(battleIsEnd:y);
 
-!!BMy51:B?y53;
-!!BMy51:H?y54;
-!!BMy51:N?y55;
-!!BMy51:T?y61;
-!!BMy51:L?y50;
-!!BMy51:F?y78;                           [read flags]
-!!BMy51:O?y79;
-!!VRy78:&4194304;                       [just look summoned bit]
-!!FU&y78>0:E;                           [Exit if cloned or summoned]
-!!FU|y61=263/y61=145/y61=146/y61=147/y61=148/y61=149:E;
-!!FU&y79<0:E;
-!!VRy59:Sy54-y50;
+!!if&(battleIsEnd);
+  !!re i/(BATTLE_LEFT)/(BATTLE_RIGHT);
+    !!FU(hota_GetFangarmsIncreasedAfterBattle):Pi;
+  !!en;
+!!en;
 
-!!VRy55:-1;
-!!VRy56:Sy55*y54;
-!!VRy56:+y59;
-!!MR:F?y57;
-!!FU&y57<y56:E;
+!?FU(hota_GetFangarmsIncreasedAfterBattle);
+!#VA(side:x);
 
-!!VRy56:Sy54*y53;
-!!VRy56::5;
-!!VRy56&y56>y53:Sy53;
-!!VRy56&y56<1:S1;
+!!VRi^hota_fangarmIncreased_%(side)^:S0;
+!!VR(firstStack:y):S(side) *21;
+!!VR(lastStack:y):S(firstStack) +20;
 
-!!UN:C6919200/4/?y1;
-!!VRy2:Sy51*1352+21708+y1;
-!!VRy3:Sy2+234;
-!!UN:Cy3/1/1;
-!!BMy51:F?y4;
-!!VRy4:|268435456;
-!!BMy51:N0 Fy4;
-!!SN:E4621680/2/y1/51/1;
-!!SN:E4797616/2/y1/0/1;
+!!re i/(firstStack)/(lastStack);
+  !!BMi:T?(type:y);
 
+  !!if&(type)=(MON_FANGARM);
+    !!BMi:B?(startNum:y) N?(currNum:y);
+    !!VR(fangarmIncreased:y):S(currNum) -(startNum);
+    !!VRi^hota_fangarmIncreased_%(side)^&(fangarmIncreased)>0:+(fangarmIncreased);
+  !!en;
+!!en;
 
-!!BU:S70/y56/y52/y99/-1/1;
-!!BMy51:V70;
+!?FU(OnAfterBattleUniversal);
+!!FU(hota_GiveFangarmAfterBattle)&i^hota_fangarmIncreased_0^>0:P(BATTLE_LEFT);
+!!FU(hota_GiveFangarmAfterBattle)&i^hota_fangarmIncreased_1^>0:P(BATTLE_RIGHT);
 
-!!SN:W^KO_Horn^/dy56;
-!!SN&y23=1:W^KO_Horn_Hero^/y11;
-!!SN&y24=1:W^KO_Horn_Hero^/y12;
+!?FU(hota_GiveFangarmAfterBattle);
+!#VA(side:x);
 
+!!VR(hero:y):Si^battle_hero_%(side)^;
 
-!?FU(OnBeforeBattle)&1000;
-!!SN:W^KO_Horn^/0;
+!!if&(hero)>(NO_HERO);
+  !!HE(hero):O?(owner:y);
 
+  !!if&(owner)>(NO_OWNER);
+    !!VR(mode:y):S1;
+    !!OW:I(owner)/?(isAi:y);
+    !!VR(mode)&(isAi):S0;
+    !!HE(hero):C2/(MON_FANGARM)/i^hota_fangarmIncreased_%(side)^/(mode);
+    !!SN:D;
+  !!en;
+!!en;
 
+// Hawaiing's memory hacks
+!?FU(hota_RemoveDeadBody);
+!#VA(stack:x);                          [stack id of the dead body]
+!#VA(removeStack:x);                    [whether remove the stack completely]
 
-!?FU(OnAfterBattle)&1000;
-!!SN:W^KO_Horn^/?y1;
-!!FU&y1=0:E;
-!!SN:W^KO_Horn_Hero^/?y2;
-!!HEy2:A2/266/?y22/?y23;
-!!FU&y23=0:E;
-!!HEy2:C2/263/y1/1;
-!!SN:W^KO_Horn^/0;
+!!FU|x1<0/x1>41/x2<0/x2>1:E;
+!!BMx1:T?y1 N?y2 I?y3 F?i;
+!!VRy5:Si &1;
+!!VRy6:Si &8388608;
+!!VRy7:Si &4194304;
+!!VRy8:Si &268435456;
+!!FU|y1<0/y1=149/y2>0/y6>0/y8>0:E;      [特殊生物退出]
 
+!!UN:C6919200/4/?y13;                   [调用内存]
+!!VRy14:Sx1 *1352 +21708 +y13;
+!!SN:E4481984/2/y14;
+!!BMx1:P?y15;
+!!VRy16:Sv1;                            [取得另一坐标位置]
 
+!!BU:Ey15/?y17;
+!!FU&y17>-1:E;
+
+!!if&y5=1;                              [处理双格死亡生物]
+  !!BU:Ey16/?y18;
+  !!FU&y18>-1:E;
+!!en;
+
+!!BMx1&x2=1/y7=0:Fd4194304;
+!!BMx1&y8=0:Fd268435456;
+
+!!VRy9:Sy3 *21 +x1;
+!!VRy10:Sy15 *112 +y13 +452;
+!!SN:E5928496/1/y10/y3/y9;
+
+!!if&y5=1;
+  !!VRy11:Sy16 *112 +y13 +452;
+  !!SN:E5928496/1/y11/y3/y9;
+!!en;
+
+!?FU(hota_PlayCustomAnimation);
+!#VA(animPtr:x);                        [Filename of the animation]
+!#VA(pos:x);                            [Position of the animation]
+!#VA(delay:x);                          [Delay (ms)]
+!#VA(flags:x);                          [Flags. 0-4.]
+!#VA(isTransparent:x);                  [Transparent (boolean)]
+!#VA(flagAlterationOn:x);               [Allow changes to flags (boolean)]
+
+; Set up values
+!!VR(bmvIndex:y):S82;                   [Poof]
+!!VRz1:Sz(animPtr);
+
+!!FU:A?(numArgs:y);
+
+!!if&(numArgs)<6;
+  !!VR(flagAlterationOn):S0;
+  !!VR(isTransparent):S(FALSE);
+  !!VR(flags):S0;
+!!en;
+
+!!VR(delay)|(delay)<0/(numArgs)<3:S100;
+
+!!VR(pos)|(pos)<0/(pos)>187:S93;        [Play the animation in the middle of the battlefield if posisiton is invalid]
+!!VR(flags):F0/4;
+!!VR(isTransparent):F(FALSE)/(TRUE);
+
+!!UN:C6919200/4/?(value:y);             [战场内存]
+!!VR(defAdd:y):S(value) +78568;         [动画DEF]
+!!VR(indexAdd:y):S(value) +78572;       [动画索引]
+!!UN:C4454270/4/?(basicAdd:y);          [BM:V调用动画时用到的基址]
+!!UN:C(defAdd)/4/0 C(indexAdd)/4/-1;    [清除内存多余数据]
+!!VR(origDefPtr:y):S(bmvIndex) *12 +(basicAdd); [魔法动画名字的指针地址]
+!!VR(origFlagsPtr:y):S(origDefPtr) +8;  [魔法动画播放标志的内存(这里可由x5和x6组成)]
+!!VR(zPtr:y):S512 +9597416;             [z1变量对应的内存地址(ERA下)]
+!!VR(newFlags:y):S(isTransparent) *256 +(flags); [自定义播放标志(否则采用x1动画的原有标志)]
+!!UN:C(origDefPtr)/4/?(origNamePtr:y);  [原动画名指针]
+!!UN:C(origFlagsPtr)/4/?(origFlags:y);  [原有播放标志]
+!!UN:C(origDefPtr)/4/(zPtr);            [新指针]
+!!UN&(flagAlterationOn)<>(FALSE):C(origFlagsPtr)/4/(newFlags); [自定义播放标志]
+!!SN:E4810128/2/(value)/(bmvIndex)/(pos)/(delay)/0; [调用内部函数播放战场动画]
+!!UN:C(origDefPtr)/4/(origNamePtr);     [还原]
+!!UN&(flagAlterationOn)<>(FALSE):C(origFlagsPtr)/4/(origFlags); [还原]
+!!UN:C(defAdd)/4/0 C(indexAdd)/4/-1;    [清除内存多余数据]

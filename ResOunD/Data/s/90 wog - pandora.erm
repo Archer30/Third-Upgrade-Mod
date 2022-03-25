@@ -11,9 +11,11 @@ ERMS_PoweredBy=ERM Scripter v. 2005.9.7.814
 !#SN:W^Hero_level_90^/1;                                init
 !#SN:W^init_pandora_90^/-1;                             [haven't initialized boxes]
 
-!#VRi^pandora_on^:S(TRUE);
+; Enable new pandora only when object replacement is enabled
+!#UN:P195/?(wogOption:y);
+!#VRi^pandora_enabled^&(wogOption):S(TRUE);
 *************************************************Initial Timer Set******************************************************
-!?FU(OnAfterErmInstructions)&i^pandora_on^;
+!?FU(OnAfterErmInstructions)&i^pandora_enabled^;
 !!UN:U6/-1/?y1;                         [count boxes->count_pandora_90]
 !!SN:W^count_pandora_90^/y1;            [write pandora numb]
 
@@ -40,7 +42,7 @@ ERMS_PoweredBy=ERM Scripter v. 2005.9.7.814
 !!en:;
 *
 *************************************************Main Trigger Section****************************************************
-!?OB6;
+!?OB6&i^pandora_enabled^;
 !!IF:V203/0;
 ******************* set Box Variant
 !!SN:W^%V998_%V999_%V1000_pandora90^/?y2;
@@ -356,7 +358,7 @@ ERMS_PoweredBy=ERM Scripter v. 2005.9.7.814
 !!IF:V203/0;
 *****************************END MAIN TRIGGER*****************************
 **************************** Pre-battle trigger
-!?BA52&203/i^pandora_on^;
+!?BA52&203/i^pandora_enabled^;
 !!SN:W^Box_variant_90^/?y34 W^Bless_variant_90^/?y35;
 !!if&y34=12:;
  !!BA&y35=0:B9;                                                   set field
@@ -364,7 +366,7 @@ ERMS_PoweredBy=ERM Scripter v. 2005.9.7.814
 !!en:;
 **************************
 *****************************Sets up special battlefield
-!?BF&203/i^pandora_on^;
+!?BF&203/i^pandora_enabled^;
 !!SN:W^Box_variant_90^/?y34 W^Bless_variant_90^/?y35;
 !!if&y34=12:;
  !!BF:C;                                                           Clear the battlefield
@@ -373,7 +375,7 @@ ERMS_PoweredBy=ERM Scripter v. 2005.9.7.814
 !!en:;
 ****************************************************
 *****************************BG  trigger
-!?BG&203/i^pandora_on^;
+!?BG&203/i^pandora_enabled^;
 !!SN:W^Box_variant_90^/?y34 W^Bless_variant_90^/?y35;
 !!if&y34=12:;
  !!BU&y35=0:G1;
@@ -381,7 +383,7 @@ ERMS_PoweredBy=ERM Scripter v. 2005.9.7.814
 !!en:;
 **************************
 ************************** Battlefield round trigger**********************
-!?BR&203/1000/i^pandora_on^;
+!?BR&203/1000/i^pandora_enabled^;
 !!SN:W^Box_variant_90^/?y34 W^Bless_variant_90^/?y35 W^Hero_level_90^/?y36;
 !!if&y34=12:;
  !!if&v997=0:;                    Round Zero
@@ -520,7 +522,7 @@ ERMS_PoweredBy=ERM Scripter v. 2005.9.7.814
  !!en:;
 !!en:;
 *****************************Post-battle trigger**************************
-!?BA53&203/i^pandora_on^;
+!?BA53&203/i^pandora_enabled^;
 !!SN:W^Box_variant_90^/?y34 W^Bless_variant_90^/?y35 W^Hero_level_90^/?y36;
 !!if&y34=12:;
  !!HE-1:O?t;           Выясняем, жив ли герой, в переменную t
@@ -802,7 +804,7 @@ ERMS_PoweredBy=ERM Scripter v. 2005.9.7.814
 !!VRx1:+1;                       [Increase v-var                                       |
 !!VRx2:+1;                       [Increase z-var index]                                |
 ****************
-!?FU(OnAfterLoadGame)&i^pandora_on^;    [Fix battle save compatibility - Archer]
-!!SN:W^Box_variant_90^/-1;                              init
+!?FU(OnAfterLoadGame)&i^pandora_enabled^;    [Fix battle save compatibility - Archer]
+!!VRi^Box_variant_90^:S-1;                              init
 *****************************************************End******************************************************************
 

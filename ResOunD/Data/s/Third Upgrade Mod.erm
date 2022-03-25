@@ -9,50 +9,6 @@ visit www.heroescommunity.com for updates and news
 ****************************************************************************************************
 
 !#VRv9500:S-1;                          [Initialize v9500 to -1]
-!#VRv9520:S0;
-
-!?FU(OnGameEnter);
-!#VA(newtowns:y); !!SN:L^new_towns.era^/?(newtowns); !!FU&(newtowns)=0:E;
-!!re i/0/7;
-  !!re j/0/6;
-    !!VRy1:Si *14 +j +j;
-    !!UN:Ti/j/0/y1;
-    !!VRy2:Sy1 +1;
-    !!UN:Ti/j/1/y2;
-    !!MA:Uy1/y2;
-  !!en;
-!!en;
-
-** fortress fix
-!!UN:T7/2/0/104 T7/2/1/105;
-!!UN:T7/3/0/106 T7/3/1/107;
-!!UN:T7/4/0/102 T7/4/1/103;
-
-** conflux
-!!UN:T8/0/0/118 T8/0/1/119; !!MA:U118/119;
-!!UN:T8/1/0/112 T8/1/1/127; !!MA:U112/127;
-!!UN:T8/2/0/115 T8/2/1/123; !!MA:U115/123;
-!!UN:T8/3/0/114 T8/3/1/129; !!MA:U114/129;
-!!UN:T8/4/0/113 T8/4/1/125; !!MA:U113/125;
-!!UN:T8/5/0/120 T8/5/1/121; !!MA:U120/121;
-!!UN:T8/6/0/130 T8/6/1/131; !!MA:U130/131;
-
-** 3rd upgrade
-
-!!UN:T0/0/2/197; !!UN:T0/1/2/198; !!UN:T0/2/2/199; !!UN:T0/3/2/291; !!UN:T0/4/2/320; !!UN:T0/5/2/201; !!UN:T0/6/2/150; // castle
-!!UN:T1/0/2/293; !!UN:T1/1/2/203; !!UN:T1/2/2/256; !!UN:T1/3/2/204; !!UN:T1/4/2/205; !!UN:T1/5/2/206; !!UN:T1/6/2/151; // rampart
-!!UN:T2/0/2/255; !!UN:T2/1/2/208; !!UN:T2/2/2/209; !!UN:T2/3/2/257; !!UN:T2/4/2/210; !!UN:T2/5/2/211; !!UN:T2/6/2/152; // tower
-!!UN:T3/0/2/213; !!UN:T3/1/2/214; !!UN:T3/2/2/215; !!UN:T3/3/2/216; !!UN:T3/4/2/217; !!UN:T3/5/2/218; !!UN:T3/6/2/153; // inferno
-!!UN:T4/0/2/220; !!UN:T4/1/2/329; !!UN:T4/2/2/261; !!UN:T4/3/2/221; !!UN:T4/4/2/222; !!UN:T4/5/2/223; !!UN:T4/6/2/154; // Necropolis
-!!UN:T5/0/2/225; !!UN:T5/1/2/227; !!UN:T5/2/2/226; !!UN:T5/3/2/228; !!UN:T5/4/2/229; !!UN:T5/5/2/230; !!UN:T5/6/2/155; // Dungeon
-!!UN:T6/0/2/232; !!UN:T6/1/2/233; !!UN:T6/2/2/234; !!UN:T6/3/2/235; !!UN:T6/4/2/236; !!UN:T6/5/2/237; !!UN:T6/6/2/156; // Stronghold
-!!UN:T7/0/2/321; !!UN:T7/1/2/240; !!UN:T7/2/2/241; !!UN:T7/3/2/242; !!UN:T7/4/2/244; !!UN:T7/5/2/243; !!UN:T7/6/2/157; // Fortress
-!!UN:T8/0/2/246; !!UN:T8/1/2/247; !!UN:T8/2/2/248; !!UN:T8/3/2/249; !!UN:T8/4/2/250; !!UN:T8/5/2/251; !!UN:T8/6/2/158; // Conflux
-
-!!UN:P(WOG_OPT_4TH_UPGRADES)/?(fourthUpgOn:y); !!FU&(fourthUpgOn)=0:E;
-!!UN:T0/6/3/(MON_SERAPH); !!UN:T1/6/3/(MON_PURE_DIAMOND_DRAGON); !!UN:T2/6/3/(MON_GUARDIAN_OF_ZEUS);
-!!UN:T3/6/3/219; !!UN:T4/6/3/(MON_RED_BONES_DRAGON); !!UN:T5/6/3/(MON_CHASM_DRAGON);
-!!UN:T6/6/3/(MON_SPECTRAL_BEHEMOTH); !!UN:T7/6/3/(MON_NIGHTMARE_HYDRA); !!UN:T8/6/3/(MON_DIVINE_PHOENIX);
 
 ****************************************************************
 ************************ Upgrading Part ************************
@@ -61,7 +17,6 @@ visit www.heroescommunity.com for updates and news
 ; Script by Archer30
 !?FU(OnDetermineMonInfoDlgUpgrade);
 !#VA(monType:x) (upgType:x) (town:x) (hero:x);
-!#VA(newtowns:y); !!SN:L^new_towns.era^/?(newtowns); !!FU&(newtowns)<>0:E;
 
 ; Exit if Gelu or Dracon
 !!FU|(hero)=(HERO_GELU)/(hero)=(HERO_DRACON):E;
@@ -99,7 +54,6 @@ visit www.heroescommunity.com for updates and news
 
 !?FU(tum_GetTownMon);
 !#VA(townType:x) (level:x) (mon:x) (upgMon:x) (thirdUpgMon:x);
-!#VA(newtowns:y); !!SN:L^new_towns.era^/?(newtowns); !!FU&(newtowns)<>0:E;
 
 ; get original upgraded creatures
 !!if&(townType)<=(TOWN_STRONGHOLD);
@@ -123,7 +77,6 @@ visit www.heroescommunity.com for updates and news
 
  [Reset changed town creature types]
 !?FU9502;
-!#VA(newtowns:y); !!SN:L^new_towns.era^/?(newtowns); !!FU&(newtowns)<>0:E;
 !!CA(CURRENT_TOWN):P?y1/?y2/?y3;        [Town's position: y1/y2/y3]
 
  [Creature type: y4 (non-upgraded) and y5 (upgraded), y6 (level)]
@@ -282,7 +235,6 @@ visit www.heroescommunity.com for updates and news
 !!FU(tum_SetUpTownMons):P;
 
 !?FU(tum_SetUpTownMons);
-!#VA(newtowns:y); !!SN:L^new_towns.era^/?(newtowns); !!FU&(newtowns)<>0:E;
 !!CA(CURRENT_TOWN):U?(townId:y) T?(townType:y);
 
 !!re i/(MON_MIN_LEVEL)/(MON_MAX_LEVEL);
@@ -325,13 +277,12 @@ visit www.heroescommunity.com for updates and news
 ; Demolish upgrade guild if fort is not built
 !!if&-1;
   !!CA(CURRENT_TOWN):U?(townId:y) T?(townType:y); [get town id and type]
-  !!VRi^tum_upgGuild_%(townId)^:S(FALSE);
+  !!VRi^tum_upgGuild_%(townId)^:S(FALSE);[set flag]
   !!FU(tum_ResetSlotSettings):P(townId)/(townType);
 !!en;
 
 !?FU(tum_ResetSlotSettings);
 !#VA(townId:x) (townType:x);
-!#VA(newtowns:y); !!SN:L^new_towns.era^/?(newtowns); !!FU&(newtowns)<>0:E;
 
 !!if&(townType)=(TOWN_CASTLE);          [Castle]
   !!FU(dex_SetDwellingSlotByTownId):P(townId)/0/1/0/(MON_PIKEMAN)/100;
@@ -482,7 +433,6 @@ visit www.heroescommunity.com for updates and news
 ; Script by Archer30
 !?FU(OnPreTownScreen);
 !#VA(townId:x);
-!#VA(newtowns:y); !!SN:L^new_towns.era^/?(newtowns); !!FU&(newtowns)<>0:E;
 
 !!CA(CURRENT_TOWN):T?(townType:y);
 
@@ -493,40 +443,77 @@ visit www.heroescommunity.com for updates and news
 !!en;
 
 *****************************************************************************
+!?FU(gem_OnOpenButtonDlg);              [Function from GEM Mod that is called when clicking the new buttons]
+
+    !!CA-1:T?y1;                        [Get Town type]
+    
+    !!VRz20&y1=0:Sz199863;              [The Heavenly Tower]
+    !!VRz21&y1=0:Sz199861;              [The Heavenly Tower]
+
+    !!VRz20&y1=1:Sz199866;              [Order of The Sun]
+    !!VRz21&y1=1:Sz199864;              [Order of The Sun]
+
+    !!VRz20&y1=2:Sz199869;              [Cloud Castle]
+    !!VRz21&y1=2:Sz199867;              [Cloud Castle]
+
+    !!VRz20&y1=3:Sz199872;              [Kreegans' Gate]
+    !!VRz21&y1=3:Sz199870;              [Kreegans' Gate]
+
+    !!VRz20&y1=4:Sz199875;              [Hall of The Pit]
+    !!VRz21&y1=4:Sz199873;              [Hall of The Pit]
+
+    !!VRz20&y1=5:Sz199881;              [Underworld Entrance]
+    !!VRz21&y1=5:Sz199879;              [Underworld Entrance]
+
+    !!VRz20&y1=6:Sz199884;              [Barbarian Citadel]
+    !!VRz21&y1=6:Sz199882;              [Barbarian Citadel]
+
+    !!VRz20&y1=7:Sz199887;              [Temple of The Snake]
+    !!VRz21&y1=7:Sz199885;              [Temple of The Snake]
+
+    !!VRz20&y1=8:Sz199860;              [Escaton's Crystal]
+    !!VRz21&y1=8:Sz199858;              [Escaton's Crystal]
+    
+  !!FU(gem_AddTownButton):P^007T8BTN.def^/^%Z20^/^%Z21^/(TUM_Build_New_Building)/0/0/0; [Blacksmith button]
+
 ; Build special buildings
-!?FU(OnTownMouseClick);                 [(trigger on clicking in town screen)]
-!!SN:L^new_towns.era^/?y99; !!FU&y99<>0:E;
+!?FU(OnTownMouseClick);                 [trigger on clicking in town screen)]
+
 !!CA(CURRENT_TOWN):U?y30;               [get town id]
-!!CA(CURRENT_TOWN):T?y2;                [(get town type)]
+!!CA(CURRENT_TOWN):T?y2;                [get town type)]
 
-!!CA(CURRENT_TOWN):O?y-2;               [(owner of the town: y-2)]
-!!OW:C?v9540;                           [(current player: y-3)]
-!!FU&y-2<>v9540:E;                      [(Exit if player doesn't own town)]
+!!CA(CURRENT_TOWN):O?y-2;               [owner of the town: y-2)]
+!!OW:C?v9540;                           [current player: y-3)]
+!!FU&y-2<>v9540:E;                      [Exit if player doesn't own town)]
 
-!!CM:S?y1;                              [(Get what type of click)]
-!!FU&y1<>14:E;                          [(exit if not right click)]
+!!CM:S?y1;                              [Get what type of click)]
+!!FU&y1<>14:E;                          [exit if not right click)]
 
-!!CM:I?y1;                              [(Get what type of click)]
-!!FU&y1<10:E;                           [(abort if not town hall type)]
-!!FU&y1>13:E;                           [(abort if not town hall type)]
+!!CM:I?y1;                              [Get what type of click)]
+!!FU&y1<10:E;                           [abort if not town hall type)]
+!!FU&y1>13:E;                           [abort if not town hall type)]
+!!FU(TUM_Build_New_Building):P; 
 
-!!CM:R0;                                [(Disable normal popup)]
-!!CA(CURRENT_TOWN):B3/13;               [(if capitol built - reenable standard text)]
+
+!?FU(TUM_Build_New_Building);           [trigger on clicking in town screen)]
+
+!!CM:R0;                                [Disable normal popup)]
+!!CA(CURRENT_TOWN):B3/13;               [if capitol built - reenable standard text)]
 !!CM&1:R1;
 
 !!VRv4:S0;
 !!VRv5:S0;
 !!VRv6:S0;
-!!CA(CURRENT_TOWN):B3/9;                [(ckeck if there's a castle)]
-!!VRv4&1:S1;                            [(set a helping var)]
+!!CA(CURRENT_TOWN):B3/9;                [ckeck if there's a castle)]
+!!VRv4&1:S1;                            [set a helping var)]
 
-!!CA(CURRENT_TOWN):B3/8;                [(check for citadel)]
+!!CA(CURRENT_TOWN):B3/8;                [check for citadel)]
 !!VRv5&1:S1;
 
-!!CA(CURRENT_TOWN):B3/7;                [(check for fort)]
+!!CA(CURRENT_TOWN):B3/7;                [check for fort)]
 !!VRv6&1:S1;
 
-!!CM&v4=0/v5=0/v6=0:R1;                 [(if no fort, citadel or castle reenable standard text)]
+!!CM&v4=0/v5=0/v6=0:R1;                 [if no fort, citadel or castle reenable standard text)]
 
 !!UN:P4/?y2;                            [check if town demolition is enabled]
 !!CM&y2=1:R0;                           [if it is not enabled - disable any standard text]
@@ -786,7 +773,6 @@ visit www.heroescommunity.com for updates and news
 
 **************************** Third Upgrade Mod Town dwellings enhancement ****************************
 !?FU(newup_ExtendTownDwellings);
-!#VA(newtowns:y); !!SN:L^new_towns.era^/?(newtowns); !!FU&(newtowns)<>0:E;
 ; x1 - town ID
 ; x2 - town type
 !!if&x2=0;                             [Castle]
@@ -997,7 +983,6 @@ visit www.heroescommunity.com for updates and news
 !$OB98&-1000; !!FU9504:P;               [-occur when AI is leaving town]
 
 !?FU9504;
-!!SN:L^new_towns.era^/?y99; !!FU&y99<>0:E;
 ***************************** building part ******************************
 
 !!CA998:O?y-2;                          [(owner of the town: y-2)]
@@ -1240,10 +1225,11 @@ script by Perry R
 
 !!BG:A?y1;                              [Aktion in y1]
 !!MR:S?y2;
+
 !!if&y1=10/y2=19;                       [Chain always does 105 damage  19  Chain Lightning]
-!!MR:N?y10;
-!!BMy10:I?y11;
-!!MR&y11=0:F100;                        [Disable Magic damage for attacker side from Chain]
+  !!MR:N?y10;
+  !!BMy10:I?y11;
+  !!MR&y11=0:F100;                        [Disable Magic damage for attacker side from Chain]
 !!en;
 
 
@@ -1258,36 +1244,37 @@ script by Perry R
 
 !!CM:F?v3 I?v4 S?v5 T?v6;               [where we click and click subtype]
 !!FU|v4<>118/v6<>512/v5=13:E;           [If not Specialty Icon Clicked Exit]
+
 !!if|v3=512/v3=0;                       [if right or left click]
-!!HE(CURRENT_HERO):N?y6;                [Get current hero #]
-!!FU&y6>=144:E;                         [Exit for Extension Heroes]
-!!HEy6:X?y11/?y12/?y13/?y14/?y15/?y16/?y17; [Check Hero Speciality]
-!!FU&y11<>1:E;                          [Exit if no Creature_Specialist]
+  !!HE(CURRENT_HERO):N?y6;                [Get current hero #]
+  !!FU&y6>=144:E;                         [Exit for Extension Heroes]
+  !!HEy6:X?y11/?y12/?y13/?y14/?y15/?y16/?y17; [Check Hero Speciality]
+  !!FU&y11<>1:E;                          [Exit if no Creature_Specialist]
 
-!!CM:R0;                                [disable standard reaction]
-!!HEy6:R2/?y70;
-!!HEy6:B0/?z1;
-!!HEy6:E?y47/?y48/1;                    [Check hero Level]
-!!SN&y70=0:T^Third_Upgrade_Mod.his^/?z5;
-!!SN&y70=1:T^Third_Upgrade_Mod.her^/?z5;
+  !!CM:R0;                                [disable standard reaction]
+  !!HEy6:R2/?y70;
+  !!HEy6:B0/?z1;
+  !!HEy6:E?y47/?y48/1;                    [Check hero Level]
+  !!SN&y70=0:T^Third_Upgrade_Mod.his^/?z5;
+  !!SN&y70=1:T^Third_Upgrade_Mod.her^/?z5;
 
-!!FU(Set_Creature_Upgrades_1):Py12/y6/?y16/?y17;
+  !!FU(Set_Creature_Upgrades_1):Py12/y6/?y16/?y17;
 
-!!UN:N3/z3/y12/1;                      [Normal Creature]
-!!UN:N3/z4/y16/1;                      [First Upgrade]
-!!UN:N3/z6/y17/1;                      [Second Upgrade]
+  !!UN:N3/z3/y12/1;                      [Normal Creature]
+  !!UN:N3/z4/y16/1;                      [First Upgrade]
+  !!UN:N3/z6/y17/1;                      [Second Upgrade]
 
-!!MA:Ly12/?y14;                         [Get creature level]
-!!VRy60&y14=0:S16; !!VRy60&y14=1:S15; !!VRy60&y14=2:S13; !!VRy60&y14=3:S12; !!VRy60&y14=4:S10; !!VRy60&y14=5:S7; !!VRy60&y14=6:S5;
-!!VRy14:+1;
-!!VRy50:Sy48:7+1;                       [7 Attack and Defense per Level]
-!!VRy51:Sy48:y60;                       [Damage per Level based on creature level]
-!!VRy52:Sy48+9;                         [+1% per Health per Level +9%]
+  !!MA:Ly12/?y14;                         [Get creature level]
+  !!VRy60&y14=0:S16; !!VRy60&y14=1:S15; !!VRy60&y14=2:S13; !!VRy60&y14=3:S12; !!VRy60&y14=4:S10; !!VRy60&y14=5:S7; !!VRy60&y14=6:S5;
+  !!VRy14:+1;
+  !!VRy50:Sy48:7+1;                       [7 Attack and Defense per Level]
+  !!VRy51:Sy48:y60;                       [Damage per Level based on creature level]
+  !!VRy52:Sy48+9;                         [+1% per Health per Level +9%]
 
-!!SN:T^Third_Upgrade_Mod.Creature_Specialist^/?s^Text^/^level^/y14/^attack^/y50/^damage^/y51/^health^/y52/^Crea1^/z3/^Crea2^/z4/^Crea3^/z6/^Hero^/z1/^sex^/z5;
+  !!SN:T^Third_Upgrade_Mod.Creature_Specialist^/?s^Text^/^level^/y14/^attack^/y50/^damage^/y51/^health^/y52/^Crea1^/z3/^Crea2^/z4/^Crea3^/z6/^Hero^/z1/^sex^/z5;
 
-!!IF&i^mouse_action^=(MOUSE_LMB_PRESSED):M1/1/^%S(Text)^;
-!!IF&i^mouse_action^=(MOUSE_RMB_PRESSED):M1/4/^%S(Text)^;
+  !!IF&i^mouse_action^=(MOUSE_LMB_PRESSED):M1/1/^%S(Text)^;
+  !!IF&i^mouse_action^=(MOUSE_RMB_PRESSED):M1/4/^%S(Text)^;
 !!en;
 
 
@@ -1534,14 +1521,14 @@ for Third Upgrade Mod by VMaiko
 *Morale and Luck reducing artefacts*
 Script by PerryR
 
-!?FU(OnCombatRound)&v997=0/i^tum_emerald_on^; [At the start of each battle]
+!?FU(OnCombatRound)&v997=0/i^tum_emerald_on^;[At the start of each battle]
 !!BA:Q?f; !!FU&f=1:E;                   [Exit if Quick Combat]
 !!BA:H0/?y1;                            [Attacking Hero]
 !!FU(TUM_Luck_Morale_Artefacts)&y1>=0/y1<=155:Py1/21/41;
 !!BA:H1/?y1;   Defending Hero
 !!FU(TUM_Luck_Morale_Artefacts)&y1>=0/y1<=155:Py1/0/20;
 
-!?FU(OnAfterBattleAction)&i^tum_emerald_on^; [After every Battle Action]
+!?FU(OnAfterBattleAction)&i^tum_emerald_on^;[After every Battle Action]
 !!BA:Q?f; !!FU&f=1:E;                   [Exit in Quick Combat]
 !!BG:H?y1; !!FU&y1<0:E;                 [Get acting Hero and Exit if no Hero]
 !!BG:Q?y8;                              [Battle Side]
@@ -1606,9 +1593,9 @@ Script by PerryR
 !!en;
 ****************************************************************************************************
 
-!?FU(OnEveryDay)&i^tum_emerald_on^;         [Runs once each Turn]
+!?FU(OnEveryDay)&i^tum_emerald_on^/i^timerOnce^; [Runs once each Turn]
 
-!!DO(Golden_Goose_Shit)/0/155/1&x3=1/x1>1:P;      [loop through heroes]
+!!DO(Golden_Goose_Shit)/0/155/1&x3=1/x1>1:P; [loop through heroes]
 
 !?FU(Golden_Goose_Shit);
 !!HEx16:O?y1;                           [Checke Hero Owner]
@@ -1632,8 +1619,6 @@ Script by PerryR
     !!VRy2:+19;                             [add +20% chance to resist]
     !!VRy2&y2>=100:S100;                    [chance cannot be higher than 100% (Immune)]
     !!MR:Fy2;                               [Apply increased resistance chance to that stack temporarily]
-    *!MR:F?y2;
-    *!IF:L^Resistance %Y2^;
   !!en;
 !!en;
 ****************************************************************************************************
@@ -1974,3 +1959,5 @@ Raises Skeleton Warriors or Skeleton Knights if needed
 
 !!UN|y21=57/y31=57/y41=57/y51=57/y61=57/y71=57/y81=57:C5127994/4/57; [Set to Skeleton Warriors if Hero has them in the Army]
 !!UN|y21=220/y31=220/y41=220/y51=220/y61=220/y71=220/y81=220:C5127994/4/220; [Set to Skeleton Knights if Hero has them in the Army]
+
+**************************************************************************

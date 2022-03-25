@@ -1,4 +1,4 @@
-ZVSE
+ZVSE2
 
 ; USED z958-z959, w121-w127, D61, TM94
 
@@ -920,7 +920,8 @@ PESTILENCE: no enemy will be able to approach %Z3 for 7 days^;
 !!BMx16:M53/999/3 M48/999/3 M27/999/3;
 
 !?FU45696527;
-!!BMx16:Sd3; +3 speed
+!!BMx16:S?(speed:y);
+!!BMx16&(speed)>0:Sd3; +3 speed
 
 !?FU45696528;
 !!BMx16:H?y1;

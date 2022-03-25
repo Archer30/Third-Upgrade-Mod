@@ -2,27 +2,28 @@ ZVSE2
 ; Author:   Archer30
 ; Special thanks to Hawaiing
 ; Engine:   ERM 2.0+
-; Requires: ERA 3.4+, Era Erm Framework, Third Upgrade Mod
+; Requires: ERA 3.3+, Era Erm Framework, Third Upgrade Mod
 
 ; 8th creature is now available for every town!
 ; Portal of Summoning becomes Banner Workshop, provides a Warlord's Banner every week.
+
+; You can customise the 8th creatures by editing this script. Simply search for "Customise here" to find where you need to patch
+; It is the best if all the 8th creatures IDs are consistent, or you will need to rewrite a few lines 
 
 ; To-Do:
 ; Fix not able to recruit from left-clicking on left bottom of town screen (HD problem feature, now only Dungeon with Portal Of Summoning built works)
 
 
 ; ============== SETTINGS ==============
-!#VRi^eighth_Build8thDwellIntervalAi^:S3;[days between AI build 8th dwellings]
+!#VRi^eighth_build8thDwellIntervalAi^:S3;[days between AI build 8th dwellings]
 !#VRi^eighth_recruit8thMaxGoldPctAi^:S50;[Max percent of gold spending on recruiting 8th creatures everyday for AI]
-
 !#VRi^eighth_8thHotkey^:S(KEY_D);       [hotkey for left-click features in Town]
-
 !#VRi^eighth_bannerPrice^:S1500;        [price of Warlord's Banner from Banner Workshop]
 ; ============ END SETTINGS ============
 
 
 !?FU(eighth_RestrainValues);
-!!VRi^eighth_Build8thDwellIntervalAi^:F1/(INT_MAX);
+!!VRi^eighth_build8thDwellIntervalAi^:F1/(INT_MAX);
 !!VRi^eighth_recruit8thMaxGoldPctAi^:F1/100;
 !!VRi^eighth_8thHotkey^:F8/254;
 !!VRi^eighth_bannerPrice^:F1/(INT_MAX);
@@ -41,15 +42,15 @@ ZVSE2
   !!en;
 
   ; Create arrays with with 0 item for gold cost of 8th dwelling /pre-requirement building ID (for AI building)
-  !!FU(NewIntArray):P?i^eighth_dwellGoldCosts^/(M_TEMP);
-  !!FU(NewIntArray):P?i^eighth_dwellReqDwells^/(M_TEMP);
+  !!FU(NewIntArray):P9/?i^eighth_dwellGoldCosts^/(M_TEMP);
+  !!FU(NewIntArray):P9/?i^eighth_dwellReqDwells^/(M_TEMP);
 
-  ; Create global array for AI 8th dwelling counts (for distributing budget on 8th creatures)
+  ; Create global array for AI 8th dwelling numbers (for distributing budget on 8th creatures). One element for one player
   !!FU(NewIntArray):P8/?i^eighth_townsWith8thDwellAi^/(M_STORED);
 !!en;
 
-; Create array with 0 item for all 8th creature (for checking whether a dweliing has 8th creatures)
-!!FU(NewIntArray):P?i^eighth_8thMons^/(M_TEMP);
+; Create array for all 8th creature (for checking whether a dweliing has 8th creatures)
+!!FU(NewIntArray):P18/?i^eighth_8thMons^/(M_TEMP);
 
 !?FU(eighth_CheckBanner);
 !!VRi^eighth_bannerOn^:S(TRUE);
@@ -62,15 +63,13 @@ ZVSE2
   !!FU(eighth_RenPortalOfSum):P;
   *!FU(eighth_CreateTownScreenHook):P;    [Test code]
 
-  !!SN:Mi^eighth_dwellGoldCosts^/0 Mi^eighth_dwellReqDwells^/0;
-  !!FU(Array_Push):Pi^eighth_dwellGoldCosts^/10000/3000/10000/5000/3000/4000/5000/4000/2500;
-  !!FU(Array_Push):Pi^eighth_dwellReqDwells^/36/33/36/33/33/34/35/34/32; [id of faction specific required buildings]
+  ; Customise here
+  !!SN:Vi^eighth_dwellGoldCosts^/0/10000/3000/10000/5000/3000/4000/5000/4000/2500;
+  !!SN:Vi^eighth_dwellReqDwells^/0/36/33/36/33/33/34/35/34/32; [id of required buildings for each factions]
 !!en;
 
-!!SN:Mi^eighth_8thMons^/0;
-!!FU(Array_Push):Pi^eighth_8thMons^/(MON_TEMPLAR)/(MON_PALADIN)/(MON_DRYAD)/(MON_OAK_DRYAD)/(MON_DRAKE_GOLEM)/(MON_DRAGON_GOLEM)
-  /(MON_SUCCUBUS)/(MON_LILIM)/(MON_WEREWOLF_TOW)/(MON_DIRE_WEREWOLF)/(MON_ILLITHID)/(MON_AHOON);
-!!FU(Array_Push):Pi^eighth_8thMons^/(MON_COATL)/(MON_QUERZALCOATL)/(MON_TROLL_HAG)/(MON_TROLL_WITCH)/(MON_TRITON)/(MON_ABYSSAL_TRITON); [execute the fucntion twice to not exceed character limit]
+!!SN:Vi^eighth_8thMons^/0/(MON_LIGHT_TEMPLAR)/(MON_LIGHT_PALADIN)/(MON_DRYAD)/(MON_OAK_DRYAD)/(MON_DRAKE_GOLEM)/(MON_DRAGON_GOLEM)/(MON_SUCCUBUS)/(MON_LILIM)/(MON_WEREWOLF_TOW)/(MON_DIRE_WEREWOLF)/(MON_ILLITHID)/(MON_AHOON);
+!!SN:Vi^eighth_8thMons^/12/(MON_COATL)/(MON_QUERZALCOATL)/(MON_TROLL_HAG)/(MON_TROLL_WITCH)/(MON_TRITON)/(MON_ABYSSAL_TRITON);
 
 !?FU(eighth_Patch);                     [Hawaiing]
 !!UN:C5016381/2/9195;
@@ -238,12 +237,12 @@ ZVSE2
 ; Check AI towns and build 8th dwellings, recruit available 8th creatures
 !?FU(OnEveryDay)&i^eighth_on^;
 !!FU(eighth_Build8thDwellAi)&i^timerOnce^/i^timerDay^>=2:P;
-!!FU(eighth_Recruit8thMonAi)&i^timerIsAi^/i^timerDay^>=i^eighth_Build8thDwellIntervalAi^:P;
+!!FU(eighth_Recruit8thMonAi)&i^timerIsAi^/i^timerDay^>=i^eighth_build8thDwellIntervalAi^:P;
 
 !?FU(eighth_Build8thDwellAi);
 ; Execute the fucntion only at the right time
 !!VRi^eighth_buildTimer^:+1;
-!!FU&i^eighth_Build8thDwellIntervalAi^<>i^eighth_buildTimer^:E;
+!!FU&i^eighth_build8thDwellIntervalAi^<>i^eighth_buildTimer^:E;
 
 !!VRi^eighth_buildTimer^:S0;
 ; Set up arrays for gold of AI players and towns with 8th dwelling
@@ -382,11 +381,8 @@ ZVSE2
 
 !!VR(heroSlot)&i<=(ARMY_SLOT_LAST):Si;
 
-!?FU(OnEveryDay)&i^timerOnce^/i^timerDay^>7/i^timerWeekDay^=1; [check hostile assembly]
-!!VRz2:S^mods\wog era^;
-!!FU(DirExists):P3/?(result:y);
-!!FU&(result)<>(TRUE):E;
-!!re i;!!en;
+!?FU(OnEveryDay)&i^timerOnce^/i^timerDay^=1; [check hostile assembly]
+!!FU(DirExists):P^mods\wog era^/?(result:y); !!FU&(result)<>(TRUE):E; !!re i;!!en;
 
 ****************************************************************************************************
 ; Set up global var for 8th creature type
@@ -960,8 +956,9 @@ ZVSE2
 !!FU&(ownerTown)<>(townType):E;
 
 ; If the monster is a eighth monster, get its upgrade if 8th monster is enabled/8th dwelling is built
-!!if&(monType)>=(MON_TEMPLAR)/(monType)<=(MON_TRITON)/i^tum_upgGuild_%(town)^/i^eighth_8thDwell_%(town)^;
-  !!MA:U(monType)/?(eighthMonUpg:y);
+; Customise here
+!!if&(monType)>=(MON_EIGHTH_FIRST)/(monType)<=(MON_EIGHTH_LAST)/i^tum_upgGuild_%(town)^/i^eighth_8thDwell_%(town)^;
+  !!FU(GetUpgradedMonster):P(monType)/?(eighthMonUpg:y);
   !!VR(upgType)&(eighthMonUpg)<>(NO_MON):S(eighthMonUpg);
 !!en;
 

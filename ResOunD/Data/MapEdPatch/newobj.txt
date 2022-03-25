@@ -118,3 +118,21 @@ Ultimate Dragon Utopia
 Halls of Temptation
 Royal Treasury
 Skeleton Transformer
+GuardHouse (CB)
+Centaur Stables (CB)
+Workshop (CB)
+Imp Crucible (CB)
+Cursed Temple (CB)
+Warren (CB)
+Goblin Barracks (CB)
+Gnoll Hut (CB)
+Magic Lantern (CB)
+Archers' Tower (CB)
+Dwarf Cottage (CB)
+Parapet (CB)
+Hall of Sins (CB)
+Graveyard (CB)
+Harpy Loft (CB)
+Wolf Pen (CB)
+Lizard Den (CB)
+Altar of Air (CB)

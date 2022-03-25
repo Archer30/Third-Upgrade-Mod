@@ -95,3 +95,12 @@ ZVSE2
 ; Bad fix. Should have been done without stack exp ability
 !?FU(OnAfterErmInstructions);
 !!EA292:F0/-1/?(firstEmptySlot:y) B(firstEmptySlot)/1/119/76/1/1/1/1/1/1/1/1/1/1/1;
+
+*****************************************
+**** Fix Emerald Tower Compatibility ****
+*****************************************
+; The following lines must be executed later than 
+!?FU(WOG_44_CheckIfMonDrainsLife);
+!#VA(mon:x) (result:x);
+
+!!VR(result)&(mon)=(MON_SHADOW_DRAGON):S(TRUE);

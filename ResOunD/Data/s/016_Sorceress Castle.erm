@@ -1048,7 +1048,7 @@ Guarded by %Z1 {(%Y30-%Y31)} of %Z-1, %Z2 {(%Y32-%Y33)} of %Z-2, %Z3 {(%Y34-%Y35
 
 ****************************************************************************************************
 *Replace Objects when map starts
-!?FU(OnEveryDay);
+!?FU(OnEveryDay)&i^tum_replaceObj_on^;
 
 !!if&x1=1/x3=1:;                   (Run once at day 1)
   !!VRy1:Si^CB_016_Replace_Objects^; !!FU&y1=0:E;
@@ -1072,7 +1072,7 @@ Guarded by %Z1 {(%Y30-%Y31)} of %Z-1, %Z2 {(%Y32-%Y33)} of %Z-2, %Z3 {(%Y34-%Y35
 !!en:;
 
 ********************************************************************************
-!?FU(CB_016_Replace)&i^tum_replaceObj_on^;
+!?FU(CB_016_Replace);
 
 !!UN:Ux1/-1/-1/1;
 
@@ -1087,10 +1087,10 @@ Guarded by %Z1 {(%Y30-%Y31)} of %Z-1, %Z2 {(%Y32-%Y33)} of %Z-2, %Z3 {(%Y34-%Y35
   *!OBv1/v2/v3&x1=y5/x2=y6:B;           (Remove a description hint for an object.)
   !!UN:Ov1/v2/v3/0/0;                   (delete old object)
   !!OBv1/v2/v3:C-1;                     (Clear Control Word of deleted Object)
-  !!VRv1:+x6;                           (Offset in x)
+  !!VRv2:+x6;                           (Offset in x)
   !!UN:Iv1/v2/v3/x3/x4/x3/x4/-1/0;
   !!POv1/v2/v3:N0;
-  !!VRi^CB_016_Set_Flag_%V1_%V2_%V3^:S1;
+  !!VRi^CB_016_Set_Flag_%v2_%v3_%v4^:S1;
   *!TRv1/v2/v3:E1;
   *!IF:L^Map Start %V1 %V2 %V3^;
   *!OBv1/v2/v3&x1=x3/x2=x4:H900;
@@ -1167,12 +1167,12 @@ Guarded by %Z1 {(%Y30-%Y31)} of %Z-1, %Z2 {(%Y32-%Y33)} of %Z-2, %Z3 {(%Y34-%Y35
 !!UN:Ux1/-1/-1/1;
 !!OBv1/v2/v3:T?y5 U?y6;                 (Get Type and Subtype)
 *!VRv1:+x5;
-*!SN:W^CB_016_Set_Flag_%V1_%V2_%V3^/?y7;(Get Coordinate Flag)
+*!SN:W^CB_016_Set_Flag_%v2_%v3_%v4^/?y7;(Get Coordinate Flag)
 *!POv1/v2/v3:N?y20;
 *!IF:L^Replace %V1 %V2 %V3   Flag is %Y7 and PO is %Y20^;
 *!VRv1:-x5;
 !!if&x1=y5/x2=y6:;                      (If same type and at that coordinate was a replace, and cleared at least once)
-  !!VRy1:Si^CB_016_Day_Cleared_%V1_%V2_%V3^; (get day on which the CB was cleared)
+  !!VRy1:Si^CB_016_Day_Cleared_%v2_%v3_%v4^; (get day on which the CB was cleared)
   !!VRy1:Sy1+x3;                        (Set to day on which was cleared + resetting intervall)
   !!POv1/v2/v3:N?y3;                    (Check PO:N value  1 means visited)
   !!POv1/v2/v3&y1<=x4/y3=1:N0;          (Reset PO value to 0, means not taken)

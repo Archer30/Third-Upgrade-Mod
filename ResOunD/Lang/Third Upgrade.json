@@ -82,10 +82,10 @@
 
 	"wog_options": {        
         "page0": {
-            "name": "Game Enhancements, \nHard-Coded Options & TUM",
+            "name": "TUM, Game Enhancements \nand Hard-Coded Options",
 
-            "group1": { 
-                "name": "Game Enhancements & TUM", 
+            "group0": { 
+                "name": "Third Upgrade Mod Options", 
             }
         }
     }

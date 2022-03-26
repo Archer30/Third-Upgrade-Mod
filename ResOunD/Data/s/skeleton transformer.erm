@@ -22,9 +22,9 @@ ZVSE2
 !!VR(replace)&(objType)=(OBJ_DEN_OF_THIEVES):S(TRUE);
 ; exit if not searchable types
 !!FU&(replace)<>(TRUE):E;
-; generate 40% chance
-!!VR(random:y):R0/1/100; 
-!!FU&(random)<=60:E;
+; generate 30% chance
+!!VR(random:y):R0/1/100;
+!!FU&(random)<=70:E;
 ; set a new object type
 !!VR(objType):S(OBJ_NEW_WOG_OBJECTS);
 !!VR(objSubtype):S118;

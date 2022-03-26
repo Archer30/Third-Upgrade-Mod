@@ -33,8 +33,11 @@ ZVSE2
 !#FU(tum_SetUpGlobalVars):P;
 
 !?FU(OnStartOrLoad);
-!!UN:C7546045/4/?(realLastArt:y);
-!!VRi^tum_emerald_on^&(realLastArt)>(ART_LAST_WOG):S(TRUE);
+!!SN:L^emerald3_3.era^/?(emer3:y);
+!!SN:L^emerald3_3.dll^/?(emer3Var:y);
+!!SN:L^emerald_v202a.era^/?(emer2:y);
+
+!!VRi^tum_emerald_on^|(emer3)<>0/(emer3Var)<>0/(emer2)<>0:S(TRUE);
 
 ; Set up town screen variable (to prevent triggering several events)
 !?FU(OnOpenTownScreen);

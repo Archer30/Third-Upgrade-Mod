@@ -18,17 +18,17 @@ visit www.heroescommunity.com for updates and news
 !?FU(OnDetermineMonInfoDlgUpgrade);
 !#VA(monType:x) (upgType:x) (town:x) (hero:x);
 
-; Exit if Gelu or Dracon
-!!FU|(hero)=(HERO_GELU)/(hero)=(HERO_DRACON):E;
+; Exit if Gelu or Dracon, or the third upgrade guild has not been built
+!!FU|(hero)=(HERO_GELU)/(hero)=(HERO_DRACON)/i^tum_upgGuild_%(town)^<>(TRUE):E;
 
-; Exit if not from town screen
-!!FU&(town)<=(NO_TOWN):E;
+!!FU(tum_GetUpgMonInTown):P(monType)/(town)/?(upgType);
 
-; Exit if town type doens't match - might not be compatible with extended upgrades (is disabled anyway)
+!?FU(tum_GetUpgMonInTown);
+!#VA(monType:x) (town:x) (upgType:x);
+
+; Initialization
+!!VR(upgType):S(NO_MON);
 !!CA0/(town):T?(townType:y);
-!!MA:O(monType)/?(ownerTown:y);
-!!FU&(ownerTown)<>(townType):E;
-
 ; Get monster's level and get upgrade chain of the level
 !!MA:L(monType)/?(level:y);
 !!FU(tum_GetTownMon):P(townType)/(level)/?(mon:y)/?(upgMon:y)/?(thirdUpgMon:y);
@@ -72,6 +72,81 @@ visit www.heroescommunity.com for updates and news
 
 ; get third upgraded creatures
 !!FU(GetUpgradedMonster):P(upgMon)/?(thirdUpgMon);
+
+// Adapt fast upgrades with holding A + mouse click
+!?FU(OnTownMouseClick)&i^mouse_action^=(MOUSE_LMB_PRESSED)/i^key_a^/999;
+; Exit if not clicking on a possible creature slot
+!!VR(item:y):Si^mouse_item^;
+!!VR(flag:y):S(FALSE);
+!!VR(flag)&(item)>=115/(item)<=121:S(TRUE);
+!!CA(CURRENT_TOWN):H1/?(visitHero:y);
+!!VR(flag)&(item)>=140/(item)<=146/(visitHero)>(NO_HERO):S(TRUE);
+!!FU&(flag)=(FALSE):E;
+
+; Exit if the town is not owned by the player
+!!CA(CURRENT_TOWN):O?(owner:y);
+!!FU&(owner)<>i^timerOwner^:E;
+
+; Exit if the third upgrade building has not been built
+!!CA(CURRENT_TOWN):U?(townId:y) T?(townType:y);
+!!FU&i^tum_upgGuild_%(townId)^<>(TRUE):E;
+
+; Manage different actions depending on whether clicking on the garrison or a slot from the visiting hero
+!!if&(item)>=115/(item)<=121;
+  !!VR(slot:y):S(item) -115;
+  !!CA0/(townId):M2/(slot)/?(type:y)/?(num:y);
+  !!CA0/(townId):P?(x:y)/?(y:y)/?(z:y);
+  !!EX(x)/(y)/(z)/(slot)/2:E?(exp:y);
+!!el&(item)>=140/(item)<=146;
+  !!VR(slot):S(item) -140;
+  !!HE(visitHero):C0/(slot)/?(type)/?(num)/?(exp:y)/0;
+!!en;
+
+!!CM:R0;
+
+; Check for upgrade if it was clicked on a monster
+!!if&(type)>(NO_MON)/(num)>0;
+  !!FU(tum_GetUpgMonInTown):P(type)/(townId)/?(upg:y);
+
+  ; Check the cost of upgrade if the monster has one
+  !!if&(upg)>(NO_MON);
+
+    !!re i/(RES_FIRST)/(RES_LAST_SOD);
+      !!MA:C(type)/i/?(typeRes:y);
+      !!MA:C(upg)/i/?(upgRes:y);
+      !!VR(cost:y):S(upgRes) -(typeRes) *(num) F0/(INT_MAX);
+      !!OW:R(owner)/i/?(ownedRes:y);
+      !!VR(leftRes:y):S(ownedRes) -(cost);
+
+      ; Exit the function if can't afford
+      !!FU&(leftRes)<0:E;
+
+      ; Store the left resource in v variables for use later
+      !!VR(ptr:y):Si +2;
+      !!VRv(ptr):S(leftRes);
+    !!en;
+
+    ; Set new resource
+    !!re i/(RES_FIRST)/(RES_LAST_SOD);
+      !!VR(ptr):Si +2;
+      !!OW:R(owner)/i/v(ptr);
+    !!en;
+
+    ; Upgrade the creature with exp changes
+    !!EA(type):U?(upgMultiplier:y);
+    !!VR(newExp:y):S(exp) *(upgMultiplier) :1000;
+
+    !!if&(item)>=115/(item)<=121;
+      !!CA0/(townId):M2/(slot)/(upg)/(num);
+      !!EX(x)/(y)/(z)/(slot)/2:E(newExp);
+    !!el&(item)>=140/(item)<=146;
+      !!HE(visitHero):C0/(slot)/(upg)/(num)/(newExp)/0;
+    !!en;    
+
+    !!SN:D;
+    !!UN:R2;
+  !!en;
+!!en;
 
 ------------------------------------------------------------------------------------------------------------------
 
@@ -200,6 +275,10 @@ visit www.heroescommunity.com for updates and news
 !!MA:U309/310;
 !!MA:U313/314;
 !!MA:U322/323;
+!!MA:U331/332;
+!!MA:U333/334;
+!!MA:U335/336;
+!!MA:U337/338;
 
 ; level 8
 !!MA:U(MON_SUPREME_ARCHANGEL)/(MON_SERAPH);
@@ -477,14 +556,13 @@ visit www.heroescommunity.com for updates and news
   !!FU(gem_AddTownButton):P^007T8BTN.def^/^%Z20^/^%Z21^/(TUM_Build_New_Building)/0/0/0; [Blacksmith button]
 
 ; Build special buildings
-!?FU(OnTownMouseClick);                 [trigger on clicking in town screen)]
+!?FU(OnTownMouseClick)&999;             [trigger on clicking in town screen)]
 
 !!CA(CURRENT_TOWN):U?y30;               [get town id]
 !!CA(CURRENT_TOWN):T?y2;                [get town type)]
 
 !!CA(CURRENT_TOWN):O?y-2;               [owner of the town: y-2)]
-!!OW:C?v9540;                           [current player: y-3)]
-!!FU&y-2<>v9540:E;                      [Exit if player doesn't own town)]
+!!FU&y-2<>i^timerOwner^:E;
 
 !!CM:S?y1;                              [Get what type of click)]
 !!FU&y1<>14:E;                          [exit if not right click)]
@@ -519,14 +597,14 @@ visit www.heroescommunity.com for updates and news
 !!CM&y2=1:R0;                           [if it is not enabled - disable any standard text]
 
 ************ get current resources *************
-!!OW:Rv9540/6/?v9541;                   [1 - gold]
-!!OW:Rv9540/0/?v9542;                   [2 - wood]
-!!OW:Rv9540/2/?v9543;                   [3 - ore]
-!!OW:Rv9540/1/?v9544;                   [4 - mercury]
-!!OW:Rv9540/3/?v9545;                   [5 - sulfur]
-!!OW:Rv9540/4/?v9546;                   [6 - crystal]
-!!OW:Rv9540/5/?v9547;                   [7 - gems]
-!!OW:Rv9540/7/?v9548;                   [8 - mithril]
+!!OW:Ri^timerOwner^/6/?v9541;                   [1 - gold]
+!!OW:Ri^timerOwner^/0/?v9542;                   [2 - wood]
+!!OW:Ri^timerOwner^/2/?v9543;                   [3 - ore]
+!!OW:Ri^timerOwner^/1/?v9544;                   [4 - mercury]
+!!OW:Ri^timerOwner^/3/?v9545;                   [5 - sulfur]
+!!OW:Ri^timerOwner^/4/?v9546;                   [6 - crystal]
+!!OW:Ri^timerOwner^/5/?v9547;                   [7 - gems]
+!!OW:Ri^timerOwner^/7/?v9548;                   [8 - mithril]
 
 ************ set texts ********************
 !!VRz946:Sz199850;                      [already build]
@@ -684,7 +762,8 @@ visit www.heroescommunity.com for updates and news
 
 ********************** check if the building is built ****************
 !!VRv9520:S(FALSE);
-!!VRv9520&i^tum_upgGuild_%y30^:S(TRUE); [set a check value for 'yes' on the v9520 - Archer]
+!!CA(CURRENT_TOWN):U?y30;
+!!VRv9520&i^tum_upgGuild_%y30^:S(TRUE); [set a check value for 'yes' on v9520 - Archer]
 
 !!if&v9520=1;
   !!CA(CURRENT_TOWN):U?n T?t;
@@ -744,9 +823,9 @@ visit www.heroescommunity.com for updates and news
   !!VRv9541:Sv9541-v9551;         [substract 'price' from 'gold']
   !!VRv9554:Sv9554-v9552;         [substract 'price' from 'second resource amount']
   !!VRv9555:Sv9555-v9553;         [substract 'price' from 'third resource amount']
-  !!OW:Rv9540/6/v9541;            [set new gold value]
-  !!OW:Rv9540/v9556/v9554;        [set new second resource]
-  !!OW:Rv9540/v9557/v9555;        [set new third resource]
+  !!OW:Ri^timerOwner^/6/v9541;            [set new gold value]
+  !!OW:Ri^timerOwner^/v9556/v9554;        [set new second resource]
+  !!OW:Ri^timerOwner^/v9557/v9555;        [set new third resource]
   !!VRz10:S^..\data\p\BUILDTWN.WAV^;
   !!SN:Pz10;                      [Play the sound of a new building]
 
@@ -982,26 +1061,25 @@ visit www.heroescommunity.com for updates and news
 !?OB98&-1000; !!FU9504:P;               [-occur when AI is entering town]
 !$OB98&-1000; !!FU9504:P;               [-occur when AI is leaving town]
 
-!?FU9504;
+!?FU9504&999;
 ***************************** building part ******************************
 
 !!CA998:O?y-2;                          [(owner of the town: y-2)]
-!!OW:C?v9540;                           [(current player: y-3)]
-!!FU&y-2<>v9540:E;                      [(Exit if player doesn't own town)]
+!!FU&y-2<>i^timerOwner^:E;
 
 !!VRv4:S0;
 !!CA998:B3/9;                           [(ckeck if there's a castle)]
 !!VRv4&1:S1;                            [(set a helping var)]
 
 ;get money
-!!OW:Rv9540/6/?v9541;                   [1 - gold]
-!!OW:Rv9540/0/?v9542;                   [2 - wood]
-!!OW:Rv9540/2/?v9543;                   [3 - ore]
-!!OW:Rv9540/1/?v9544;                   [4 - mercury]
-!!OW:Rv9540/3/?v9545;                   [5 - sulfur]
-!!OW:Rv9540/4/?v9546;                   [6 - crystal]
-!!OW:Rv9540/5/?v9547;                   [7 - gems]
-!!OW:Rv9540/7/?v9548;                   [8 - mithril]
+!!OW:Ri^timerOwner^/6/?v9541;                   [1 - gold]
+!!OW:Ri^timerOwner^/0/?v9542;                   [2 - wood]
+!!OW:Ri^timerOwner^/2/?v9543;                   [3 - ore]
+!!OW:Ri^timerOwner^/1/?v9544;                   [4 - mercury]
+!!OW:Ri^timerOwner^/3/?v9545;                   [5 - sulfur]
+!!OW:Ri^timerOwner^/4/?v9546;                   [6 - crystal]
+!!OW:Ri^timerOwner^/5/?v9547;                   [7 - gems]
+!!OW:Ri^timerOwner^/7/?v9548;                   [8 - mithril]
 
 !!CA998:T?y2;                           [check town type]
 
@@ -1144,9 +1222,9 @@ visit www.heroescommunity.com for updates and news
     !!VRv9555&v9555<v9553:S0;     [set '0' for 'third resource amount'  (if NOT enough)]
     !!VRv9555&v9555>=v9553:Sv9555-v9553; [substract 'price' from 'third resource amount'  (if enough)]
 
-    !!OW:Rv9540/6/v9541;          [set new gold value]
-    !!OW:Rv9540/v9556/v9554;      [set new second resource]
-    !!OW:Rv9540/v9557/v9555;      [set new third resource]
+    !!OW:Ri^timerOwner^/6/v9541;          [set new gold value]
+    !!OW:Ri^timerOwner^/v9556/v9554;      [set new second resource]
+    !!OW:Ri^timerOwner^/v9557/v9555;      [set new third resource]
 
     !!VRi^tum_upgGuild_%y30^:S(TRUE);     [set flag - Archer]
     !!FU(eighth_Update8thDwell):Py30/y2/(TRUE)/(TRUE)/(FALSE); [upgrade 8th dwelling]
@@ -1203,8 +1281,7 @@ visit www.heroescommunity.com for updates and news
 !!VRy5&y3>=0:S0;                        [Set y5 to 0 if y3>=0]
 !!FU|y5=1:E;                            [Exit if no upgrade]
 
-!!OW:C?v9540;                           [(current player: v6540)]
-!!OW:Rv9540/6/?v9541;                   [get gold]
+!!OW:Ri^timerOwner^/6/?v9541;                   [get gold]
 !!HEx1:C0/x16/y1/?v9588;                [get number of creatures]
 !!MA:Cy1/6/?v9589;                      [get cost of creature un-upg]
 !!MA:Cy3/6/?v9590;                      [get cost of creature upg]
@@ -1215,7 +1292,7 @@ visit www.heroescommunity.com for updates and news
 
 !!HEx1&v9590<=v9541:C0/x16/y3/d;        [Upgrade creature]
 !!VRv9591&v9590<=v9541:Sv9541-v9590;    [substract 'price' from 'gold']
-!!OW&v9590<=v9541:Rv9540/6/v9591;       [set new gold value]
+!!OW&v9590<=v9541:Ri^timerOwner^/6/v9591;       [set new gold value]
 
 
 ****************************************************************************************************
@@ -1726,70 +1803,26 @@ Flesheater ability for creature ID 259
 !!en;
 
 *************************************************************************************************************************************************
-Succubus Spike Attack
-script by xericsin
-!?BG0;
+; Succubus Spike Attack by Archer30
+; Note: The x1/x2 parameters of MF1 can possibly exceed the limit since Fire Shield would also trigger it!
 
-!!SN:W^BG0_Attacker_Stack^/-1;
-!!SN:W^BG0_Defender_Stack^/-1;
-!!SN:W^BG0_Attacker_Type^/-1;
-!!SN:W^BG0_Defender_Type^/-1;
-!!BG:N?y2 E?y3;
-!!SN:W^BG0_Attacker_Stack^/y2;
-!!SN:W^BG0_Defender_Stack^/y3;
-!!BMy2&y2>-1:T?y4;
-!!BMy3&y3>-1:T?y5;
-!!SN&y2>-1:W^BG0_Attacker_Type^/y4;
-!!SN&y3>-1:W^BG0_Defender_Type^/y5;
+!?FU(OnMonsterPhysicalDamage);
+!#VA(atkStack:x) (defStack:x);
 
+!!FU|(atkStack)<(BATTLE_STACK_FIRST)/(atkStack)>(BATTLE_STACK_LAST):E;
+!!FU|(defStack)<(BATTLE_STACK_FIRST)/(defStack)>(BATTLE_STACK_LAST):E;
 
-!?MF1;
+!!BM(atkStack):T?(type:y);
 
-!!UN:C42149568/4/?y1;
-!!FU&y1<>4455011:E;                     [normal shot only]
+!!if|(type)=(MON_SUCCUBUS)/(type)=(MON_LILIM);
+  !!BG:A?(action:y);
 
-!!MF:N?y20;
-!!SN:W^BG0_Attacker_Stack^/?y21;
-!!SN:W^BG0_Defender_Stack^/?y22;
-!!SN:W^BG0_Attacker_Type^/?y23;
-!!SN:W^BG0_Defender_Type^/?y24;
-!!VRy30:S0;                             [indicator]
-!!if|y20=y22/y20=y21;
-  !!VRy30|y23=272/y23=281:S1;
-  !!VRy30|y24=272/y24=281:S1;
+  !!if|(action)=(BATTLE_ACTION_SHOOT)/(action)=(BATTLE_ACTION_CANCEL); [Battle action = 0, aka Ranged Retaliation]
+    !!BM(defStack):P?(pos:y);
+
+    !!FU(tum_PlayCustomAnimation):P^hatespike.def^/(pos); [Function to play custom animation by Hawaiing]
+  !!en;
 !!en;
-
-!!FU&y30=0:E;
-
-!!BMy20:P?y9;
-!!VRz3:S^hatespike.def^;
-!!FU(PlayCustomAnimation):P0/3/y9/100/0/0/1; [Function to play custom animation By Hawaiing]
-
-
-!?FU(PlayCustomAnimation);
-
-!!FU|x1<0/x1>82/x2<0/x2>1000:E;
-!!VRx3|x3<0/x3>187:S93;
-!!VRx4&x4<0:S100;
-!!VRx5|x5<0/x5>4:S0;
-!!VRx6|x6<0/x6>1:S0;
-!!UN:C6919200/4/?y20;
-!!VRy21:Sy20 +78568;
-!!VRy22:Sy20 +78572;
-!!UN:C4454270/4/?y1;
-!!UN:Cy21/4/0 Cy22/4/-1;
-!!VRy2:Sx1 *12 +y1;
-!!VRy3:Sy2 +8;
-!!VRy4:Sx2 *512 +9597416;
-!!VRy5:Sx6 *256 +x5;
-!!UN:Cy2/4/?y10;
-!!UN:Cy3/4/?y11;
-!!UN:Cy2/4/y4;
-!!UN&x7<>0:Cy3/4/y5;
-!!SN:E4810128/2/y20/x1/x3/x4/0;
-!!UN:Cy2/4/y10;
-!!UN&x7<>0:Cy3/4/y11;
-!!UN:Cy21/4/0 Cy22/4/-1;
 
 ************************************************************************
 

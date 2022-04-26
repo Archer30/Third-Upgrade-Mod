@@ -98,12 +98,21 @@ ZVSE2
 
 !!VR(result)&(mon)=(MON_SHADOW_DRAGON):S(TRUE);
 
-*******************************************
-**** Rebalance Centaur Stack Exp Bonus ****
-*******************************************
-; For some reason, Centaur has stronger growth on stack exp bonus damage than Centaur Captain, this script intended to nerf it
-; In TUM, Centaur also lose the ability to shoot with stack exp bonus
+*************************************************
+**** Replace Dens of Thieves with Treehouses ****
+*************************************************
+; Here we uses Den of Thieves for the replacement of Treehouses as the original repalcent - Mage Schools does not fit in tiles
 !?FU(OnAfterErmInstructions);
+!!VRi^CB_133_Replace_0_Type_Number^:S(OBJ_DEN_OF_THIEVES);
+!!VRi^CB_133_Replace_0_Percentage^:S15;
+
+*******************************
+**** Manage Creature Stats ****
+*******************************
+; Managing creature stats for gameplay or mod compatibility reasons
+!?FU(OnAfterErmInstructions);
+; Rebalance Centaur Stack Exp Bonus
+; For some reason, Centaur has stronger growth on stack exp bonus damage than Centaur Captain, this script intended to nerf it
 !!UN:P(WOG_OPT_STACK_EXPERIENCE)/?(wopOption:y);
 !!FU&(wopOption)<>(TRUE):E;
 
@@ -113,3 +122,11 @@ ZVSE2
 ; Min Damage
 !!EA(MON_CENTAUR_CAPTAIN):B3/1/109/43/?(r0:y)/?(r1:y)/?(r2:y)/?(r3:y)/?(r4:y)/?(r5:y)/?(r6:y)/?(r7:y)/?(r8:y)/?(r9:y)/?(r10:y);
 !!EA(MON_CENTAUR):B3/1/109/43/(r0:y)/(r1:y)/(r2:y)/(r3:y)/(r4:y)/(r5:y)/(r6:y)/(r7:y)/(r8:y)/(r9:y)/(r10:y);
+
+; Raise the defense of Naga Empress by 1, otherwise she has lower def than her lower forms
+!!MA:D(MON_NAGA_QUEEN)/?(def:y);
+!!MA:D211/(def);
+
+; Give splash shooter flag to Winged Magog and Lich King so they can be checked by other mods
+!!MA:X214/d|(MON_FLAG_SPLASH_SHOOTER);  [Give splash shooter to Winged Magog]
+!!MA:X222/d|(MON_FLAG_SPLASH_SHOOTER);  [Give splash shooter to Lich King]

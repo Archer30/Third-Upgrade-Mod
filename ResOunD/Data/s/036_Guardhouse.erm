@@ -59,10 +59,10 @@ You can choose several rewards. The rewards are processed one after the other.
 !#VRi^CB_036_Reward_Sulfur^:S-1;           (Write here the amount of Sulfur 1-1000000)
 !#VRi^CB_036_Reward_Crystal^:S-1;          (Write here the amount of Crystal 1-1000000)
 !#VRi^CB_036_Reward_Gems^:S-1;             (Write here the amount of Gems 1-1000000)
-!#VRi^CB_036_Reward_Gold^:S420;             (Write here the amount of Gold 1-1000000)
+!#VRi^CB_036_Reward_Gold^:S840;             (Write here the amount of Gold 1-1000000)
 !#VRi^CB_036_Reward_Mithril^:S-1;          (Write here the amount of Mithril 1-1000000)
 
-!#VRi^CB_036_Reward_Creatures_Type^:S0;   (The Type of Creature 0-196. Also works with higher creature IDs from mods)
+!#VRi^CB_036_Reward_Creatures_Type^:S1;   (The Type of Creature 0-196. Also works with higher creature IDs from mods)
 !#VRi^CB_036_Reward_Creatures_Number^:S7;  (The amount of Creatures 0-10000)
 !#VRi^CB_036_Reward_1_Creatures_Type^:S-1;
 !#VRi^CB_036_Reward_1_Creatures_Number^:S-1;

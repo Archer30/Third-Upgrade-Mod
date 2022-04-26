@@ -1,7 +1,7 @@
 ZVSE2
 ; Author:   Archer30
 ; Engine:   ERM 2.0+
-; Requires: ERA 3.4+, Era Erm Framework
+; Requires: ERA 3.3+, Era Erm Framework
 
 ; Loop through all Arena on the map and replaces them with Colosseum of the Magi
 ; Note: The max Colosseum id is 15. That means you won't have more than 16 different colosseums on the map. 
@@ -12,7 +12,7 @@ ZVSE2
 ; ============ END SETTINGS ============
 
 
-** Object replacement
+// Object replacement
 !?FU(colmagi_RestrainValues);
 !!VRi^colmagi_chance^:F0/100;
 
@@ -65,11 +65,11 @@ ZVSE2
 !!VR(x):+1;                             [move by 1 tile to right]
 !!UN:I(x)/(y)/(z)/(objType)/(objSubtype)/0;
 
-** Give custom numbers to colosseums
+// Give custom numbers to colosseums
 !?FU(OnEveryDay)&i^timerOnce^/i^timerDay^=1;
 !!VR(x:y):S-1;
 
-!!re i;                                 [loop though all warehouses of mithril]
+!!re i;                                 [loop though all the arenas]
   !!UN:U(OBJ_ARENA)/1/-1/(x)/(y:y)/(z:y);
   !!br&(x)<0;
 
@@ -79,7 +79,7 @@ ZVSE2
   !!VRi^colmagi_id^&i^colmagi_id^>=15:S0;
 !!en;
 
-** Visiting for human players
+// Visiting for human players
 !?OB(OBJ_ARENA)/1&1000;
 !!OB998:S;                  [disable Arena feature]
 !!PO998:N?(id:y);
@@ -94,13 +94,13 @@ ZVSE2
 
 !!if&v1=1;
   !!HE(CURRENT_HERO):Fd/d/d2/d;
+  !!VRi^colmagi_%(id)_%(hero)^:S(TRUE);
 !!el&v1=2;
   !!HE(CURRENT_HERO):Fd/d/d/d2;
+  !!VRi^colmagi_%(id)_%(hero)^:S(TRUE);
 !!en;
 
-!!VRi^colmagi_%(id)_%(hero)^:S(TRUE);
-
-** Visitng for AI
+// Visitng for AI
 ; Note: AI visits would still grant standard arena bonuses to them, but the bonuses would be removed upon end visiiting
 !?OB(OBJ_ARENA)/1&-1000;
 !!PO998:N?(id:y);
@@ -120,7 +120,7 @@ ZVSE2
 !$OB(OBJ_ARENA)/1&-1000;
 !!HE(CURRENT_HERO):Fv2/v3/d/d; [restore AI bonus from visiting arena]
 
-** Hint
+// Hint
 !?FU(OnAdvMapTileHint);
 !#VA(x:x) (y:x) (z:x) (objType:x) (objSubtype:x);
 
@@ -130,53 +130,54 @@ ZVSE2
 !!OW:A(CURRENT_PLAYER)/?(hero:y);
 
 !!if&(hero)=(NO_HERO);
-  !!MM:M^%T(colmagi.name)^;
+  !!SN:H^object^/(OBJ_ARENA)/1/^%T(colmagi.name)^;
   !!FU:E;
 !!en;
 
 ; Show hint when any hero is active, set status
+!!SN:O?(x)/?(y)/?(z);
 !!PO(x)/(y)/(z):N?(id:y);
 
 !!if&i^colmagi_%(id)_%(hero)^;
-  !!VR(hint:z):S^%T(colmagi.name) %T(colmagi.visited)^;
+  !!VR(str:z):S^%T(colmagi.name) %T(colmagi.visited)^;
 !!el;
-  !!VR(hint):S^%T(colmagi.name) %T(colmagi.notVisited)^;
+  !!VR(str):S^%T(colmagi.name) %T(colmagi.notVisited)^;
 !!en;
 
-!!MM:M^%(hint)^;
+!!SN:H^object^/(OBJ_ARENA)/1/^%(str)^;
+!!MM:M^%(str)^;
 
-** Right-clicking dialogue
+// Right-clicking dialogue
 !?FU(OnAdventureMapRightMouseClick);
 !!CM:P?(x:y)/?(y:y)/?(z:y);
 !!OB(x)/(y)/(z):T?(objType:y) U?(objSubtype:y);
 !!FU|(objType)<>(OBJ_ARENA)/(objSubtype)<>1:E;
 
-!!CM:R0;
-
 ; Show RMB msg when there is no active hero, no visiting status
 !!OW:A(CURRENT_PLAYER)/?(hero:y);
 
 !!if&(hero)=(NO_HERO);
-  !!IF:M0/4/^%T(colmagi.name)^;
+  !!SN:H^object^/(OBJ_ARENA)/1/^%T(colmagi.name)^;
   !!FU:E;
 !!en;
 
 ; Show RMB msg when any hero is active, set status
+!!SN:O?(x)/?(y)/?(z);
 !!PO(x)/(y)/(z):N?(id:y);
 
 !!if&i^colmagi_%(id)_%(hero)^;
-  !!VR(rmb:z):S^%T(colmagi.name)
+  !!VR(str:z):S^%T(colmagi.name)
 
 %T(colmagi.visited)^;
 !!el;
-  !!VR(rmb):S^%T(colmagi.name)
+  !!VR(str):S^%T(colmagi.name)
 
 %T(colmagi.notVisited)^;
 !!en;
 
-!!IF:M0/4/^%(rmb)^;
+!!SN:H^object^/(OBJ_ARENA)/1/^%(str)^;
 
-** compatibility with Single visit bonus sites reset each month
+// compatibility with single visit bonus sites reset each month
 !?FU(OnEveryDay)&i^timerOnce^/i^timerMonthDay^=1/i^timerDay^>1;
 !!UN:P123/?(resetOn:y);
 !!FU&(resetOn)<>(TRUE):E;

@@ -53,7 +53,7 @@ ZVSE2
       !!FU(hota_RemoveDeadBody):P(defStack)/(FALSE);
       !!SN:P^FNGRSUMM.wav^;
       !!BM(defStack):P?(pos:y);
-      !!FU(hota_PlayCustomAnimation):P^SP16.def^/(pos);
+      !!FU(tum_PlayCustomAnimation):P^SP16.def^/(pos);
       !!BU:S(MON_FANGARM)/(summNum)/(pos)/(atkSide)/-1/1 E(pos)/?(stack:y);
       !!BM(stack):B0 Fd|(MON_FLAG_SUMMONED);
     !!en;
@@ -157,47 +157,3 @@ ZVSE2
   !!VRy11:Sy16 *112 +y13 +452;
   !!SN:E5928496/1/y11/y3/y9;
 !!en;
-
-!?FU(hota_PlayCustomAnimation);
-!#VA(animPtr:x);                        [Filename of the animation]
-!#VA(pos:x);                            [Position of the animation]
-!#VA(delay:x);                          [Delay (ms)]
-!#VA(flags:x);                          [Flags. 0-4.]
-!#VA(isTransparent:x);                  [Transparent (boolean)]
-!#VA(flagAlterationOn:x);               [Allow changes to flags (boolean)]
-
-; Set up values
-!!VR(bmvIndex:y):S82;                   [Poof]
-!!VRz1:Sz(animPtr);
-
-!!FU:A?(numArgs:y);
-
-!!if&(numArgs)<6;
-  !!VR(flagAlterationOn):S0;
-  !!VR(isTransparent):S(FALSE);
-  !!VR(flags):S0;
-!!en;
-
-!!VR(delay)|(delay)<0/(numArgs)<3:S100;
-
-!!VR(pos)|(pos)<0/(pos)>187:S93;        [Play the animation in the middle of the battlefield if posisiton is invalid]
-!!VR(flags):F0/4;
-!!VR(isTransparent):F(FALSE)/(TRUE);
-
-!!UN:C6919200/4/?(value:y);             [战场内存]
-!!VR(defAdd:y):S(value) +78568;         [动画DEF]
-!!VR(indexAdd:y):S(value) +78572;       [动画索引]
-!!UN:C4454270/4/?(basicAdd:y);          [BM:V调用动画时用到的基址]
-!!UN:C(defAdd)/4/0 C(indexAdd)/4/-1;    [清除内存多余数据]
-!!VR(origDefPtr:y):S(bmvIndex) *12 +(basicAdd); [魔法动画名字的指针地址]
-!!VR(origFlagsPtr:y):S(origDefPtr) +8;  [魔法动画播放标志的内存(这里可由x5和x6组成)]
-!!VR(zPtr:y):S512 +9597416;             [z1变量对应的内存地址(ERA下)]
-!!VR(newFlags:y):S(isTransparent) *256 +(flags); [自定义播放标志(否则采用x1动画的原有标志)]
-!!UN:C(origDefPtr)/4/?(origNamePtr:y);  [原动画名指针]
-!!UN:C(origFlagsPtr)/4/?(origFlags:y);  [原有播放标志]
-!!UN:C(origDefPtr)/4/(zPtr);            [新指针]
-!!UN&(flagAlterationOn)<>(FALSE):C(origFlagsPtr)/4/(newFlags); [自定义播放标志]
-!!SN:E4810128/2/(value)/(bmvIndex)/(pos)/(delay)/0; [调用内部函数播放战场动画]
-!!UN:C(origDefPtr)/4/(origNamePtr);     [还原]
-!!UN&(flagAlterationOn)<>(FALSE):C(origFlagsPtr)/4/(origFlags); [还原]
-!!UN:C(defAdd)/4/0 C(indexAdd)/4/-1;    [清除内存多余数据]

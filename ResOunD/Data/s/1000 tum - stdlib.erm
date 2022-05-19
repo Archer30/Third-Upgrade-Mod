@@ -17,6 +17,7 @@ ZVSE2
 !#UN:P820/0;                            [DISABLE Adittional Uprades]
 !#UN:P37/0;                             [DISABLE Rebalanced Creatures]
 !#UN:P50/0;                             [DISABLE Enhanced Monsters]
+!#UN:P188/0;                            [Disable Rampart Farie Dragon]
 !#UN:P0/1;                              [ENABLE Level 8 dwellings function as normal]
 !#UN:P137/1;                            [ENABLE Level 8 dwellings]
 !#UN:P281/0;                            [DISABLE buckler of Beelzebub]
@@ -54,25 +55,35 @@ ZVSE2
 !?FU(OnCloseTownScreen);
 !!VRi^tum_onTownScreen^:S(FALSE);
 
-; special settings
-!?FU(OnAfterErmInstructions);
-!!VRi^wog78_howlingHollow_on^:S(FALSE); [disable generation of Howling Hollow]
-!!VRi^colmagi_chance^:S25;              [reduce the chance of Colosseum replacement]
-
-; Set up hook for opening creature info dialogue
-!?FU(OnStartOrLoad);
-!!SN:L^erm_hooker.era^/?(ermHooker:y);
-!!FU&(ermHooker)=(FALSE):E;
-
-!!SN:A(ermHooker)/^SetHook^/?(value:y);
-!!FU(tum_CreateERMHook):P(value);
-
 ; Set up varible for whether key A is pressed
 !?FU(OnKeyPressed)&i^key^=(KEY_A);
 !!VRi^key_a^:S(TRUE);
 
 !?FU(OnKeyReleased)&i^key^=(KEY_A);
 !!VRi^key_a^:S(FALSE);
+
+************************************
+**** WoG Option Compatibilities ****
+************************************
+
+!?FU(OnAfterErmInstructions);
+; Disable the generation of Howling Hollow
+!!VRi^wog78_howlingHollow_on^:S(FALSE);
+
+; Increase the cost of third upgraded level 6 monsters if Battle Extender is enabled
+!!UN:P41/?(battExtender:y);
+
+!!if&(battExtender);
+  !!MA:C(MON_HOLY_CHAMPION)/(RES_ORE)/2;
+  !!MA:C(MON_LEGENDARY_UNICORN)/(RES_GEMS)/1;
+  !!MA:C(MON_NAGA_EMPRESS)/(RES_MERCURY)/1;
+  !!MA:C(MON_EFREETI_RAJAH)/(RES_SULFUR)/1;
+  !!MA:C(MON_DEATH_NIGHT)/(RES_CRYSTAL)/1;
+  !!MA:C(MON_CHIMERA)/(RES_ORE)/1;
+  !!MA:C(MON_CYCLOPS_EMPEROR)/(RES_GEMS)/1;
+  !!MA:C(MON_ACID_WYVERN)/(RES_MERCURY)/1;
+  !!MA:C(MON_VOID_ELEMENTAL)/(RES_SULFUR)/1;
+!!en;
 
 *******************************************************
 **** Function to get the latest creature ID of TUM ****

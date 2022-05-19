@@ -8,11 +8,12 @@
 
 		"her": 								"her",
 
-		"furious":							"{Antichrists are furious!}",
+		"antichrist":						"{The @antichrist@ is furious!}",
+		"antichrists":						"{@antichrist@ are furious!}",
 
-		"cutthroat":						"Bloodlust encourages the Assassin.",
+		"assassin":							"Bloodlust encourages the @cutthroat@",
 
-		"cutthroats":						"Bloodlust encourages the Assassins."
+		"ghoul":							"@flesheater@ eat the remains of their enemies and restore themselves!"
 
 		},
 			
@@ -87,6 +88,12 @@
             "group0": { 
                 "name": "Third Upgrade Mod Options", 
             }
+        }
+    },
+    
+    "wog": {
+        "52": {
+            "objName": "Town Gate",
         }
     }
 }

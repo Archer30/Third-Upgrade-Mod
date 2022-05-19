@@ -92,11 +92,130 @@ ZVSE2
 *****************************************
 **** Fix Emerald Tower Compatibility ****
 *****************************************
-; The following lines must be executed later than 
+; The following lines must be executed later than WoG Scripts
 !?FU(WOG_44_CheckIfMonDrainsLife);
 !#VA(mon:x) (result:x);
 
 !!VR(result)&(mon)=(MON_SHADOW_DRAGON):S(TRUE);
+
+********************************************************
+**** Enable Horn of the Abyss (artifact) for Utopia ****
+********************************************************
+; Allows HotA to be generated as one of the Utopia reward
+!?OB(OBJ_DRAGON_UTOPIA);
+!!FU(tum_SetHotAAvailability):P(TRUE);
+
+!$OB(OBJ_DRAGON_UTOPIA);
+!!FU(tum_SetHotAAvailability):P(FALSE);
+
+; Rotton Dragon Valley
+!?OB(OBJ_NEW_WOG_OBJECTS)/83;
+!!FU(tum_SetHotAAvailability):P(TRUE);
+
+!$OB(OBJ_NEW_WOG_OBJECTS)/83;
+!!FU(tum_SetHotAAvailability):P(FALSE);
+
+; Magic Utopia
+!?OB(OBJ_NEW_WOG_OBJECTS)/84;
+!!FU(tum_SetHotAAvailability):P(TRUE);
+
+!$OB(OBJ_NEW_WOG_OBJECTS)/84;
+!!FU(tum_SetHotAAvailability):P(FALSE);
+
+; Ultimate Dragon Utopia
+!?OB(OBJ_NEW_WOG_OBJECTS)/115;
+!!FU(tum_SetHotAAvailability):P(TRUE);
+
+!$OB(OBJ_NEW_WOG_OBJECTS)/115;
+!!FU(tum_SetHotAAvailability):P(FALSE);
+
+!?FU(tum_SetHotAAvailability)&i^tum_emerald_on^;
+!#VA(isAvail:x);
+
+!!if&(isAvail);
+  !!UN:A(ART_HORN_OF_THE_ABYSS)/0;
+  !!UN:A(ART_HORN_OF_THE_ABYSS)/3/(ART_LEVEL_RELIC);
+!!el;
+  !!UN:A(ART_HORN_OF_THE_ABYSS)/1;
+  !!UN:A(ART_HORN_OF_THE_ABYSS)/3/(ART_LEVEL_SPECIAL);
+!!en;
+
+***************************************************
+**** Match new monsters with their lower forms ****
+***************************************************
+!?FU(OnAfterErmInited);
+; Match the faction of a few neutral creatures with new factions
+; Crystal Dragon
+!!MA:O(MON_RUBY_CRYSTAL_DRAGON)/?(faction:y);
+!!MA:O(MON_TOPAZ_CRYSTAL_DRAGON)/(faction);
+!!MA:O(MON_AMETHYST_CRYSTAL_DRAGON)/(faction);
+!!MA:O(MON_EMERALD_CRYSTAL_DRAGON)/(faction);
+!!MA:O(MON_SAPPHIRE_CRYSTAL_DRAGON)/(faction);
+
+; Faerie Dragon
+!!MA:O(MON_FAERIE_DRAGON)/?(faction);
+!!MA:O(MON_PRIMAL_FAERIE_DRAGON)/(faction);
+
+; Enchanter
+!!MA:O(MON_ENCHANTER)/?(faction);
+!!MA:O(MON_SPELLWEAVER)/(faction);
+
+; Peasant
+!!MA:O(MON_PEASANT)/?(faction);
+!!MA:O(MON_CONSCRIPT)/(faction);
+!!MA:O(MON_SQUIRE)/(faction);
+
+; Rogue
+!!MA:O(MON_ROGUE)/?(faction);
+!!MA:O(MON_ASSASSIN)/(faction);
+
+; Gorynych
+!!MA:O(MON_GORYNYCH)/?(faction);
+!!MA:O(MON_TIAMAT)/(faction);
+
+; Dracolich
+!!MA:O(MON_DRACOLICH)/?(faction);
+!!MA:O(MON_NECROSS_DRAGON)/(faction);
+
+***********************************************************************
+**** Match the R10/R11 exp with Blood Dragon for level 8+ monsters ****
+***********************************************************************
+!?FU(OnAfterErmInited);
+!!MA:F(MON_BLOOD_DRAGON)/?(bloodFightValue:y);
+!!EA(MON_BLOOD_DRAGON):L?(r10Exp:y) P?(topExp:y);
+!!FU(GetMaxMonsterId):P?(lastMon:y);
+
+!!re i/(MON_FIRST_TUM)/(lastMon);
+  !!MA:Fi/?(fightValue:y);
+
+  !!EAi&(fightValue)>=(bloodFightValue):L(r10Exp) P(topExp);
+!!en;
+
+*****************************************************************
+**** Dirty fix for Astral Spirit summoning massive Air Elem. ****
+*****************************************************************
+; Remove spells of Astral Spirits without a hero
+!?FU(OnBattleRound)&i^battle_round^=0/i^battle_hero_1^=(NO_HERO)/i^battle_ai_1^;
+!!re i/(BATTLE_DEFENDER_STACK_FIRST)/(BATTLE_DEFENDER_STACK_LAST);
+  !!BMi:T?(type:y);
+
+  !!BMi&(type)=(MON_ASTRAL_SPIRIT_D):E0;
+!!en;
+
+**************************************************************
+**** Third Upgrade Mod Chinese Edition special treatments ****
+**************************************************************
+; The following lines works only for TUM Chinese Edition
+; Dirty fix: Temporarily disable Emissary CBs as they appear to be buggy
+!?FU(tum_DisableEmissaryCreatureBanks_Chn);
+!!SN:L^wogcn.dll^/?(wogcn:y);
+!!FU&(wogcn)=0:E;
+
+!!re i/119/122;
+  !!VRi^CB_%i_Replace_Objects^:S(FALSE);
+!!en;
+
+!#FU(tum_DisableEmissaryCreatureBanks_Chn):P;
 
 *************************************************
 **** Replace Dens of Thieves with Treehouses ****
@@ -110,23 +229,16 @@ ZVSE2
 **** Manage Creature Stats ****
 *******************************
 ; Managing creature stats for gameplay or mod compatibility reasons
-!?FU(OnAfterErmInstructions);
+!?FU(OnAfterErmInited);
 ; Rebalance Centaur Stack Exp Bonus
 ; For some reason, Centaur has stronger growth on stack exp bonus damage than Centaur Captain, this script intended to nerf it
-!!UN:P(WOG_OPT_STACK_EXPERIENCE)/?(wopOption:y);
-!!FU&(wopOption)<>(TRUE):E;
+!!UN:P(WOG_OPT_STACK_EXPERIENCE)/?(stackExp:y);
 
-; Max Damage
-!!EA(MON_CENTAUR_CAPTAIN):B2/1/77/43/?(r0:y)/?(r1:y)/?(r2:y)/?(r3:y)/?(r4:y)/?(r5:y)/?(r6:y)/?(r7:y)/?(r8:y)/?(r9:y)/?(r10:y);
-!!EA(MON_CENTAUR):B2/1/77/43/(r0:y)/(r1:y)/(r2:y)/(r3:y)/(r4:y)/(r5:y)/(r6:y)/(r7:y)/(r8:y)/(r9:y)/(r10:y);
-; Min Damage
-!!EA(MON_CENTAUR_CAPTAIN):B3/1/109/43/?(r0:y)/?(r1:y)/?(r2:y)/?(r3:y)/?(r4:y)/?(r5:y)/?(r6:y)/?(r7:y)/?(r8:y)/?(r9:y)/?(r10:y);
-!!EA(MON_CENTAUR):B3/1/109/43/(r0:y)/(r1:y)/(r2:y)/(r3:y)/(r4:y)/(r5:y)/(r6:y)/(r7:y)/(r8:y)/(r9:y)/(r10:y);
-
-; Raise the defense of Naga Empress by 1, otherwise she has lower def than her lower forms
-!!MA:D(MON_NAGA_QUEEN)/?(def:y);
-!!MA:D211/(def);
-
-; Give splash shooter flag to Winged Magog and Lich King so they can be checked by other mods
-!!MA:X214/d|(MON_FLAG_SPLASH_SHOOTER);  [Give splash shooter to Winged Magog]
-!!MA:X222/d|(MON_FLAG_SPLASH_SHOOTER);  [Give splash shooter to Lich King]
+!!if&(stackExp);
+  ; Max Damage
+  !!EA(MON_CENTAUR_CAPTAIN):B2/1/77/43/?(r0:y)/?(r1:y)/?(r2:y)/?(r3:y)/?(r4:y)/?(r5:y)/?(r6:y)/?(r7:y)/?(r8:y)/?(r9:y)/?(r10:y);
+  !!EA(MON_CENTAUR):B2/1/77/43/(r0:y)/(r1:y)/(r2:y)/(r3:y)/(r4:y)/(r5:y)/(r6:y)/(r7:y)/(r8:y)/(r9:y)/(r10:y);
+  ; Min Damage
+  !!EA(MON_CENTAUR_CAPTAIN):B3/1/109/43/?(r0:y)/?(r1:y)/?(r2:y)/?(r3:y)/?(r4:y)/?(r5:y)/?(r6:y)/?(r7:y)/?(r8:y)/?(r9:y)/?(r10:y);
+  !!EA(MON_CENTAUR):B3/1/109/43/(r0:y)/(r1:y)/(r2:y)/(r3:y)/(r4:y)/(r5:y)/(r6:y)/(r7:y)/(r8:y)/(r9:y)/(r10:y);
+!!en;

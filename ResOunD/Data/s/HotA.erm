@@ -55,7 +55,7 @@ ZVSE2
       !!BM(defStack):P?(pos:y);
       !!FU(tum_PlayCustomAnimation):P^SP16.def^/(pos);
       !!BU:S(MON_FANGARM)/(summNum)/(pos)/(atkSide)/-1/1 E(pos)/?(stack:y);
-      !!BM(stack):B0 Fd|(MON_FLAG_SUMMONED);
+      !!BM(stack)&(stack)>(NO_STACK):Fd|(MON_FLAG_SUMMONED);
     !!en;
   !!en;
 !!en;

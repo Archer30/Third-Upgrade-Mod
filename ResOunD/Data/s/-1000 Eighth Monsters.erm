@@ -285,7 +285,7 @@ ZVSE2
 
     !!co&-1;
 
-    ; Build 8th dwelling and set up initial available creatures, does not mark the town as built for making AI's life easier
+    ; Build 8th dwelling and set up initial available creatures, does not set the town as built for making AIs' lives easier
     !!VRi^eighth_8thDwell_%(townId)^:S(TRUE);
     !!FU(eighth_Get8thMon):P(townType)/i^tum_upgGuild_%(townId)^/?(mon:y)/?(nonUpgMon:y);
     !!FU(eighth_Get8thBasicGrowth):P(townType)/?(basicGrowth:y);
@@ -373,6 +373,10 @@ ZVSE2
 !!CA0/(townId):H1/?(visitHero);
 !!FU&(visitHero)<=(NO_HERO):E;
 
+!!CA0/(townId):O?(townOwner:y);
+!!HE(visitHero):O?(heroOwner:y);
+!!FU&(townOwner)<>(heroOwner):E;
+
 !!re i/(ARMY_SLOT_FIRST)/(ARMY_SLOT_LAST);
   !!HE(visitHero):C0/i/?(mon)/?(qty);
 
@@ -385,11 +389,47 @@ ZVSE2
 !!FU(DirExists):P^mods\wog era^/?(result:y); !!FU&(result)<>(TRUE):E; !!re i;!!en;
 
 ****************************************************************************************************
-; Set up global var for 8th creature type
-!?FU(OnPreTownScreen);
-!!CA(CURRENT_TOWN):T?(townType:y) U?(townId:y);
+; Update 8th dwelling variables and displays
+!?FU(OnPreTownScreen)&i^eighth_on^;
+!#VA(townId:x);
 
-!!FU(eighth_Get8thMon):P(townType)/i^tum_upgGuild_%(townId)^/?i^eighth_8thMon^/?(nonUpgMon:y);
+!!FU(eighth_Update8thDwell):P(townId);
+!!SN:D;
+
+!?FU(OnAfterBuildTownBuilding)&i^tum_onTownScreen^/i^eighth_on^;
+!#VA(townId:x) (buildingId:x);
+
+!!FU(eighth_Update8thDwell)|(buildingId)=7/(buildingId)=22:P(townId);
+!!SN:D;
+
+!?FU(eighth_Update8thDwell);
+!#VA(townId:x);
+
+!!CA0/(townId):B3/7 T?(townType:y);
+!!FU(eighth_Get8thMon):P(townType)/(TRUE)/?(upgMon:y)/?(nonUpgMon:y);
+
+; Demolish 8th dwellings if village hall is not built
+!!if&-1;
+  !!VRi^eighth_8thDwell_%(townId)^:S(FALSE);
+  !!FU(eighth_SetOrGet8thMon):P(townId)/(NO_MON)/-1/0;
+!!el;
+  !!FU(eighth_SetOrGet8thMon):P(townId)/?(mon:y)/?(num:y)/(TRUE); [Get]
+
+  !!if&i^eighth_8thDwell_%(townId)^;
+    !!if&i^tum_upgGuild_%(townId)^;
+      !!FU(eighth_SetOrGet8thMon):P(townId)/(upgMon)/(num)/(FALSE);
+    !!el;
+      !!FU(eighth_SetOrGet8thMon):P(townId)/(nonUpgMon)/(num)/(FALSE);
+    !!en;
+  !!en;
+!!en;
+
+!!if&i^tum_upgGuild_%(townId)^;
+  !!VRi^eighth_8thMon^:S(upgMon);
+!!el;
+  !!VRi^eighth_8thMon^:S(nonUpgMon);
+!!en;
+
 !!SN:H^monname^/i^eighth_8thMon^/1/?s^eighth_8thMonName^;
 
 ****************************************************************************************************
@@ -472,6 +512,9 @@ ZVSE2
 ; build 8th dwelling
 !#VA(townId:x) (townType:x) (owner:x) (rightClick:x);
 
+; Ensure the 8th dwelling monster variables are updated
+!!FU(eighth_Update8thDwell):P(townId);
+
 ; get dwellDesc base string
 !!VR(dwell:y):S(TRUE);
 !!VR(fort:y):S(TRUE);
@@ -537,7 +580,7 @@ ZVSE2
 !!VR(resReq:z):S^^;
 
 !!re i/(RES_FIRST)/(RES_LAST_SOD);
-  !!VR(resReq)&(costs[i])>0:+^{~>SMALRES.def:%i} %(costs[i])      ^;
+  !!VR(resReq)&(costs[i])>0:+^{~>RESOURCE.def:%i} %(costs[i])      ^;
 !!en;
 
 !!FU(Substr):P^%(resReq)^/0/-6/?(resReq);[remove the last 8 characters]
@@ -820,50 +863,6 @@ ZVSE2
 !!FU(H3Dlg_SendCmdToItem):P(rootDlg)/7001/(DLG_CMD_SET_TEXT)/^^/(DLG_CMD_TYPE_DEFAULT);
 
 ****************************************************************************************************
-; Refresh 8th creature type afte changes to upgrade guild
-!?FU(OnPreTownScreen)&i^eighth_on^;
-!!FU(eighth_Check8thEligibility):P;
-
-!?FU(OnBuildTownBuilding)&i^tum_onTownScreen^/i^eighth_on^;
-!!FU(eighth_Check8thEligibility):P;
-
-!?FU(eighth_Check8thEligibility);
-!!CA(CURRENT_TOWN):B3/7 U?(townId:y);   [check if there's a fort]
-
-!!if&-1/i^eighth_8thDwell_%(townId)^;
-  !!CA(CURRENT_TOWN):T?(townType:y);    [get town type]
-  !!FU(eighth_Update8thDwell):P(townId)/(townType)/(FALSE)/(FALSE)/(FALSE); [demolish 8th dwelling - don't refresh]
-!!en;
-
-!?FU(eighth_Update8thDwell);
-!#VA(townId:x) (townType:x) (isUpg:x) (isAi:x) (refresh:x); 
-
-; Upgrade 8th dwelling for if upgrade guild is built
-!!if&(isUpg)/(isAi)/i^eighth_8thDwell_%(townId)^;
-  !!FU(eighth_Get8thMon):P(townType)/(TRUE)/?(upgMon:y)/?(nonUpgMon:y);
-  !!FU(eighth_SetOrGet8thMon):P(townId)/?(mon:y)/?(qty:y)/(TRUE); [get]
-  !!FU(eighth_SetOrGet8thMon):P(townId)/(upgMon)/(qty)/(FALSE); [set]
-!!el&(isUpg)/(isAi)=(FALSE);
-  !!FU(eighth_Get8thMon):P(townType)/(TRUE)/?i^eighth_8thMon^/?(nonUpgMon);
-  !!SN:H^monname^/i^eighth_8thMon^/1/?s^eighth_8thMonName^;
-
-  !!if&i^eighth_8thDwell_%(townId)^;
-    !!FU(eighth_SetOrGet8thMon):P(townId)/?(mon)/?(qty)/(TRUE); [get]
-    !!FU(eighth_SetOrGet8thMon):P(townId)/i^eighth_8thMon^/(qty)/(FALSE); [set]
-  !!en;
-
-!!el&(isUpg)=(FALSE)/(isAi)=(FALSE)/i^eighth_8thDwell_%(townId)^;
-
-; Demolish if Village Hall is gone (AI never demolishes)
-  !!FU(eighth_Get8thMon):P(townType)/(FALSE)/?i^eighth_8thMon^/?(nonUpgMon);
-  !!SN:H^monname^/i^eighth_8thMon^/1/?s^eighth_8thMonName^;
-  !!VRi^eighth_8thDwell_%(townId)^:S(FALSE);
-  !!FU(eighth_SetOrGet8thMon):P(townId)/(NO_MON)/-1/0;
-!!en;
-
-!!UN&(refresh):R4/(CURRENT_TOWN);
-
-****************************************************************************************************
 ; Manage 8th button according to WoG option
 !?FU(OnTownMouseClick)&i^eighth_on^=(FALSE);
 ; Show left click and right click info when 8th upgrade option is disabled
@@ -989,6 +988,7 @@ ZVSE2
 
   ; give AI hero free banner if there is a visiting hero (high priority) /hero in town
   !!co|i^eighth_bannerOn^=(FALSE)/i^eighth_banner_%(townId)^=(FALSE); [next town if banner is not available or not even enabeld]
+  !!co&(owner)=(NO_OWNER);              [Next town if the town has no owner]
 
   !!OW:I(owner)/?(isAi:y);              [check if the town belongs to AI]
   !!CA0/(townId):B3/22;                 [check if Banner Workshop (Portal of Summoning) is built]

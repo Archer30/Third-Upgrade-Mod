@@ -8,7 +8,7 @@ ZVSE2
 
 
 ; ============== SETTINGS ==============
-!#VRi^colmagi_chance^:S50;        [Chance of Colosseum replacement]
+!#VRi^colmagi_chance^:S25;        [Chance of Colosseum replacement]
 ; ============ END SETTINGS ============
 
 

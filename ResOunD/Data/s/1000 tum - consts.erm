@@ -7,97 +7,113 @@ ZVSE2
 
 
 ; ===============  MONSTERS  ===============
-!#DC(MON_FIRST_TUM)             = 197;
-!#DC(MON_ROYAL_HALBERDIER)      = 197;
-!#DC(MON_CROSSBOWMAN)           = 198;
-!#DC(MON_ARCANE_GENIE)          = 210;
-!#DC(MON_LICH_KING)             = 222;
-!#DC(MON_MEDUSA_EMPRESS)        = 228;
-!#DC(MON_ELITE_LIZARD)          = 240;
-!#DC(MON_VOID_ELEMENTAL)        = 251;
-!#DC(MON_SHARPSHOOTER_ELF)      = 256;
-!#DC(MON_SUPREME_ARCH_MAGE)     = 257;
-!#DC(MON_SPELLWEAVER)           = 259;
-!#DC(MON_WILL_O_WISP)           = 317;
-!#DC(MON_HIGH_PRIEST)           = 320;
+!#DC(MON_RUBY_CRYSTAL_DRAGON)      = 133;
+!#DC(MON_DIRE_WEREWOLF)            = 194;
 
-!#DC(MON_SERAPH)                = 202;
-!#DC(MON_PURE_DIAMOND_DRAGON)   = 207;
-!#DC(MON_GUARDIAN_OF_ZEUS)      = 212;
-!#DC(MON_ANTICHRIST)            = 219;
-!#DC(MON_RED_BONES_DRAGON)      = 224;
-!#DC(MON_CHASM_DRAGON)          = 231;
-!#DC(MON_SPECTRAL_BEHEMOTH)     = 238;
-!#DC(MON_NIGHTMARE_HYDRA)       = 245;
-!#DC(MON_FAERIE)                = 246;
-!#DC(MON_HURRICANE_ELEMENTAL)   = 247;
-!#DC(MON_LIFE_ELEMENTAL)        = 248;
-!#DC(MON_PLASMA_ELEMENTAL)      = 249;
-!#DC(MON_MINERAL_ELEMENTAL)     = 250;
-!#DC(MON_VOID_ELEMENTAL)        = 251;
-!#DC(MON_DIVINE_PHOENIX)        = 252;
+!#DC(MON_FIRST_TUM)                = 197;
+!#DC(MON_ROYAL_HALBERDIER)         = 197;
+!#DC(MON_CROSSBOWMAN)              = 198;
+!#DC(MON_HOLY_CHAMPION)            = 201;
+!#DC(MON_SERAPH)                   = 202;
+!#DC(MON_LEGENDARY_UNICORN)        = 206;
+!#DC(MON_PURE_DIAMOND_DRAGON)      = 207;
+!#DC(MON_ARCANE_GENIE)             = 210;
+!#DC(MON_NAGA_EMPRESS)             = 211;
+!#DC(MON_GUARDIAN_OF_ZEUS)         = 212;
+!#DC(MON_EFREETI_RAJAH)            = 218;
+!#DC(MON_ANTICHRIST)               = 219;
+!#DC(MON_LICH_KING)                = 222;
+!#DC(MON_DEATH_NIGHT)              = 223;
+!#DC(MON_RED_BONES_DRAGON)         = 224;
+!#DC(MON_MEDUSA_EMPRESS)           = 228;
+!#DC(MON_CHIMERA)                  = 230;
+!#DC(MON_CHASM_DRAGON)             = 231;
+!#DC(MON_CYCLOPS_EMPEROR)          = 237;
+!#DC(MON_SPECTRAL_BEHEMOTH)        = 238;
+!#DC(MON_ELITE_LIZARD)             = 240;
+!#DC(MON_ACID_WYVERN)              = 243;
+!#DC(MON_NIGHTMARE_HYDRA)          = 245;
+!#DC(MON_FAERIE)                   = 246;
+!#DC(MON_HURRICANE_ELEMENTAL)      = 247;
+!#DC(MON_LIFE_ELEMENTAL)           = 248;
+!#DC(MON_PLASMA_ELEMENTAL)         = 249;
+!#DC(MON_MINERAL_ELEMENTAL)        = 250;
+!#DC(MON_VOID_ELEMENTAL)           = 251;
+!#DC(MON_DIVINE_PHOENIX)           = 252;
+!#DC(MON_TIAMAT)                   = 253;
+!#DC(MON_NECROSS_DRAGON)           = 254;
+!#DC(MON_SHARPSHOOTER_ELF)         = 256;
+!#DC(MON_SUPREME_ARCH_MAGE)        = 257;
+!#DC(MON_PRIMAL_FAERIE_DRAGON)     = 258;
+!#DC(MON_SPELLWEAVER)              = 259;
+!#DC(MON_ASSASSIN)                 = 260;
+!#DC(MON_FANGARM)                  = 263;
+!#DC(MON_TOPAZ_CRYSTAL_DRAGON)     = 265;
+!#DC(MON_AMETHYST_CRYSTAL_DRAGON)  = 266;
+!#DC(MON_EMERALD_CRYSTAL_DRAGON)   = 267;
+!#DC(MON_SAPPHIRE_CRYSTAL_DRAGON)  = 268;
 
-!#DC(MON_FANGARM)               = 263;
+!#DC(MON_EIGHTH_FIRST)             = 269;
+!#DC(MON_LIGHT_TEMPLAR)            = 269;
+!#DC(MON_DRYAD)                    = 270;
+!#DC(MON_DRAKE_GOLEM)              = 271;
+!#DC(MON_SUCCUBUS)                 = 272;
+!#DC(MON_WEREWOLF_TOW)             = 273;
+!#DC(MON_WEREWOLF_TUM)             = 273;
+!#DC(MON_ILLITHID)                 = 274;
+!#DC(MON_COATL)                    = 275;
+!#DC(MON_TROLL_HAG)                = 276;
+!#DC(MON_TRITON)                   = 277;
+!#DC(MON_LIGHT_PALADIN)            = 278;
+!#DC(MON_OAK_DRYAD)                = 279;
+!#DC(MON_DRAGON_GOLEM)             = 280;
+!#DC(MON_LILIM)                    = 281;
+!#DC(MON_AHOON)                    = 282;
+!#DC(MON_QUERZALCOATL)             = 283;
+!#DC(MON_TROLL_WITCH)              = 284;
+!#DC(MON_ABYSSAL_TRITON)           = 285;
+!#DC(MON_EIGHTH_LAST)              = 285;
 
-!#DC(MON_EIGHTH_FIRST)          = 269;
-!#DC(MON_LIGHT_TEMPLAR)         = 269;
-!#DC(MON_DRYAD)                 = 270;
-!#DC(MON_DRAKE_GOLEM)           = 271;
-!#DC(MON_SUCCUBUS)              = 272;
-!#DC(MON_WEREWOLF_TOW)          = 273;
-!#DC(MON_WEREWOLF_TUM)          = 273;
-!#DC(MON_ILLITHID)              = 274;
-!#DC(MON_COATL)                 = 275;
-!#DC(MON_TROLL_HAG)             = 276;
-!#DC(MON_TRITON)                = 277;
-
-!#DC(MON_LIGHT_PALADIN)         = 278;
-!#DC(MON_OAK_DRYAD)             = 279;
-!#DC(MON_DRAGON_GOLEM)          = 280;
-!#DC(MON_LILIM)                 = 281;
-!#DC(MON_DIRE_WEREWOLF)         = 194;
-!#DC(MON_AHOON)                 = 282;
-!#DC(MON_QUERZALCOATL)          = 283;
-!#DC(MON_TROLL_WITCH)           = 284;
-!#DC(MON_ABYSSAL_TRITON)        = 285;
-!#DC(MON_EIGHTH_LAST)           = 285;
-
-!#DC(MON_SKELETON_ARCHER)       = 295;
-!#DC(MON_MANA_SKELETON)         = 297;
-!#DC(MON_SHARPSHOOTER_SKELETON) = 299;
-
-!#DC(MON_SHADOW_DRAGON)         = 325;
+!#DC(MON_SKELETON_ARCHER)          = 295;
+!#DC(MON_MANA_SKELETON)            = 297;
+!#DC(MON_SHARPSHOOTER_SKELETON)    = 299;
+!#DC(MON_CONSCRIPT)                = 300;
+!#DC(MON_SQUIRE)                   = 301;
+!#DC(MON_WILL_O_WISP)              = 317;
+!#DC(MON_HIGH_PRIEST)              = 320;
+!#DC(MON_SHADOW_DRAGON)            = 325;
+!#DC(MON_GHOUL)                    = 329;     
 ; =============  END MONSTERS  =============
 
 
 ; ==============  ARTIFACTS  ===============
-!#DC(ART_RING_OF_ELEMENTS)      = 197;
+!#DC(ART_RING_OF_ELEMENTS)         = 197;
 
-!#DC(ART_HORN_OF_THE_ABYSS)     = 266;
+!#DC(ART_HORN_OF_THE_ABYSS)        = 266;
 ; ============  END ARTIFACTS  =============
 
 
 ; ===========  OBJECT SUBTYPES  ============
-!#DC(OBJ_SUB_CATHEDRAL)         = 110;
-!#DC(OBJ_SUB_TREEHOUSE)         = 111;
-!#DC(OBJ_SUB_DRAGON_FACTORY)    = 112;
-!#DC(OBJ_SUB_LUST_CHAMBERS)     = 113;
-!#DC(OBJ_SUB_WOLF_CAVE)         = 114;
-!#DC(OBJ_SUB_PRIMEVEL_MAW)      = 115;
-!#DC(OBJ_SUB_ZIGGURAT)          = 116;
-!#DC(OBJ_SUB_SWAMP_HUT)         = 117;
-!#DC(OBJ_SUB_DROWNED_HALL)      = 118;
+!#DC(OBJ_SUB_CATHEDRAL)            = 110;
+!#DC(OBJ_SUB_TREEHOUSE)            = 111;
+!#DC(OBJ_SUB_DRAGON_FACTORY)       = 112;
+!#DC(OBJ_SUB_LUST_CHAMBERS)        = 113;
+!#DC(OBJ_SUB_WOLF_CAVE)            = 114;
+!#DC(OBJ_SUB_PRIMEVEL_MAW)         = 115;
+!#DC(OBJ_SUB_ZIGGURAT)             = 116;
+!#DC(OBJ_SUB_SWAMP_HUT)            = 117;
+!#DC(OBJ_SUB_DROWNED_HALL)         = 118;
 ; =========  END OBJECT SUBTYPES  ==========
 
 
 ; =============  WOG OPTIONS  ==============
-!#DC(WOG_OPT_4TH_UPGRADES)      = 300; 
-!#DC(WOG_OPT_8TH_MONSTERS)      = 301;
-!#DC(WOG_OPT_DWELLING_BANKS)    = 302;
+!#DC(WOG_OPT_4TH_UPGRADES)         = 300; 
+!#DC(WOG_OPT_8TH_MONSTERS)         = 301;
+!#DC(WOG_OPT_DWELLING_BANKS)       = 302;
 ; ===========  END WOG OPTIONS  ============
 
 
 ; ==========  EIGHTH CREATURES  ============
-!#DC(EIGHTH_BTN_DEFAULT_X_COORD) = 183;
-!#DC(EIGHTH_BTN_DEFAULT_Y_COORD) = 542;
+!#DC(EIGHTH_BTN_DEFAULT_X_COORD)   = 183;
+!#DC(EIGHTH_BTN_DEFAULT_Y_COORD)   = 542;
 ; ========  END EIGHTH CREATURES  ==========

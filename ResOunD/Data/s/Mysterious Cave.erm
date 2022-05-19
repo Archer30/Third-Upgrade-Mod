@@ -64,7 +64,6 @@ ZVSE2
 !!VRvx16:Vzx16;
 
 !#VRz959:S^{Mysterious Cave} (visited)^;
-!#TM94:S1/999/7/255;
 !#SN:W^R99builderID^/-1;
 
 !#SN:L^era.dll^/?y1 Ay1/^ReadStrFromIni^/?y2;
@@ -80,7 +79,9 @@ ZVSE2
 !#SN:Ey2/1/^Prisons^/^Player settings^/^Caves.ini^/?z10;
 !#SN:Ey2/1/^Watcher^/^Player settings^/^Caves.ini^/?z11;
 !#SN:Ey2/1/^Closed^/^Player settings^/^Caves.ini^/?z12;
+
 !#DO33465124/2/12/1:P;
+
 !#SN:W^R97percentage^/v2;  den of thieves
 !#SN:W^R100percentage^/v3;  learning stones
 !#SN:W^R16percentage^/v4;  creature banks
@@ -94,6 +95,7 @@ ZVSE2
 !#SN:W^R199counter^/v11;   Watcher
 !#SN:W^R99counter^/v11;   Watcher
 !#SN:W^Closed^/v12;   percentage of visitable Caves
+
 !#DO9643278/0/155/1:P; store Heroes skills
 
 !?FU324569214;
@@ -110,16 +112,16 @@ ZVSE2
 !!SN&y3=0:W^R99humanplayer^/y2; set human player to y2
 !!SN:W^R99humanplayer^/?y2; set human player to y2
 ;for AI only, scourge
-!!if&y3=1:; if AI
+!!if&y3=1; if AI
   !!DO324569214/0/155/1:Py2; check if human hero has scourge
   !!SN:W^R99IDscourge^/?y1;
   !!DO654789321/0/7/1&y1>-1:Py1/y2;
-!!en:;
+!!en;
 
 ;for human only
 !!FU&y3<>0:E;  [exit if AI]
 !!SN:W^dreams^/?y1;
-!!if&y1<99:;
+!!if&y1<99;
 !!SN:W^R99IDscourge^/-1;  initialize scourge
 
 ; replace objects on first day
@@ -171,14 +173,8 @@ ZVSE2
   !!SN:W^dreams^/99;  [run only once
   !!VRz958:S^{Mysterious Cave} (not visited)^;
   !!HT63/55:T958; set name
-!!en:;
-!!SN:W^R199counter^/?y1;   Universal Watcher
-!!if&y1<1:;  do this only if universal watcher not set
-  !!SN:W^R99counter^/?y1; precognition ability
-  !!IF&y1=1:L^Watcher's ring is inactive^;
-  !!VRy1&y1>0:-1;
-  !!SN:W^R99counter^/y1;
-!!en:;
+!!en;
+
 ;continue
 !!VRv1:Sc+27:28; get month
 !!VRy1:S31R3;
@@ -228,18 +224,18 @@ ZVSE2
 ;x2 percentage
 !!UN:Ux1/-1/-1/1;
 !!VRy1:S1R9;
-!!if&x1<>57:;
+!!if&x1<>57;
 !!UN&y1<=x2:Ov1/v2/v3; [delete]
 !!VRv1:+1; correction location
 !!UN&y1<=x2:Iv1/v2/v3/63/56;
-!!en:;
-!!if&x1=57:; [if obelisk]
+!!en;
+!!if&x1=57; [if obelisk]
 !!MTv1/v2/v3:N?y3; [get current obelisk index]
 !!UN&y1<=x2:L-2/y3/1; [set visited for all players]
 !!UN&y1<=x2:Ov1/v2/v3; [now delete it]
 !!VRv1:+1; correction location
 !!UN&y1<=x2:Iv1/v2/v3/63/56;
-!!en:;
+!!en;
 
 !?FU32466132;
 !!HEx16:E?y1/?y2;
@@ -286,30 +282,10 @@ ZVSE2
 !!CHv1/v2/v3:S0 By1;
 
 
-!?TM94;
-!!OW:C?y1; [get current player]
-!!OW:Iy1/?y2;  [get if AI or human]
-!!FU&y2<>0:E;  [exit if AI]
-;addition for scrolls**********
-!!UN:U93/-1/?y-1; [get scrolls number]
-!!VRv1:S-1;
-!!DO7549285/1/y-1/1:P93;  [run through each one]
-;end addition for scrolls********
-!!UN:P3/?y2; check if commanders enabled
-!!SN:W^Closed^/?y3;   percentage of visitable Caves
-!!UN:U63/56/?y-1; [get Caves number]
-!!VRv1:S-1;
-!!DO56789012/1/y-1/1:P63/56/y2/y3;  [run through each one and reinitialize PO]
-!!UN:U63/55/?y-1; [get Caves number]
-!!VRv1:S-1;
-!!DO56789012/1/y-1/1:P63/55/y2/y3;  [run through each one and reinitialize PO]
-;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-
 !?OB63/56;
 !!HE-1:O?y3;  get owner
 !!OW:Iy3/?y4; get AI/human
-!!if&y4<>0:; If AI
+!!if&y4<>0; If AI
 !!PO998:N?v1;
 !!FU&v1>0:E;
 !!VRy1:S0R3;
@@ -320,10 +296,12 @@ ZVSE2
 !!HE-1&y1=3/y5<110:Fd/d/d/d2;
 !!HE-1:B0/?z1;
 !*IF:L^%Z1 visited a Cave^;   test
-!!OB998:Hz959; set to visited for this week
+*!OB998:Hz959; set to visited for this week
+!!HT63/55:T959;
+
 !!PO998:N15;
 !!FU:E;
-!!en:;
+!!en;
 ;if Human
 !!PO998:N?v1;
 !!IF&v1>0:M^This Cave is forsaken for now, we should try again next week.^;
@@ -335,7 +313,9 @@ ZVSE2
 !!PO998:B0/?y10; check value
 !!IF&y10<20:M^This Cave is forsaken, we should try again next week.^;
 !!PO998&y10<20:N15;
-!!OB998&y10<20:Hz959;
+*!OB998&y10<20:Hz959;
+!!HT63/55&y10<20:T959;
+
 !!VRz1&y10<20:S^Enter.wav^;
 !!SN&y10<20:Pz1;
 !!VRz2&y10<20:S^MaleG09a.wav^;
@@ -344,7 +324,7 @@ ZVSE2
 !!HE-1&y10=23:S2/?y2; get if he has logistic
 !!VRy10&y2=3:S25; set to different
 
-!!if&y10=20:;  get a random primary skill
+!!if&y10=20;  get a random primary skill
 !!SN:W^R99primaryskills^/?y1;
 !!SN:W^R99randomstat^/?y2;
 !!IF:Q1/y1/y2/1^A mad wizard who has been terrorizing the region has foolishly chosen you as his target today.  Realizing that his power comes from his crown, you take aim with your bow, knocking the crown from his head and releasing him from his crazed madness.
@@ -355,41 +335,41 @@ Grateful to be free, he trains you and you feel stronger."^;
 !!HE-1&y1=34:Fd/d/d/dy2;
 !!VRz1:S^07_01.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=21:; random experience
+!!if&y10=21; random experience
 !!SN:W^R99experience^/?y1;
 !!IF:Q1/17/y1/1^A Titan stops you and says, ""Pay me 5,000 gold, or I shall slay you where you stand.""  You refuse.  The Titan grabs the sword hanging from its belt, but you duck between its legs.  He is so surprised by this maneuver that he trips... falling on his sword and killing himself instantly.
 You relieve him of his belongings and get some experience^;
 !!HE-1:Edy1;
 !!VRz1:S^05_01.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=22:; boots of haste and gloves
+!!if&y10=22; boots of haste and gloves
 !!IF:Q1/8/98/8/70/1^You see some heavy boots embedded deeply in the ground.
 After several unsuccessful attempts by your army to remove them, you tightly grip the boots and effortlessly pull them free."^;
 !!HE-1:A4/98;
 !!HE-1:A4/70;
 !!VRz1:S^11_02.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=23:;  logistic expert
+!!if&y10=23;  logistic expert
 !!IF:Q1/20/11/1^As you are walking along a narrow path, a nearby bush suddenly bursts into flames.  Before your eyes the flames become the image of a beautiful woman, but she runs far away.
 
 Boosted by testosterone, you manage to grip her and find out that you can travel further and faster from now."^;
 !!HE-1:S2/3;
 !!VRz1:S^17_01.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=24:;
+!!if&y10=24;
 !!SN:W^R99magic^/?y1;
 !!HE-1:Sy1/?y2; get level
 !!VRy3:Sy1*3+5;
 !!UN:N4/z1/y1; get skill name
-  !!if&y2<3:;
+  !!if&y2<3;
   !!HE-1:Sy1/3;
   !!VRz1&y1=14:S^47_01.wav^;
   !!VRz1&y1=15:S^48_01.wav^;
@@ -397,16 +377,16 @@ Boosted by testosterone, you manage to grip her and find out that you can travel
   !!VRz1&y1=17:S^50_01.wav^;
   !!IF:Q1/20/y3/1^An old shaman stands in the road before you, screaming something in a language you can't understand.  He suddenly vanishes in a cloud of smoke.
 When the smoke clears, there is a magical book in the spot where he was standing. You pick it and learn something new^;
-  !!en:;
-    !!if&y2=3:;
+  !!en;
+    !!if&y2=3;
     !!IF:Q1/20/y3/1^An old shaman stands in the road before you, screaming something in a language you can't understand.  He suddenly vanishes in a cloud of smoke.
 When the smoke clears, there is a magical book in the spot where he was standing. You pick it but find that you already knew it...^;
     !!VRz1:S^MaleD24b^;
-    !!en:;
+    !!en;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=25:;   give one resource artifact
+!!if&y10=25;   give one resource artifact
 !!SN:W^R99cornucopia^/?y1;
 !!UN:N0/z1/y1;
 !!IF:Q1/8/y1/1^A brief stop at a hastily abandoned Wizard's tower turns up a magical %Z1 that always has a little left on the bottom.
@@ -415,18 +395,18 @@ Recognizing a treasure when you see one, you cap it and slip it in your pocket^;
 !!HE-1:A4/y1;
 !!VRz1:S^Pickup03.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=26:;  get one of the statue of legion components
+!!if&y10=26;  get one of the statue of legion components
 !!SN:W^R99legion^/?y1;
 !!UN:N0/z1/y1;
 !!IF:Q1/8/y1/1^While searching through the rubble of a caved-in mine, you free a group of trapped Dwarves.  Grateful, the leader gives you a finely crafted %Z1^;
 !!HE-1:A4/y1;
 !!VRz1:S^31_02.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=27:; get one of the three tomes
+!!if&y10=27; get one of the three tomes
 !!SN:W^R99tomes^/?y1;
 !!OW:R-1/6/?y2;
 !!UN:N0/z1/y1;
@@ -440,9 +420,9 @@ Recognizing a treasure when you see one, you cap it and slip it in your pocket^;
 !!OW&y2>=300000:R-1/6/d-300000;
 !!VRz1:S^Gold01.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=28:; magic book + all level 1 spells
+!!if&y10=28; magic book + all level 1 spells
 !!HE-1:A2/0/?y1/?y2;
 !!HE-1&y2<1:A4/1000; equip the book
 !!HE-1:M41/1 M43/1 M37/1 M42/1 M35/1 M53/1;
@@ -456,9 +436,9 @@ As you pull the book out, you feel imbued with magical power^;
 !!IF:N^All 1st level spells are added to your book^;
 !!VRz1:S^SYSMSG.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=29:;  magic book + all level 2 spells
+!!if&y10=29;  magic book + all level 2 spells
 !!HE-1:A2/0/?y1/?y2;
 !!HE-1&y2<1:A4/1000; equip the book
 !!HE-1:M62/1 M24/1 M4/1 M47/1 M13/1 M51/1;
@@ -471,9 +451,9 @@ is stunning. As you pull the book out, you feel imbued with magical power.^;
 !!IF:N^All 2nd level spells are added to your book^;
 !!VRz1:S^SYSMSG.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=30:;   magic book + all level 1-3 spells
+!!if&y10=30;   magic book + all level 1-3 spells
 !!IF:M^You find an elaborate container which houses an old vellum book. The runes on the container are very old, and the artistry with which it was put together
 is stunning. As you pull the book out, you feel imbued with magical power.^;
 !!HE-1:N?y3;
@@ -495,9 +475,9 @@ is stunning. As you pull the book out, you feel imbued with magical power.^;
 !!DO15157575/0/69/1:Py3;
 !!VRz1:S^SYSMSG.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if|y10=31/y10=32:; get random resource x month
+!!if|y10=31/y10=32; get random resource x month
 !!SN:W^R99resourcename^/?y1;
 !!SN:W^R99resource^/?y2;
 !!VRy2&y1=6:*1000;
@@ -509,9 +489,9 @@ The grateful Paladin hands you a few resources for saving him^;
 !!SN:Pz1;
 !!VRz2:S^Gold01.wav^;
 !!SN:Pz2;
-!!en:;
+!!en;
 
-!!if&y10=33:; give shackles
+!!if&y10=33; give shackles
 !!IF:Q1/8/125/1^You come upon a bridge spanning a dry gully.  As you begin to cross, a gigantic, maddened Ogre appears from the other side and charges,
 forcing you to slay it.  You decide to take its shackless as a trophy^;
 !!HE-1:A125;
@@ -519,18 +499,18 @@ forcing you to slay it.  You decide to take its shackless as a trophy^;
 !!SN:Pz1;
 !!VRz2:S^09_02.wav^;
 !!SN:Pz2;
-!!en:;
+!!en;
 
-!!if&y10=34:; give 10 enchanters
+!!if&y10=34; give 10 enchanters
 !!IF:Q1/21/136/1^You come upon a caravan of enchanters who are feasting and fortifying their bodies with mead.  They call you forward and say, ""If you prove that you can dance the Rama-Buta, we will follow you.""  You don't know it, but try anyway.
 They laugh hysterically, but admire your bravery, then they join your army.^;
 !!HE-1:C2/136/10/1;
 !!UN:R1;
 !!VRz1:S^28_01.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=35:; give 10k movement
+!!if&y10=35; give 10k movement
 !!VRz1:S^10 000 movement points^;
 !!UN:A98/9/z1;
 !!IF:Q1/8/98/1^Before you appears a levitating glass case with a golden choker perched upon a bed of crimson velvet.
@@ -539,9 +519,9 @@ At your touch, the lid opens and the choker floats into your awaiting hands. You
 !!UN:A98/9/0; restore boots name
 !!VRz1:S^Haste.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=36:;   gets one free obelisk
+!!if&y10=36;   gets one free obelisk
 !!OW:C?y1; get current player
 !!UN:U57/-1/?y-1;
 !!VRv1:S-1;
@@ -556,9 +536,9 @@ Your cursory search of the remains turns up an enchanted map, but you already ha
 !!VRz1:S^obelisk.wav^;
 !!SN:Pz1;
 !!SN:W^R99obelisk^/1;
-!!en:;
+!!en;
 
-!!if&y10=37:; get one free mage guild
+!!if&y10=37; get one free mage guild
 !!SN:W^R99notbuild^/0;
 !!OW:C?y1; current player
 !!UN:U98/-1/?y-1;
@@ -573,17 +553,17 @@ Your cursory search of the remains turns up an enchanted map, but you already ha
 !!IF&y1>0:L^%Z1 built a full Mage Guild^;
 !!VRz1:S^ULTIMATEARTIFACT.wav^;
 !!SN&y1>0:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=38:; hero creatures get prayer/haste/shield enchanted until next week
+!!if&y10=38; hero creatures get prayer/haste/shield enchanted until next week
 !!IF:W-1;
 !!IF&y10=38:Q1/9/53/9/48/9/27/1^All the creatures in this hero's army will be spell enchanted for seven days^;
 !!VRw121:S7;
 !!VRz1:S^Prayer.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=39:;  hero creatures get +3 speed until next week
+!!if&y10=39;  hero creatures get +3 speed until next week
 !!IF:W-1;
 !!VRz1:S^+3 speed^;
 !!UN:A98/9/z1;
@@ -592,9 +572,9 @@ Your cursory search of the remains turns up an enchanted map, but you already ha
 !!VRw122:S7;
 !!VRz1:S^Haste.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=40:; +100% HP
+!!if&y10=40; +100% HP
 !!VRz1:S^%100 more health^;
 !!UN:A131/9/z1;
 !!IF:Q1/8/131/1^All the creatures in this hero's army will have 100% more HP for seven days^;
@@ -603,9 +583,9 @@ Your cursory search of the remains turns up an enchanted map, but you already ha
 !!VRw123:S7;
 !!VRz1:S^Bloodlus.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=41:; give one experience level
+!!if&y10=41; give one experience level
 !!HE-1:B0/?z2;
 !!HE-1:Ed/?y1/d;
 !!IF:M^In your wanderings you come across a hermit living in a small, tidy hut.  Impressed with your mission,
@@ -615,56 +595,47 @@ he takes time out from his meditations to bless and offers you one full experien
 !!FU45696529:Py2/?v2;
 !!VRv2:-y1;
 !!HE-1:Edv2;
-!!en:;
+!!en;
 
-!!if&y10=42:;  give endless bag of gold
+!!if&y10=42;  give endless bag of gold
 !!IF:Q1/8/116/1^You find a large box that seems to be made from some unknown metal.
 When you touch it, the box opens with a loud hiss, revealing a gleaming bag of gold within^;
 !!HE-1:A4/116;
 !!VRz1:S^gold01.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=43:;  get spell points
+!!if&y10=43;  get spell points
 !!SN:W^R99manabonus^/?y1;
 !!IF:Q1/35/y1/1^A little leprechaun dances gleefully around a magic sack.  Seeing you approach, he stops in mid-stride.  The little man screams and stamps his foot ferociously, vanishing into thin air.
 Remembering the old leprechaun saying 'Finders Keepers', you grab the sack and find some mana inside^;
 !!HE-1:Idy1;
 !!VRz1:S^MaleA33b.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10>43/y10<46:;
-!!VRz1:S^Watcher's magical Ring^;
-!!UN:A101/9/z1;
-!!IF:Q1/8/101/1^While venturing into a decrepit hut you find the skeleton of a long dead witch.  Investigation of the remains reveals a ring with a Dragon's eye set into it. Some old runes deeply encryted within tell that the one wearing the ring could know what all Caves offer for the next 7 days^;
-!!SN:W^R99counter^/7;
-!!VRz1:S^SYSMSG.wav^;
-!!SN:Pz1;
-!!VRz2:S^wind01.wav^;
-!!SN:Pz2;
-!!UN:A101/9/0;
-!!IF:L^Watcher's ring will be active for 7 days^;
-!!en:;
+!!if&y10>43/y10<46;
+  !!VRy10:R0/46/48;
+!!en;
 
-!!if&y10=46:; gets blessed
+!!if&y10=46; gets blessed
 !!SN:W^R99blessmultiple^/?y1;
 !!IF:N1/y1/3/y1/4/y1/5/y1;
 !!IF:N^A traveling tinker in need of supplies begs you for food and water. You accept to help him and he fulfills your wishes: this hero is blessed for 7 days and will produce daily resources^;
 !!HE-1:Y5/y1/7/1;
 !!VRz1:S^Bless.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=47:; gets daily experience
+!!if&y10=47; gets daily experience
 !!SN:W^R99experience^/?y1;
 !!IF:Q1/17/y1/1^A Nomad trader seeks protection from a tribe of Goblins.  For your assistance, he accepts to train you in finest combat skills for 7 days. Your hero will receive daily experience^;
 !!HE-1:Y9/y1/7/1;
 !!VRz1:S^05_01.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=48:; gets daily movement
+!!if&y10=48; gets daily movement
 !!SN:W^R99movement^/?y1;
 !!VRz1:S^Daily movement bonus for 7 days: %Y1^;
 !!UN:A98/9/z1;
@@ -675,9 +646,9 @@ Remembering the old leprechaun saying 'Finders Keepers', you grab the sack and f
 !!SN:Pz1;
 !!VRz2:S^Horse00.wav^;
 !!SN:Pz2;
-!!en:;
+!!en;
 
-!!if&y10=49:; gets scouting radius bigger
+!!if&y10=49; gets scouting radius bigger
 !!VRz1:S^Eagle glance: scouting radius of 12!^;
 !!UN:A52/9/z1;
 !!IF:Q1/8/52/1^You grab a strange speculum and quickly add it to your backpack. For next seven days, your eyes can detect things others can't!^;
@@ -685,26 +656,26 @@ Remembering the old leprechaun saying 'Finders Keepers', you grab the sack and f
 !!VRw125:S7;
 !!VRz1:S^Bless.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=50:; get expert estates
+!!if&y10=50; get expert estates
 !!HE-1:S13/?y1;
 !!IF&y1<3:Q1/20/44/1^You see a Wizard fleeing from a Dragon and riding like the wind.  The Wizard opens a portal and rides through, getting his bag knocked off by the edge of the gate.  The Dragon follows, and the gate closes.  You pick the bag up and open it. A scroll thickset with ancients runes says- the one who reads me will become rich.^;
 !!IF&y1=3:Q1/20/44/1^You already have what I was offering.^;
 !!HE-1&y1<3:S13/3;
 !!VRz1:S^MaleG13B.wav^;
 !!SN&y1<3:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=51:; monsters drop money when defeated
+!!if&y10=51; monsters drop money when defeated
 !!IF:Q1/36/d/36/d/36/d/1^You pick up a magical bag. With this incredible relic, you'll be able to gather all monster's gold before they are able to flee. The bag will vanish after 7 days^;
 !!IF:W-1;
 !!VRw126:S7;
 !!VRz1:S^Military.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=52:; Scourge
+!!if&y10=52; Scourge
 !!VRz2:S^Poison.wav^;
 !!SN:Pz2;
 !!SN:W^R99IDscourge^/?y11;  initialize scourge
@@ -729,9 +700,9 @@ PESTILENCE: no enemy will be able to approach %Z3 for 7 days^;
 !!UN:G1/141/0/0; restore
 !!UN:G1/141/1/0; restore
 !!UN:R1;
-!!en:;
+!!en;
 
-!!if&y10=53:; teleportation
+!!if&y10=53; teleportation
 !!HE-1:N?y7;
 !!SN:W^R99OV^/?y2;  OV ID to visit today
 !!VRy1&y2=1:S23; Marletto Tower
@@ -764,9 +735,9 @@ PESTILENCE: no enemy will be able to approach %Z3 for 7 days^;
 !!DO32456139/1/y-1/1&y-1>0:Py1/y3/y7/y-1;  Run through
 !!VRz1:S^wind01.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10=54:; builder
+!!if&y10=54; builder
 !!SN:W^R99builderID^/?y1;
 !!IF&y1>-1:M^You already have a builder!^;
 !!FU&y1>-1:E;
@@ -785,17 +756,17 @@ PESTILENCE: no enemy will be able to approach %Z3 for 7 days^;
 !!VRz1:S^Dragon.wav^;
 !!SN:Pz1;
 !!UN:A3/9/0;
-!!en:;
+!!en;
 
-!!if&y10>54/y10<62:; give one commander artifacts
+!!if&y10>54/y10<62; give one commander artifacts
 !!SN:W^R99commander^/?y1;
 !!IF:Q1/8/y1/1^A brief stop at an improbable rural inn yields an exchange of money, tales, and accidentally, luggage.  You find a magical artifact in your new backpack^;
 !!HE-1:Ay1;
 !!VRz1:S^smith.wav^;
 !!SN:Pz1;
-!!en:;
+!!en;
 
-!!if&y10>61:; commander receives one skill he doesn't have
+!!if&y10>61; commander receives one skill he doesn't have
 !!SN:W^R99completed^/0;
 !!HE-1:N?y1;
 !!DO45696539/0/6/1:Py1;
@@ -806,13 +777,15 @@ PESTILENCE: no enemy will be able to approach %Z3 for 7 days^;
 !!VRz1:S^01_02.wav^;
 !!SN&y1<99:Pz1;
 !!IF&y1=99:M^Your commander already knows all skills!^;
-!!en:;
+!!en;
 ;replace Caves
 !!VRv3:Cv998/v999/v1000;
 !!VRv3:+1;
 !!UN:Ov3/v4/v5;
 !!UN:Iv3/v4/v5/63/55;
-!!OB998:Hz959; set to visited
+*!OB998:Hz959; set to visited
+!!HT63/55:T959;
+
 !!PO998:N15;
 
 !?FU45696539;
@@ -939,16 +912,16 @@ PESTILENCE: no enemy will be able to approach %Z3 for 7 days^;
 !!VRw127&w127>1:-1;                     [scourge]
 !!VRw124&w124>1:-1;                     [builder]
 
-!!if&w127=1:; scourge
+!!if&w127=1; scourge
   !!HEx16:B0/?z2;
   !!HEx16:L3/x16; restore
   !!VRw127:-1;
   !!IF:L^%Z2 has been healed from Scourge and can be attacked again.^;
   !!SN:W^R99IDscourge^/-1;  initialize scourge
   !!HOx16:R;                            [hero can be attacked again - WIP. not HO:S?]
-!!en:;
+!!en;
 
-!!if&w124=1:;
+!!if&w124=1;
   !!SN:W^R99ID5^/?y5; !!SN:W^R99ID6^/?y6; !!SN:W^R99ID7^/?y7; !!SN:W^R99ID8^/?y8; !!SN:W^R99ID9^/?y9; !!SN:W^R99ID10^/?y10;  !!SN:W^R99ID11^/?y11;
   !!HEx16:Xy5/y6/y7/y8/y9/y10/y11;
   !!UN:G0/d/d/0; restore
@@ -956,42 +929,12 @@ PESTILENCE: no enemy will be able to approach %Z3 for 7 days^;
   !!SN:W^R99builderID^/-1;
   !!HEx16:B0/?z1;
   !!IF:L^%Z1 is no longer a BUILDER and retrieved his original specialty.^;
-!!en:;
+!!en;
 
 !?FU654789321;
 ;x1 hero ID
 ;x2 faction
 !!HOx1&x2<>x16:Dx16; exclude his faction
-
-!?FU56789012;
-;x1, x2 type/subtype
-;x3 commanders enabled/no
-;x4 percentage of Caves visitable (0=75%, 1=100%)
-!!if&x3=0:; commanders enabled
-!!VRy1&x4=0:S10 R54;  75%
-!!VRy1&x4=1:S20 R44;  100%
-!!en:;
-  !!if&x3=1:; commanders not enabled
-  !!VRy1&x4=0:S10 R44;   75%
-  !!VRy1&x4=1:S20 R34;   100%
-  !!en:;
-!!SN:W^R199counter^/?y2;   check if Watcher on/off
-!!VRy1&y1>43/y1<46/y2>0:S43;   set to 100 spell points instead
-!!UN:Ux1/x2/-1/1;
-!!POv1/v2/v3:N0;
-!!SN:W^R57percentage^/?y10; check if obelisks are all removed
-!!VRy1&y10=10/y1=36:S43; set to spell points
-!!POv1/v2/v3:B0/y1;
-!!OBv1/v2/v3:Hz958;
-!!VRy1:Sv1+1;
-!!UN:P904/1; turn errors off
-!!UN:P905/0; clear error flag
-!!HEv1/v2/v3:N?y8; get hero to y8, if any
-!!UN:P904/0; turn on errors showing
-!!UN:P905/?y9; get error flag to y9
-!!FU&y9=0:E; exit if hero on Cave (will crash if not)
-!!UN:Ov1/v2/v3;
-!!UN:Iy1/v2/v3/63/56;
 
 
 !?CM0;
@@ -1002,12 +945,12 @@ PESTILENCE: no enemy will be able to approach %Z3 for 7 days^;
 !!SN:W^R99counter^/?y7;
 !!FU&y7<1:E;
 !!OBy4/y5/y6:T?y7 U?y8;
-!!if&y7=63/y8=55:; if visited
+!!if&y7=63/y8=55; if visited
 !!IF:Q1/-1/-1/4^Already visited^;
 !!CM:R0;
-!!en:;
+!!en;
 
-!!if&y7=63/y8=56:; if Cave
+!!if&y7=63/y8=56; if Cave
 !!POy4/y5/y6:N?y9;
 !!FU&y9>0:E;
 !!POy4/y5/y6:B0/?y10;
@@ -1096,207 +1039,8 @@ Hero can demolish and rebuild towns to any faction of your choice^;
 !!IF&y10>54/y10<62:Q1/8/y1/4^{~Cyan}Commander: %Z1{~}^;
 !!IF&y10>61/y10<65:Q1/-1/-1/4^{~Chartreuse}Commander: new skill{~}^;
 !!CM:R0;
-!!en:;
+!!en;
 
-;F2 key to loop trough not visited Caves (in player sight ONLY)
-!?FU77003; keystroke
-!!FU:E;                                 [Archer - block watcher ring activation]
-!!SN:X?y1; y1 — key code
-!!FU&y1<>113:E; exit, if not F2
-!!SN:L^Era.dll^/?y2; received description of Era library in y2
-!!SN:Ay2/^GetGameState^/?y3; y3 — address of function GetGameState
-!!SN:Ey3/1/?y4; y4 — ID of parent dialog, y5 — ID of current dialog
-!!FU&y5<>4205280:E; exit, if this is not the adventure map
-!!SN:X?y1/1; block standard action
-!!VRz1:S^Choose Caves search method^;
-!!VRz2:S^Locate all un-visited^;
-!!VRz3:S^Locate a specific un-visited Cave (watcher ring must be active)^;
-!!IF:G1/1/2/1/2/3;
-!!if&v1=1:;
-!!OW:C?v5; current player
-!!VRv5:+550;
-!!VRv5:Svv5;  convert to player bits
-!!UN:U63/56/?y-1;  Caves
-!!VRv1:S-1;
-!!DO32456136/1/y-1/1&y-1>1:P63/56/v5;
-!!en:;
-
-!!if&v1=2:;
-!!SN:W^R99counter^/?y7;
-!!IF&y7<1:M^The custom search is available only when watcher ring is active^;
-!!FU&y7<1:E;
-!!SN:W^R99search^/0;
-!!IF:M^Type in next dialog the ID of the specific pilar you want to find:
-
-{~Lime}20:Random stats bonus
-{~Lime}21:Gives random experience
-{~Lime}22:Gives Boots of haste and gloves
-{~Lime}23:Gives logistic expert
-{~Lime}24:Gives one of the 4 magic schools expert
-{~Lime}25:Gives one of the 6 resource artifacts
-{~Lime}26:Gives one of the components of statue of legion
-{~Lime}27:Sells for 300k gold one of the 3 tomes (not air)
-{~Lime}28:Gives magic book and all level 1 spells
-{~Lime}29:Gives magic book and all level 2 spells
-{~Lime}30:Gives magic book and all level 1-3 spells
-{~Lime}31-32:Random resource
-{~Lime}33:Gives shackles
-{~Lime}34:Gives 10 enchanters
-{~Lime}35:10k mvm points
-{~Lime}36:One random obelisk is automatically visited
-{~Lime}37:Builds one full mage guild in one random town you own
-{~Lime}38: Enchants  with prayer/haste/shield
-{~Lime}39:Enchants  with +3 speed
-{~Lime}40:Enchants  with +100% HP
-{~Lime}41:+ one experience level
-{~Lime}42:Gives purse of gold
-{~Lime}43:Gives 100 spell points
-{~Lime}44-45:Gives knowledge of what all other Caves offer
-{~Lime}46:Blessed, hero will produce resources daily for 7 days
-{~Lime}47:Blessed, hero will receive experience daily for 7 days
-{~Lime}48:Blessed, hero will move faster for 7 days
-{~Lime}49:Hero will have great scouting radius for 7 days
-{~Lime}50:Gets expert estates
-{~Lime}51:Rockfeller: monsters drop money when defeated
-{~Lime}52:Pestilence: Hero is contagious and can't be attacked
-{~Lime}53:Teleport: Hero can visit objects in distant land
-{~Lime}54:Builder: Hero can demolish towns
-{~Lime}55-61:Gives one of commander's artifacts
-{~Lime}62-64:Gives a primary skill to commander{~}^;
-!!VRz-1:S^Search for a specific Cave^;
-!!VRz-2:S^Type the Cave ID^;
-!!IF:D61/-1/-2/0/0/0/0/0;
-!!IF:F61/0/0/0/0/0;
-!!IF:E1/61;
-!!VRz1:H5; **check if text entered, flag 5=1 if yes
-!!VRv2&5:Vz1;
-!!FU&-5:E;
-!!IF|v2<10/v2>64:M^Value not used, try again^;
-!!FU|v2<10/v2>64:E;
-!!OW:C?v5; current player
-!!VRv5:+550;
-!!VRv5:Svv5;  convert to player bits
-!!UN:U63/56/?y-1;  Caves
-!!VRv1:S-1;
-!!DO32456137/1/y-1/1&y-1>1:P63/56/v2/v5;
-!!SN:W^R99search^/?y1;
-!!IF&y1<1:M^Requested Cave not found!^;
-!!en:;
-
-!?FU32456137;
-;x2 player bits
-!!UN:Ux1/x2/-1/1;
-!!TR1:V?i; check visibility
-!!VRi:&x4; check current player bits
-!!FU&i<>x4:E; exit if not in visible range
-!!POv1/v2/v3:N?y1;
-!!FU&y1>0:E;
-!!POv1/v2/v3:B0/?y2;
-!!FU&y2<>x3:E;
-!!SN:W^R99search^/1;
-!!UN:Lv1/v2/v3/1000;
-!!IF:Q1^Next one?^;
-!!VRx16&-1:S9999;
-
-!?FU32456136;
-;x3 player bits
-!!UN:Ux1/x2/-1/1;
-!!TR1:V?i; check visibility
-!!VRi:&x3; check current player bits
-!!FU&i<>x3:E; exit if not in visible range
-!!POv1/v2/v3:N?y9;
-!!FU&y9>0:E;
-!!POv1/v2/v3:B0/?y10;
-!!FU&y10<20:E;
-!!UN:Lv1/v2/v3/10;
-!!SN:W^R99counter^/?y7;
-
-
-!!if&y7>0:; if watcher active
-!!IF&y10=20:Q1^Increase primary skill^;
-!!IF&y10=21:Q1^Gives Experience^;
-!!IF&y10=22:Q1/8/98/8/70/2^Gives travel artifacts^;
-!!IF&y10=23:Q1/20/11/2^Gives Expert Logistic^;
-!!SN&y10=24:W^R99magic^/?y1; get one magic school
-!!VRy3&y10=24:Sy1*3+5;
-!!UN&y10=24:N4/z1/y1;
-!!IF&y10=24:Q1/20/y3/2^Gives Expert %Z1^;
-!!SN&y10=25:W^R99cornucopia^/?y1;
-!!UN&y10=25:N0/z1/y1;
-!!IF&y10=25:Q1/8/y1/2^Gives %Z1^;
-!!SN&y10=26:W^R99legion^/?y1;
-!!UN&y10=26:N0/z1/y1;
-!!IF&y10=26:Q1/8/y1/2^Gives %Z1^;
-!!SN&y10=27:W^R99tomes^/?y1;
-!!UN&y10=27:N0/z1/y1;
-!!IF&y10=27:Q1/8/y1/2^Sells %Z1 for 100000 gold^;
-!!IF&y10=28:Q1/-1/-1/2^Gives all level 1 spells^;
-!!IF&y10=29:Q1/-1/-1/2^Gives all level 2 spells^;
-!!IF&y10=30:Q1/-1/-1/2^Gives all level 1-3 spells^;
-!!SN|y10=31/y10=32:W^R99resourcename^/?y1;
-!!SN|y10=31/y10=32:W^R99resource^/?y2;
-!!VRy2&y10>30/y10<33/y1=6:*1000; gold x 1000
-!!IF|y10=31/y10=32:Q1/y1/y2/2^Gives resources^;
-!!IF&y10=33:Q1/8/125/2^Gives Shackles of War^;
-!!VRy1&y10=34:S65536*10+136;
-!!IF&y10=34:Q1/21/y1/2^Gives 10 enchanters^;
-!!VRz1&y10=35:S^10000 movement for today^;
-!!UN&y10=35:A98/9/z1;
-!!IF&y10=35:Q1/8/98/2^^;
-!!UN&y10=35:A98/9/0;
-!!IF&y10=36:Q1/-1/-1/2^Reveals one random obelisk^;
-!!IF&y10=37:Q1/24/4/2^Builds a full mage guild^;
-!!IF&y10=38:Q1/9/53/9/27/9/48/2^Your army is enchanted^;
-!!IF&y10=39:Q1/9/53/2^Your army gets +3 speed^;
-!!IF&y10=40:Q1/-1/-1/2^Your army gets +100% HP^;
-!!IF&y10=41:Q1/17/-1/2^{~Yellow}ONE EXPERIENCE LEVEL{~}^;
-!!IF&y10=42:Q1/8/116/2^Gives Endless Bag of Gold^;
-!!SN&y10=43:W^R99manabonus^/?y1;
-!!IF&y10=43:Q1/35/y1/2^Gives %Y1 spell points^;
-!!VRz1|y10=44/y10=45:S^^;
-!!UN|y10=44/y10=45:A92/9/z1;
-!!IF|y10=44/y10=45:Q1/8/92/8/92/8/92/2^{~SeaShell}PRECOGNITION
-
-Shows what all Caves will offer for 7 days{~}^;
-!!UN|y10=44/y10=45:A92/9/0;
-!!SN&y10=46:W^R99blessmultiple^/?y1;
-!!IF&y10=46:Q1/-1/-1/2^Bless: Hero produces %Y1 of each resource daily^;
-!!SN&y10=47:W^R99experience^/?y1;
-!!IF&y10=47:Q1/17/y1/2^Bless: Hero receives free experience each day^;
-!!VRz1&y10=48:S^Bless: Increase movement for 7 days^;
-!!UN&y10=48:A98/9/z1;
-!!IF&y10=48:Q1/8/98/2^^;
-!!UN&y10=48:A98/9/0;
-!!VRz1&y10=49:S^Bless: Increased Scouting Radius^;
-!!UN&y10=49:A52/9/z1;
-!!IF&y10=49:Q1/8/52/2^^;
-!!UN&y10=49:A52/9/0;
-!!IF&y10=50:Q1/20/44/2^Gives Expert Estates^;
-;commanders
-!!IF&y10=51:Q1/36/d/36/d/36/d/2^Rockfeller: defeated monsters drop gold^;
-!!VRz1&y10=52:S^PESTILENCE^;
-!!VRz2&y10=52:S^^;
-!!UN&y10=52:G1/141/0/1;
-!!UN&y10=52:G1/141/1/2;
-!!IF&y10=52:Q1/21/141/2^{~Crimson}%Z1{~}^;
-!!UN&y10=52:G1/141/0/0; restore
-!!UN&y10=52:G1/141/1/0; restore
-!!IF&y10=53:Q1/31/d/32/d/33/d/2^Teleportation: your hero can visit objects from distant lands^;
-!!VRz1&y10=54:S^^;
-!!UN&y10=54:A3/9/1;
-!!IF&y10=54:Q1/8/3/2^{~Gold}BUILDER:{~}
-
-Hero can rebuild towns to any faction of your choice^;
-!!UN&y10=54:A3/9/0; restore
-!!SN&y10>54/y10<62:W^R99commander^/?y1;
-!!UN&y10>54/y10<62:N0/z1/y1;
-!!IF&y10>54/y10<62:Q1/8/y1/2^{~Cyan}Commander: %Z1{~}^;
-!!IF&y10>61/y10<65:Q1/-1/-1/2^{~Chartreuse}Commander: new skill{~}^;
-!!en:;
-!!if&y7<1:; if watcher not active
-!!IF:Q1^Next one?^;
-!!en:;
-!!VRx16&-1:S9999;
 
 !?HM-1;  increase scouting radius
 !!IF:W-1;
@@ -1427,7 +1171,9 @@ Instructions: Once he demolished the last building (Village Hall), a blacksmith 
 !!UN:Oy1/y2/y3; delete
 !!VRy6:Sy1+1;
 !!UN:Iy6/y2/y3/63/55;
-!!OBy1/y2/y3:Hz959; set to visited
+*!OBy1/y2/y3:Hz959; set to visited
+!!HT63/55:T959;
+
 !!POy1/y2/y3:N15;
 !!IF:Q1/-1/-1/4^Cave set to visited^;
 !!VRz1:S^WoodDRClose.wav^;

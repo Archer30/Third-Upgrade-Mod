@@ -13,13 +13,13 @@ visit www.heroescommunity.com for updates and news
 ****************************************************************
 ************************ Upgrading Part ************************
 ****************************************************************
-; Manage Creature upgrades in town
-; Script by Archer30
+// Script by Archer30
+// Manage Creature upgrades in town
 !?FU(OnDetermineMonInfoDlgUpgrade);
 !#VA(monType:x) (upgType:x) (town:x) (hero:x);
 
 ; Exit if Gelu or Dracon, or the third upgrade guild has not been built
-!!FU|(hero)=(HERO_GELU)/(hero)=(HERO_DRACON)/i^tum_upgGuild_%(town)^<>(TRUE):E;
+!!FU|(upgType)=(MON_SHARPSHOOTER)/(upgType)=(MON_ENCHANTER)/i^tum_upgGuild_%(town)^<>(TRUE):E;
 
 !!FU(tum_GetUpgMonInTown):P(monType)/(town)/?(upgType);
 
@@ -69,11 +69,17 @@ visit www.heroescommunity.com for updates and news
 
 ; get non-upgraded creatures
 !!VR(mon):S(upgMon) -1;
+; Fix Conflux mons
+!!VR(mon)&(upgMon)=(MON_STORM_ELEMENTAL):S(MON_AIR_ELEMENTAL);
+!!VR(mon)&(upgMon)=(MON_ICE_ELEMENTAL):S(MON_WATER_ELEMENTAL);
+!!VR(mon)&(upgMon)=(MON_ENERGY_ELEMENTAL):S(MON_FIRE_ELEMENTAL);
+!!VR(mon)&(upgMon)=(MON_MAGMA_ELEMENTAL):S(MON_EARTH_ELEMENTAL);
 
 ; get third upgraded creatures
 !!FU(GetUpgradedMonster):P(upgMon)/?(thirdUpgMon);
 
 // Adapt fast upgrades with holding A + mouse click
+// Note: Clicking on the spot of the garrison hero/visiting hero has not been coded yet
 !?FU(OnTownMouseClick)&i^mouse_action^=(MOUSE_LMB_PRESSED)/i^key_a^/999;
 ; Exit if not clicking on a possible creature slot
 !!VR(item:y):Si^mouse_item^;
@@ -94,12 +100,20 @@ visit www.heroescommunity.com for updates and news
 ; Manage different actions depending on whether clicking on the garrison or a slot from the visiting hero
 !!if&(item)>=115/(item)<=121;
   !!VR(slot:y):S(item) -115;
-  !!CA0/(townId):M2/(slot)/?(type:y)/?(num:y);
-  !!CA0/(townId):P?(x:y)/?(y:y)/?(z:y);
-  !!EX(x)/(y)/(z)/(slot)/2:E?(exp:y);
+
+  ; Use differernt receivers depending on whether the hero in the garrison is available
+  !!CA0/(townId):H0/?(garrisonHero:y);
+
+  !!if&(garrisonHero)=(NO_HERO);
+    !!CA0/(townId):M2/(slot)/?(type:y)/?(num:y);
+    !!CA0/(townId):P?(x:y)/?(y:y)/?(z:y);
+    !!EX(x)/(y)/(z)/(slot)/2:E?(exp:y);
+  !!el;
+    !!HE(garrisonHero):C0/(slot)/?(type)/?(num)/?(exp:y)/0;
+  !!en;
 !!el&(item)>=140/(item)<=146;
   !!VR(slot):S(item) -140;
-  !!HE(visitHero):C0/(slot)/?(type)/?(num)/?(exp:y)/0;
+  !!HE(visitHero):C0/(slot)/?(type)/?(num)/?(exp)/0;
 !!en;
 
 !!CM:R0;
@@ -110,26 +124,23 @@ visit www.heroescommunity.com for updates and news
 
   ; Check the cost of upgrade if the monster has one
   !!if&(upg)>(NO_MON);
+    !#VA(leftRes[7]:y);
 
     !!re i/(RES_FIRST)/(RES_LAST_SOD);
       !!MA:C(type)/i/?(typeRes:y);
       !!MA:C(upg)/i/?(upgRes:y);
       !!VR(cost:y):S(upgRes) -(typeRes) *(num) F0/(INT_MAX);
+
       !!OW:R(owner)/i/?(ownedRes:y);
-      !!VR(leftRes:y):S(ownedRes) -(cost);
+      !!VR(leftRes[i]):S(ownedRes) -(cost);
 
       ; Exit the function if can't afford
-      !!FU&(leftRes)<0:E;
-
-      ; Store the left resource in v variables for use later
-      !!VR(ptr:y):Si +2;
-      !!VRv(ptr):S(leftRes);
+      !!FU&(leftRes[i])<0:E;
     !!en;
 
     ; Set new resource
     !!re i/(RES_FIRST)/(RES_LAST_SOD);
-      !!VR(ptr):Si +2;
-      !!OW:R(owner)/i/v(ptr);
+      !!OW:R(owner)/i/(leftRes[i]);
     !!en;
 
     ; Upgrade the creature with exp changes
@@ -137,8 +148,12 @@ visit www.heroescommunity.com for updates and news
     !!VR(newExp:y):S(exp) *(upgMultiplier) :1000;
 
     !!if&(item)>=115/(item)<=121;
-      !!CA0/(townId):M2/(slot)/(upg)/(num);
-      !!EX(x)/(y)/(z)/(slot)/2:E(newExp);
+      !!if&(garrisonHero)=(NO_HERO);
+        !!CA0/(townId):M2/(slot)/(upg)/(num);
+        !!EX(x)/(y)/(z)/(slot)/2:E(newExp);
+      !!el;
+        !!HE(garrisonHero):C0/(slot)/(upg)/(num)/(newExp)/0;
+      !!en;  
     !!el&(item)>=140/(item)<=146;
       !!HE(visitHero):C0/(slot)/(upg)/(num)/(newExp)/0;
     !!en;    
@@ -255,18 +270,18 @@ visit www.heroescommunity.com for updates and news
 !!MA:U(MON_GOLD_GOLEM)/(MON_DIAMOND_GOLEM);
 
 ; Crystal Dragons
-!!MA:U265/266;
-!!MA:U266/(MON_CRYSTAL_DRAGON);
-!!MA:U(MON_CRYSTAL_DRAGON)/267;
-!!MA:U267/268;
+!!MA:U(MON_TOPAZ_CRYSTAL_DRAGON)/(MON_AMETHYST_CRYSTAL_DRAGON);
+!!MA:U(MON_AMETHYST_CRYSTAL_DRAGON)/(MON_CRYSTAL_DRAGON);
+!!MA:U(MON_CRYSTAL_DRAGON)/(MON_EMERALD_CRYSTAL_DRAGON);
+!!MA:U(MON_EMERALD_CRYSTAL_DRAGON)/(MON_SAPPHIRE_CRYSTAL_DRAGON);
 
-!!MA:U(MON_FAERIE_DRAGON)/258;
-!!MA:U(MON_ENCHANTER)/259;
-!!MA:U(MON_PEASANT)/300;
-!!MA:U(MON_ROGUE)/260;
-!!MA:U(MON_GORYNYCH)/253;
+!!MA:U(MON_FAERIE_DRAGON)/(MON_PRIMAL_FAERIE_DRAGON);
+!!MA:U(MON_ENCHANTER)/(MON_SPELLWEAVER);
+!!MA:U(MON_PEASANT)/(MON_CONSCRIPT);
+!!MA:U(MON_ROGUE)/(MON_ASSASSIN);
+!!MA:U(MON_GORYNYCH)/(MON_TIAMAT);
 !!MA:U(MON_HELL_STEED)/(MON_NIGHTMARE);
-!!MA:U(MON_DRACOLICH)/254;
+!!MA:U(MON_DRACOLICH)/(MON_NECROSS_DRAGON);
 
 ; New neutrals
 !!MA:U301/302;
@@ -284,7 +299,7 @@ visit www.heroescommunity.com for updates and news
 !!MA:U(MON_SUPREME_ARCHANGEL)/(MON_SERAPH);
 !!MA:U(MON_DIAMOND_DRAGON)/(MON_PURE_DIAMOND_DRAGON);
 !!MA:U(MON_LORD_OF_THUNDER)/(MON_GUARDIAN_OF_ZEUS);
-!!MA:U153/219;                          [compatiblity settings with ERA earlier than 2.8.2]
+!!MA:U(MON_HELL_BARON)/(MON_ANTICHRIST);
 !!MA:U(MON_BLOOD_DRAGON)/(MON_RED_BONES_DRAGON);
 !!MA:U(MON_DARKNESS_DRAGON)/(MON_CHASM_DRAGON);
 !!MA:U(MON_GHOST_BEHEMOTH)/(MON_SPECTRAL_BEHEMOTH);
@@ -296,71 +311,102 @@ visit www.heroescommunity.com for updates and news
 *****************************************************************************
 ; Set up monsters in the town
 ; Script by Archer30
-!?FU(OnAfterBuildTownBuilding)&i^tum_onTownScreen^;
-!!FU(tum_SetUpTownMons):P;
-
-**** compatibility with ERA 3.9.1 and earlier ****
-
-!?FU(OnTownMouseClick);                 
-; Clicks on anywhere except for hero and garrison slots
-!!UN:V?(verWoG:y)/?(verErm:y);
-!!FU&(verErm)>3901:E;
-
-!!FU(tum_SetUpTownMons):P;
-
-**** end compatibility ****
-
 !?FU(OnPreTownScreen);
-!!FU(tum_SetUpTownMons):P;
+!#VA(townId:x);
+
+!!FU(tum_SetUpTownMons):P(townId);
+!!SN:D;
+
+!?FU(OnAfterBuildTownBuilding)&i^tum_onTownScreen^;
+!#VA(townId:x) (buildingId:x);
+
+!!FU(tum_SetUpTownMons)&(buildingId)=7:P(townId);
+!!FU(tum_SetUpTownMons)&(buildingId)>=37/(buildingId)<=43:P(townId);
+!!SN:D;
 
 !?FU(tum_SetUpTownMons);
-!!CA(CURRENT_TOWN):U?(townId:y) T?(townType:y);
+!#VA(townId:x);
 
-!!re i/(MON_MIN_LEVEL)/(MON_MAX_LEVEL);
-  !!VR(building:y):Si +37;
-  !!CA0/(townId):B3/(building);
+!!CA0/(townId):B3/7 T?(townType:y);
+!!VRi^tum_upgGuild_%(townId)^&-1:S(FALSE);
 
-  !!FU(tum_GetTownMon):P(townType)/i/?(mon:y)/?(upgMon:y)/?(thirdUpgMon:y)/;
+; Set to third upgrade monsters if third upgrade building is built - depedning on whether the upgraded dwelling is built
+!!if&i^tum_upgGuild_%(townId)^;
+  !!re i/(MON_MIN_LEVEL)/(MON_MAX_LEVEL);
+    !!VR(building:y):Si +37;
+    !!CA0/(townId):B3/(building);
 
-  !!if&1/i^tum_upgGuild_%(townId)^;
-    ; if both the upgraded dwelling and upgrade guild is built, get the third upgrade creature
-    !!UN:T(townType)/i/1/(thirdUpgMon);
+    !!FU(tum_GetTownMon):P(townType)/i/?(mon:y)/?(upgMon:y)/?(thirdUpgMon:y)/;
 
-    ; if level 7, also 4th upgrade option is enabled, get the fourth upgrade creature
-    !!if&i=6;
-      !!UN:P(WOG_OPT_4TH_UPGRADES)/?(fourthUpgOn:y);
+    !!if&1/i^tum_upgGuild_%(townId)^;
+      ; if both the upgraded dwelling and upgrade guild is built, get the third upgrade creature
+      !!UN:T(townType)/i/1/(thirdUpgMon);
 
-      !!if&(fourthUpgOn);
-        !!FU(GetUpgradedMonster):P(thirdUpgMon)/?(fourthUpgMon:y);
-        !!UN&(fourthUpgMon)<>(NO_MON):T(townType)/i/1/(fourthUpgMon);
+      ; if level 7, also 4th upgrade option is enabled, get the fourth upgrade creature
+      !!if&i=6;
+        !!UN:P(WOG_OPT_4TH_UPGRADES)/?(fourthUpgOn:y);
+
+        !!if&(fourthUpgOn);
+          !!FU(GetUpgradedMonster):P(thirdUpgMon)/?(fourthUpgMon:y);
+          !!UN&(fourthUpgMon)<>(NO_MON):T(townType)/i/1/(fourthUpgMon);
+        !!en;
       !!en;
+    !!el;
+      ; if either upgraded dwelling or third upgrade building is not built, reset to original upgraded creature
+      !!UN:T(townType)/i/1/(upgMon);
     !!en;
-  !!el;
-    ; if either upgraded dwelling or third upgrade building is not built, reset to original upgraded creature
-    !!UN:T(townType)/i/1/(upgMon);
+  !!en;
+; Restore to the original town monsters if third upgrade building is not built
+!!el;
+  !!FU(tum_ResetTownMons):P(townId);
+!!en;
+
+; Manage town dwellings
+!!if&i^tum_upgGuild_%(townId)^;
+  !!FU(newup_ExtendTownDwellings):P(townId)/(townType);
+!!el;
+  !!FU(tum_DemolishExtTownDwell):P(townId)/(townType);
+!!en;
+
+// Restore UN:T values to their original
+!?FU(OnCloseTownScreen);
+!#VA(townId:x);
+
+!!FU(tum_ResetTownMons):P(townId);
+
+!?FU(tum_ResetTownMons);
+!#VA(townId:x);
+
+!!re i/(TOWN_FIRST)/(TOWN_LAST_WOG);
+  !!if&i<(TOWN_FORTRESS);
+    !!re j/0/6;
+      !!VR(townOffset:y):Si *14 +1;
+      !!VR(mon:y):Sj *2 +(townOffset);
+      !!UN:Ti/j/1/(mon);
+    !!en;
+  !!el&i=(TOWN_FORTRESS);
+    !!UN:Ti/0/1/(MON_GNOLL_MARAUDER);
+    !!UN:Ti/1/1/(MON_LIZARD_WARRIOR);
+    !!UN:Ti/2/1/(MON_DRAGON_FLY);
+    !!UN:Ti/3/1/(MON_GREATER_BASILISK);
+    !!UN:Ti/4/1/(MON_MIGHTY_GORGON);
+    !!UN:Ti/5/1/(MON_WYVERN_MONARCH);
+    !!UN:Ti/6/1/(MON_CHAOS_HYDRA);
+  !!el&i=(TOWN_CONFLUX);
+    !!UN:Ti/0/1/(MON_SPRITE);
+    !!UN:Ti/1/1/(MON_STORM_ELEMENTAL);
+    !!UN:Ti/2/1/(MON_ICE_ELEMENTAL);
+    !!UN:Ti/3/1/(MON_ENERGY_ELEMENTAL);
+    !!UN:Ti/4/1/(MON_MAGMA_ELEMENTAL);
+    !!UN:Ti/5/1/(MON_MAGIC_ELEMENTAL);
+    !!UN:Ti/6/1/(MON_PHOENIX);
   !!en;
 !!en;
 
 *****************************************************************************
 ; Destruct the special building if there is no fort
 ; Script by Archer30
-!?FU(OnPreTownScreen);
-!!FU(tum_CheckUpgGuildEligibility):P;
-
-!?FU(OnBuildTownBuilding)&i^tum_onTownScreen^;
-!!FU(tum_CheckUpgGuildEligibility):P;
-
-!?FU(tum_CheckUpgGuildEligibility);
-!!CA(CURRENT_TOWN):B3/7;                [check if there's a fort]
-
-; Demolish upgrade guild if fort is not built
-!!if&-1;
-  !!CA(CURRENT_TOWN):U?(townId:y) T?(townType:y); [get town id and type]
-  !!VRi^tum_upgGuild_%(townId)^:S(FALSE);[set flag]
-  !!FU(tum_ResetSlotSettings):P(townId)/(townType);
-!!en;
-
-!?FU(tum_ResetSlotSettings);
+!?FU(tum_DemolishExtTownDwell);
 !#VA(townId:x) (townType:x);
 
 !!if&(townType)=(TOWN_CASTLE);          [Castle]
@@ -508,21 +554,8 @@ visit www.heroescommunity.com for updates and news
 !!FU(dex_SetDwellingSlotByTownId)&(fourthUpgOn):P(townId)/6/1/3/(NO_MON)/100;
 
 *****************************************************************************
-; Update recruite dialogue on visiting a town
-; Script by Archer30
-!?FU(OnPreTownScreen);
-!#VA(townId:x);
-
-!!CA(CURRENT_TOWN):T?(townType:y);
-
-!!if&i^tum_upgGuild_%(townId)^;
-  !!FU(newup_ExtendTownDwellings):P(townId)/(townType);
-!!el;
-  !!FU(tum_DemolishExtTownDwell):P(townId)/(townType);
-!!en;
-
-*****************************************************************************
 !?FU(gem_OnOpenButtonDlg);              [Function from GEM Mod that is called when clicking the new buttons]
+    !!FU:E;
 
     !!CA-1:T?y1;                        [Get Town type]
     
@@ -553,7 +586,7 @@ visit www.heroescommunity.com for updates and news
     !!VRz20&y1=8:Sz199860;              [Escaton's Crystal]
     !!VRz21&y1=8:Sz199858;              [Escaton's Crystal]
     
-  !!FU(gem_AddTownButton):P^007T8BTN.def^/^%Z20^/^%Z21^/(TUM_Build_New_Building)/0/0/0; [Blacksmith button]
+  !!FU(gem_AddTownButton):P^007T8BTN.def^/10/10/^%Z20^/^%Z20^/^%Z21^/(TUM_Build_New_Building)/0/0/0; [Blacksmith button]
 
 ; Build special buildings
 !?FU(OnTownMouseClick)&999;             [trigger on clicking in town screen)]
@@ -594,7 +627,14 @@ visit www.heroescommunity.com for updates and news
 !!CM&v4=0/v5=0/v6=0:R1;                 [if no fort, citadel or castle reenable standard text)]
 
 !!UN:P4/?y2;                            [check if town demolition is enabled]
-!!CM&y2=1:R0;                           [if it is not enabled - disable any standard text]
+
+!!if&y2=1;
+  !!CM:R0;                              [if it is not enabled - disable any standard text]
+!!el;
+  !!CA(CURRENT_TOWN):B3/0;              [Cancel standard action if Level 1 Mage Guild is built - town hall can't be demolished in this case]
+
+  !!CM&1:R0;
+!!en;
 
 ************ get current resources *************
 !!OW:Ri^timerOwner^/6/?v9541;                   [1 - gold]
@@ -832,7 +872,7 @@ visit www.heroescommunity.com for updates and news
   !!CA(CURRENT_TOWN):U?y30;             [get town id - Archer]
   !!VRi^tum_upgGuild_%y30^:S(TRUE);     [set flag]
   !!FU(tum_SetUpTownMons):P;
-  !!FU(eighth_Update8thDwell):Py30/y2/(TRUE)/(FALSE)/(TRUE); [upgrade 8th dwelling]
+  !!FU(eighth_Update8thDwell):P;        [upgrade 8th dwelling]
 
   !!CA(CURRENT_TOWN):R1;                [no more building today for this town]
 
@@ -1058,10 +1098,13 @@ visit www.heroescommunity.com for updates and news
 ************ AI building the special structure and upgrading **************
 ***************************************************************************
 
-!?OB98&-1000; !!FU9504:P;               [-occur when AI is entering town]
-!$OB98&-1000; !!FU9504:P;               [-occur when AI is leaving town]
+!?OB98&-1000;
+!!FU9504:P;               [-occur when AI is entering town]
 
-!?FU9504&999;
+!$OB98&-1000;
+!!FU9504:P;               [-occur when AI is leaving town]
+
+!?FU9504;
 ***************************** building part ******************************
 
 !!CA998:O?y-2;                          [(owner of the town: y-2)]
@@ -1082,7 +1125,6 @@ visit www.heroescommunity.com for updates and news
 !!OW:Ri^timerOwner^/7/?v9548;                   [8 - mithril]
 
 !!CA998:T?y2;                           [check town type]
-
 
 ************************ CONFLUX *****************************
 !!if&y2=8;
@@ -1227,7 +1269,7 @@ visit www.heroescommunity.com for updates and news
     !!OW:Ri^timerOwner^/v9557/v9555;      [set new third resource]
 
     !!VRi^tum_upgGuild_%y30^:S(TRUE);     [set flag - Archer]
-    !!FU(eighth_Update8thDwell):Py30/y2/(TRUE)/(TRUE)/(FALSE); [upgrade 8th dwelling]
+    !!FU(eighth_Update8thDwell):P;        [upgrade 8th dwelling]
   !!en;
 !!en;
 
@@ -1348,10 +1390,10 @@ script by Perry R
   !!VRy51:Sy48:y60;                       [Damage per Level based on creature level]
   !!VRy52:Sy48+9;                         [+1% per Health per Level +9%]
 
-  !!SN:T^Third_Upgrade_Mod.Creature_Specialist^/?s^Text^/^level^/y14/^attack^/y50/^damage^/y51/^health^/y52/^Crea1^/z3/^Crea2^/z4/^Crea3^/z6/^Hero^/z1/^sex^/z5;
+  !!SN:T^Third_Upgrade_Mod.Creature_Specialist^/?z7/^level^/y14/^attack^/y50/^damage^/y51/^health^/y52/^Crea1^/z3/^Crea2^/z4/^Crea3^/z6/^Hero^/z1/^sex^/z5;
 
-  !!IF&i^mouse_action^=(MOUSE_LMB_PRESSED):M1/1/^%S(Text)^;
-  !!IF&i^mouse_action^=(MOUSE_RMB_PRESSED):M1/4/^%S(Text)^;
+  !!IF&i^mouse_action^=(MOUSE_LMB_PRESSED):M1/1/^%z7^;
+  !!IF&i^mouse_action^=(MOUSE_RMB_PRESSED):M1/4/^%z7^;
 !!en;
 
 
@@ -1503,27 +1545,7 @@ Need to expand and edit here for every faction
 
 !#SN:W^Advanced_Classes_Mod_Active^/?y1;
 !#FU(Third_Upgrade_2)&y1=0:P;           [Set Conflux Heroes to normal Creature_Specialist]
-****************************************************************************************************
-Antichrists are furious
-Script by Algor
 
-!?BG0;
-!!BG:N?y1 A?y2;
-!!BMy1:T?y3;
-!!FU|y2<>6/y3<>219:E;
-!!BMy1:D?y4;
-
-!!if&y4>0;
-  !!BA:Q?f;
-
-  !!if&f=0;
-    !!SN:T^Third_Upgrade_Mod.furious^/?z1;
-    !!MM:Sz1;
-    !!SN:P^FRENZY^;
-  !!en;
-
-  !!BMy1:Dd-1 Ad3 V17;
-!!en;
 ****************************************************************************************************
 Scripts by Perry 2020
 for Third Upgrade Mod by VMaiko
@@ -1668,6 +1690,7 @@ Script by PerryR
   !!VRy2&y2<=-3:S-3;                    [Cannot be more than -3 Luck]
   !!BMi:G213/y2/?t;                     [213 Luck]
 !!en;
+
 ****************************************************************************************************
 
 !?FU(OnEveryDay)&i^tum_emerald_on^/i^timerOnce^; [Runs once each Turn]
@@ -1698,108 +1721,14 @@ Script by PerryR
     !!MR:Fy2;                               [Apply increased resistance chance to that stack temporarily]
   !!en;
 !!en;
-****************************************************************************************************
-*Cutthroats script for creature ID 260*
-
-!?FU(OnBeforeBattleUniversal);          [перед боем]
-!!SN:W^TUM_2_Cutthroats_0^/-1 W^TUM_2_Cutthroats_1^/-1 W^TUM_2_Cutthroats_2^/-1; [сбрасываем номера атакующего отряда и цели]
-
-!?FU(OnBeforeBattleAction);             [перед действием]
-!!BG:A?y1 N?y2 E?y3;                    [y1/y2/y3 - тип действия/отряд/цель]
-!!FU|y1<>6/y2<0/y3<0:E;                 [выход, если не атака ближнего боя, нет отряда или цели]
-!!BMy2:T?y4;                            [y4 - тип атакующего отряда]
-!!SN&y4=260:W^TUM_2_Cutthroats_0^/y2 W^TUM_2_Cutthroats_1^/y3; [если атака Головорезов, сохраняем номера атакующего отряда и цели]
-
-!?FU(OnBattleRegeneratePhase);          [фаза регенерации]
-!!SN:W^TUM_2_Cutthroats_0^/?y1 W^TUM_2_Cutthroats_1^/?y2; [y1/y2 - атакующий отряд/цель]
-!!FU&y1<0/y2<0:E;                       [выход, если не было атаки Головорезов]
-!!BMy1:N?y3;                            [y3/y4 - количество существ в отрядах]
-!!BMy2:N?y4;                            [...]
-!!if|y3<1/y4>0;                         [если убиты головорезы или не убит целевой отряд]
-  !!SN:W^TUM_2_Cutthroats_0^/-1 W^TUM_2_Cutthroats_1^/-1; [обнуляем номера]
-  !!FU:E;                               [и выходим]
-!!en;
-!!SN&y1<21:W^TUM_2_Cutthroats_2^/0;     [устанавливаем признак стороны Головорезов]
-!!SN&y1>20:W^TUM_2_Cutthroats_2^/1;     [...]
-!!SN:X?i/?j/1;                          [блокируем фазу регенерации]
-
-!?FU(OnBattleStackObtainsTurn);         [при получении хода в бою]
-!!SN:W^TUM_2_Cutthroats_0^/?y1 W^TUM_2_Cutthroats_1^/?y2 W^TUM_2_Cutthroats_2^/?y3; [y1/y2/y3 отряд/цель/сторона]
-!!FU|y1<0/y2<0/y3<0:E;                  [выход, если одно из значений не установлено]
-!!SN:W^TUM_2_Cutthroats_0^/-1 W^TUM_2_Cutthroats_1^/-1 W^TUM_2_Cutthroats_2^/-1; [обнуляем номера]
-!!BMy1:N?y5;                            [y5 - количество головорезов]
-!!FU&y5<1:E;                            [выход, если головорезов нет]
-!!BA:Q?f;                               [f-статус быстрой битвы]
-!!if&f=0;                               [для не-быстрой битвы]
-  !!VRz1&y5=1:S^%T(Third_Upgrade_Mod.cutthroat)^; [z1 - текст сообщения для вывода в лог]
-  !!VRz1&y5>1:S^%T(Third_Upgrade_Mod.cutthroats)^; [...]
-  !!MM:Sz1;                             [вывод текста в лог битвы]
-  !!VRz1:S^MIRTH^;                      [z1 - звуковой файл морали]
-  !!SN:P1;                              [вывод звука морали]
-  !!BMy1:V20;                           [анимация морали на отряде]
-!!en;
-!!VRy1&y1>20/y3=1:-21;                  [y1 - номер отряда (0..20)]
-!!SN:Xy3/y1;                            [передаем ход головорезам]
-
-*********************************************************************************************************************************************
-Flesheater ability for creature ID 259
-
-!?BG0;                        [перед действием]
-!!VRv7920:C-1/-1/-1;          [обнуляем v-переменные]
-!!BG:N?y1 A?y2;               [y1 - активный отряд, y2 - действие (6 - атака)]
-!!BMy1:T?y3;                  [y3 - тип атакующих существ (259 - зомби)]
-!!FU|y3<>259/y2<>6:E;          [выход если не атака зомби]
-!!BG:E?y2;                    [y2 - целевой отряд]
-!!BMy2:F?y3;                  [y3 - флаги существ целевого отряда]
-!!VRy4:Sy3 &16;               [y4=16, если существа целевого отряда живые]
-!!FU&y4=0:E;                  [выход если зомби атакуют не отряд живых существ]
-!!BMy2:N?y5 H?y6 L?y7;        [y5/y6/y7 - количество существ/макс. здоровье/потер. здоровье целевого отряда]
-!!VRy5:*y6 -y7;               [y5 - суммарное здоровье целевого отряда перед атакой]
-!!VRv7920:Cy1/y2/y5;          [v7920/v7921/v7922 - номер атакующего отряда/номер целевого отряда/здоровье целевого отряда]
-
-!?MF1&v7920>=0;               [при нанесении урона]
-!!MF:F?y1;                    [y1 - урон, который получит целевой отряд]
-!!if&y1<v7922:;               [если атака не уничтожит целевой отряд полностью]
-  !!VRv7920:C-1/-1/-1;        [обнуляем v-переменные]
-  !!FU:E;                     [выход]
-!!en:;
-!!BMv7920:N?y1 H?y2 L?y3 B?y4;[y1/y2/y3/y4 - количество существ/макс. здоровье/потер. здоровье/начальное количество отряда зомби]
-!!if&y1=y4/y3=0:;               [если атака не уничтожит целевой отряд полностью]
-  !!VRv7920:C-1/-1/-1;          [обнуляем v-переменные]
-  !!FU:E;                       [выход если у отряда зомби нет потерь и раненных]
-!!en:;
-!!VRy5:Sy1 *y2 -y3 +v7922;    [y5 - новое суммарное здоровье отряда зомби]
-!!VRy6:Sy4 *y2;               [y6 - максимально допустимое здоровье отряда зомби]
-!!VRy5&y5>y6:Sy6;             [y5 - фактическое здоровье отряда зомби после трупоедства]
-!!VRy6:Sy5 :y2;               [y6 - количество нераненых сомби после трупоедства]
-!!VRy7:Sy5 %y2;               [y7 - здоровье раненого зомби]
-!!VRy6&y7>0:+1;               [добавляем раненого зомби к общему количеству]
-!!VRy8&y7>0:Sy2 -y7;          [y8 - потерянное здоровье раненого зомби]
-!!BA:Q?f;                     [f-статус быстрой битвы]
-!!VRz1&f=0:S^{Flesheaters eat the remains of their enemies and restore themselves!}^;          [получаем текст для вывода в лог битвы из ert]
-!!MM&f=0:Sz1;                 [вывод текста в лог битвы]
-!!VRz1&f=0:S^ANIMDEAD^;       [z1 - звуковой файл поднятия нежити]
-!!SN&f=0:P1;                  [вывод звука поднятия нежити]
-!!BMv7920&f=0:V74;            [анимация вампирской регенерации]
-!!BMv7920:Ny6 Ly8;            [и восстановление отряда зомби]
-!!BMv7921:F?y1;               [y1 - флаги целевого отряда]
-!!VRy1:|813694976;            [добавляем цели флаги жертвы/клона/неизменяемости цвета]
-!!BMv7921:Fy1 E0 K1;          [обновляем флаги и убиваем цель без возможности воскрешения]
-!!VRv7920:C-1/-1/-1;          [обнуляем v-переменные]
 
 **********************************************************************************************************************************************
+; Bad fix: prevent Soul Eater from casting in all quick Battles to prevent crash
+!?FU(OnSetupBattlefield)&i^battle_isQuick^;
+!!re i/(BATTLE_STACK_FIRST)/(BATTLE_STACK_LAST);
+  !!BMi:T?(type:y);
 
-!?BF;
-*Bad fix: prevent Soul Eater from casting in all quick Battles to prevent crash
-!!SN:W^Typhon_Third_Upgrade_Mod_Active^/?y1; !!FU&y1=0:E; [Check for Third Upgrade Mod]
-!!BA:Q?y1;
-!!FU&y1=0:E;
-
-!!re i/0/41;
-  !!BMi:T?y3;
-  !!if|y3=178/y3=187;
-  !!BMi:E0;
-  !!en;
+  !!BMi|(type)=(MON_SOUL_EATER_A)/(type)=(MON_SOUL_EATER_D):E0;
 !!en;
 
 *************************************************************************************************************************************************
@@ -1807,10 +1736,9 @@ Flesheater ability for creature ID 259
 ; Note: The x1/x2 parameters of MF1 can possibly exceed the limit since Fire Shield would also trigger it!
 
 !?FU(OnMonsterPhysicalDamage);
-!#VA(atkStack:x) (defStack:x);
+!#VA(atkStack:x);
 
 !!FU|(atkStack)<(BATTLE_STACK_FIRST)/(atkStack)>(BATTLE_STACK_LAST):E;
-!!FU|(defStack)<(BATTLE_STACK_FIRST)/(defStack)>(BATTLE_STACK_LAST):E;
 
 !!BM(atkStack):T?(type:y);
 
@@ -1818,6 +1746,7 @@ Flesheater ability for creature ID 259
   !!BG:A?(action:y);
 
   !!if|(action)=(BATTLE_ACTION_SHOOT)/(action)=(BATTLE_ACTION_CANCEL); [Battle action = 0, aka Ranged Retaliation]
+    !!MF:N?(defStack:y);
     !!BM(defStack):P?(pos:y);
 
     !!FU(tum_PlayCustomAnimation):P^hatespike.def^/(pos); [Function to play custom animation by Hawaiing]
@@ -1994,3 +1923,160 @@ Raises Skeleton Warriors or Skeleton Knights if needed
 !!UN|y21=220/y31=220/y41=220/y51=220/y61=220/y71=220/y81=220:C5127994/4/220; [Set to Skeleton Knights if Hero has them in the Army]
 
 **************************************************************************
+; Antichrist Rage
+; Script by Archer30
+!?FU(OnBeforeBattleAction);
+!!BG:N?(stack:y) A?(action:y);          [активный отр€д/тип действи€]
+!!BM(stack):T?(type:y);                 [тип существ в активном отр€де]
+!!FU|(action)<>(BATTLE_ACTION_WALK_AND_ATTACK)/(type)<>(MON_ANTICHRIST):E;
+
+!!BM(stack):D?(def:y);                  [текуща€ защита рогатых демонов]
+
+!!if&(def)>0;                           [если защита не нулева€]
+  
+  ; Show battle log and animation
+  !!if&i^battle_isVisible^;
+    !!BM(stack):N?(num:y);
+
+    !!if&(num)=1;
+      !!SN:H^monname^/(MON_ANTICHRIST)/0/?(antichristName:z);
+      !!SN:T^Third_Upgrade_Mod.antichrist^?(battleLog:z)/^antichrist^/(antichristName);
+    !!el;
+      !!SN:H^monname^/(MON_ANTICHRIST)/1/?(antichristName);
+      !!SN:T^Third_Upgrade_Mod.antichrists^?(battleLog)/^antichrist^/(antichristName);
+    !!en;
+
+    !!MM:S(battleLog);                  [вывод текста в лог битвы]
+
+    !!SN:P^FRENZY^;                     [вывод звука бешенства]
+    !!BM(stack):V17;
+  !!en;
+
+  !!BM(stack):Dd-1 Ad3;                 [снижение защиты, повышение атаки]
+!!en;
+
+; Assassin - Cutthroat
+; Script by Archer30
+// Initializaion
+!?FU(OnBeforeBattleUniversal);
+; Initialise variable - This must to be executed regardless of the option
+!!VRi^tum_assas_defStack^:S(NO_STACK);
+
+// Store defending stack ID if it is Rogue attacking another stack
+!?FU(OnBeforeBattleAction);
+!!BG:A?(action:y);
+!!BMi^battle_acting_stack^:T?(type:y);
+
+!!if&(action)=(BATTLE_ACTION_WALK_AND_ATTACK);
+  !!if&(type)=(MON_ASSASSIN);
+    !!BG:E?(defStack:y);
+    !!VRi^tum_assas_defStack^&(defStack)>(NO_MON):S(defStack);
+  !!en;
+!!en;
+
+// Check if Rogue is eligible to attack again
+!?FU(OnBattleActionEnd)&i^tum_assas_defStack^>(NO_STACK);
+; Check if the defending stack is dead
+!!BMi^tum_assas_defStack^:N?(defNum:y);
+
+!!if&(defNum)<=0;
+  ; Remove the acted flag so cutthroat can act again
+  !!BMi^battle_acting_stack^:Fd~(MON_FLAG_ACTED);
+
+  ; Show battle log and play animation/sound
+  !!if&i^battle_isVisible^;
+    !!BMi^battle_acting_stack^:N?(cutthroatNum:y) T?(type:y);
+
+    !!if&(cutthroatNum)=1;
+      !!SN:H^monname^/(type)/0/?(cutthroatName:z);
+    !!el;
+      !!SN:H^monname^/(type)/1/?(cutthroatName);
+    !!en;
+
+    !!SN:T^Third_Upgrade_Mod.assassin^?(battleLog:z)/^cutthroat^/(cutthroatName);
+    !!MM:S(battleLog);
+
+    !!SN:P^MIRTH^;                      [вывод звука морали]
+    !!BMi^battle_acting_stack^:V20;     [анимация морали на отряде]
+  !!en;
+!!el;
+  !!VRi^tum_assas_defStack^:S(NO_STACK);
+!!en;
+
+// Restore the turn to Rogue's turn
+!?FU(OnBeforeBattleStackTurn)&i^tum_assas_defStack^>(NO_STACK);
+!#VA(stack:x);
+
+!!VR(stack):Si^battle_acting_stack^;
+!!VRi^tum_assas_defStack^:S(NO_STACK);
+
+; Ghoul - Flesheaters
+; Script by Archer30
+!?FU(OnMonsterPhysicalDamage);
+!#VA(atkStack:x);
+; Exit if the attacking stack ID is out-of-limit (Would be screwed if missing and damaged by Fire Shield)
+!!FU|(atkStack)<(BATTLE_STACK_FIRST)/(atkStack)>(BATTLE_STACK_LAST):E;
+
+; Check if the defedning monster (must be a living one) would be be killed by the Zombie attacker
+!!MF:N?(defStack:x) F?(dmg:y);
+
+!!BM(atkStack):T?(type:y);
+!!BM(defStack):F?(monFlags:y) N?(num:y) H?(hp:y) L?(lostHp:y);
+!!VR(isAlive:y):S(monFlags) &(MON_FLAG_ALIVE);'
+!!VR(defCurrTotalHp:y):S(num) *(hp) -(lostHp);
+
+; Store the hp of the def stack if it would be killed, set up flags for the victim to disappear 
+!!if&(isAlive)/(dmg)>=(defCurrTotalHp);
+
+  !!if&(type)=(MON_GHOUL);
+    !!VRi^tum_ghoul_regenHp^:S(defCurrTotalHp);
+    !!BM(defStack):Fd|813694976 E0 K1;    [добавляем цели флаги жертвы/клона/неизменяемости цвета]
+  !!en;
+!!en;
+
+!?FU(ES_OnAfterMelee)&i^tum_ghoul_regenHp^;
+!#VA(zombieStack:x) (defStack:x);
+
+; Calculate the new HP and number of the flesheater
+!!VR(noHpLost:y):S(FALSE);
+!!BM(zombieStack):N?(num:y) H?(hp:y) L?(lostHp:y) B?(startNum:y);
+
+!!VR(totalStartHp:y):S(startNum) *(hp);
+!!VR(totalHp:y):S(num) *(hp) -(lostHp);
+!!VR(noHpLost)&(totalStartHp)=(totalHp):S(TRUE);
+
+!!VR(newTotalHp:y):S(totalHp) +i^tum_ghoul_regenHp^ F(totalHp)/(totalStartHp);
+!!VR(newCurrHp:y):S(newTotalHp) %(hp);
+!!VR(newNum:y):S(newTotalHp) :(hp) +1;
+
+!!if&(newCurrHp)=0;
+  !!VR(newCurrHp):S(hp);
+  !!VR(newNum):-1;
+!!en;
+
+!!VR(newLostHp:y):S(hp) -(newCurrHp);
+
+; Show battle log and play animation/sound
+!!if&i^battle_isVisible^/(noHpLost)<>(TRUE);
+  !!BM(zombieStack):T?(type:y);
+
+  !!if&(num)=1;
+    !!SN:H^monname^/(type)/0/?(flesheaterName:z);
+  !!el;
+    !!SN:H^monname^/(type)/1/?(flesheaterName);
+  !!en;
+
+  !!SN:T^Third_Upgrade_Mod.ghoul^?(battleLog:z)/^flesheater^/(flesheaterName);
+  !!MM:S(battleLog);
+
+  ; Play sound and animation
+  !!SN:P^ANIMDEAD^;
+  !!BM(zombieStack):V74;
+!!en;
+
+; Set up new number and hp for the Zombises
+!!BM(zombieStack):N(newNum) L(newLostHp);
+; Restore the global variable
+!!VRi^tum_ghoul_regenHp^:S0;
+
+** end

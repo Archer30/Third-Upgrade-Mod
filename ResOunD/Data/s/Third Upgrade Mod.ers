@@ -38,10 +38,10 @@ Dungeon: Illithid --> Alhoon
 Stonghold: Coatl --> Quetzalcoatl
 Fortress: Troll Hag --> Troll Witch
 Conflux: Triton --> Abyssal Triton
-Dwelling Banks	0	0	0	-1	1	1	302	Dwelling Banks	Some external level 1 dwellings becomes "dwelling banks".	DWELLING BANKS
+Dwelling Banks	0	0	0	-1	1	1	302	Dwelling Banks	Some external dwellings become "dwelling banks".	DWELLING BANKS
 
 Option 302 by Perry R
 
-New creature banks may replace some dwellings on the map. These creature banks look similar to the dwellings they replaced and reward you the creatures you could recruite from them.
+New creature banks may replace some level 1 and level 2 dwellings on the map. These creature banks look similar to the dwellings they replaced and reward you the creatures you could recruite from them.
 
 [If object replacement is selected, Dwellings Banks may replace some of their corresponding dwellings]

@@ -1,7 +1,7 @@
 
 
                    ************** Third Upgrades Mod *****************
-                 ****************** Version: v2.13.1********************
+                ****************** Version: v2.15.3********************
                  ***************** Amethyst Edition ******************
 
 --------------------------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ Moriarty89: Graphics.
 Avatar: Sounds and Graphics resources.
 FirePaladin: Graphics.
 ElfbI: New Pandora Boxes.
-Hawaiing: Eighth Monsters memory edits.
+Hawaiing: 8th dwellings plugin author.
 Kongsuni: ERM scripter of some artifacts.
 
 Original authors of Tides of War mod which their assets were used to do this mod:
@@ -200,16 +200,18 @@ Neutrals:
 
 4. Necromancy
 
+Thanks to amethyst, something that has been asked for so much is now possible and it is necromancy compatibility with Third Upgrades Mod.
 Necromancy has now been adapted and works as follows:
 
-Basic Necromancy: always raises skeletons
-Advanced Necromancy: if Skeleton Warriors are present in the army it will raise them instead of normal skeletons
-Expert Necromancy: if Skeleton Knights are present in the army it will raise them instead of Skeleton Warriors
+Basic Necromancy: Raise Skeletons
+Advanced Necromancy: Raise Skeleton Warriors
+Expert Necromancy: Raise Skeleton Knights
 
-If the hero wears Cloak of the Unbalanced King
-Basic Necromancy: raises Ghouls immediately 
-Advanced Necromancy: raises Spectres immediately 
-Expert Necromancy: raises Lich King immediately 
+Cloak of the Undead King has also been made compatible with Third Upgrades Mod and Necromancy:
+
+Basic Necromancy: Raise Ghouls
+Advanced necromancy: Raise Ghosts
+Necromancy Expert: Raise King Liches
 
 5. Additional Units
 

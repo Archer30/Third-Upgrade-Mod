@@ -7,7 +7,7 @@ ZVSE2
 ; Skeleton Transformer object on the map and related fix for it.
 
 
-** Object Replacement
+// Object Replacement
 !?FU(tum_OnIterateAllMapObjects);
 !#VA(x:x) (y:x) (z:x);
 !#VA(objType:x);
@@ -22,9 +22,9 @@ ZVSE2
 !!VR(replace)&(objType)=(OBJ_DEN_OF_THIEVES):S(TRUE);
 ; exit if not searchable types
 !!FU&(replace)<>(TRUE):E;
-; generate 40% chance
-!!VR(random:y):R0/1/100; 
-!!FU&(random)<=60:E;
+; generate 30% chance
+!!VR(random:y):R0/1/100;
+!!FU&(random)<=70:E;
 ; set a new object type
 !!VR(objType):S(OBJ_NEW_WOG_OBJECTS);
 !!VR(objSubtype):S118;
@@ -32,27 +32,12 @@ ZVSE2
 !!UN:O(x)/(y)/(z)/1/0; 
 !!UN:I(x)/(y)/(z)/(objType)/(objSubtype)/0;
 
-** Hint
-!?FU(OnAdvMapTileHint);
-!#VA(x:x) (y:x) (z:x) (objType:x) (objSubtype:x);
-
-!!FU|(objType)<>(OBJ_NEW_WOG_OBJECTS)/(objSubtype)<>118:E; [exit if not Skeleton Transformer object]
-
+// Hint and right-click msg
+!?FU(OnAfterErmInstructions);
 !!UN:N2/1/(TOWN_NECROPOLIS)/22;
-!!MM:M^%z1^;
+!!SN:H^object^/(OBJ_NEW_WOG_OBJECTS)/118/z1;
 
-** Right-click msg
-!?FU(OnAdventureMapRightMouseClick);
-!!CM:P?(x:y)/?(y:y)/?(z:y);
-!!OB(x)/(y)/(z):T?(objType:y) U?(objSubtype:y);
-!!FU|(objType)<>(OBJ_NEW_WOG_OBJECTS)/(objSubtype)<>118:E; [exit if not Skeleton Transformer object]
-
-!!CM:R0;
-
-!!UN:N2/1/(TOWN_NECROPOLIS)/22;
-!!IF:M0/4/^%z1^;
-
-** Visiting for human players
+// Visiting for human players
 !?OB(OBJ_NEW_WOG_OBJECTS)/118&1000;
 ; Open Skeleton Transformer dialogue for human visitor
 !!HE(CURRENT_HERO):N?(hero:y) O?(owner:y);
@@ -62,7 +47,7 @@ ZVSE2
 !!PM998:P(owner)/(TRUE);
 !!PM998:V(FALSE);
 
-** Visiting for AI players
+// Visiting for AI players
 !?OB(OBJ_NEW_WOG_OBJECTS)/118&-1000;
 !!OB998:S;                  [disable pyramid feature]
 
@@ -121,7 +106,7 @@ ZVSE2
   !!HE(hero)|(mon)=(MON_SHARPSHOOTER)/(mon)=(MON_ARCTIC_SHARPSHOOTER)/(mon)=(MON_LAVA_SHARPSHOOTER)/(mon)=(MON_SHARPSHOOTER_ELF):C0/i/(MON_SHARPSHOOTER_SKELETON)/(qty)/(expLv)/12;
 !!en;
 
-** Reset Skeleton Transformer each week for AI players
+// Reset Skeleton Transformer each week for AI players
 !?FU(OnEveryDay)&i^timerOnce^/i^timerDay^>1/i^timerWeekDay^=1;
 !!VR(x:y):S-1;
 
@@ -138,7 +123,7 @@ ZVSE2
 
 ****************************************************************************************************
 ; Additional features that are not part of the skeleton transformer object
-** Skeleton Transformer Fix
+// Skeleton Transformer Fix
 !?FU(OnGameEnter);
 !!UN:C5661880/4/?v2;
 
@@ -161,10 +146,8 @@ ZVSE2
 !!VR(add:y):S(monBefore) *4 +v2;
 !!UN:C(add)/4/(monAfter);
 
-** Visisting for AI players - in a town with Skeleton Transformer built
+// Visisting for AI players - in a town with Skeleton Transformer built
 !?OB(OBJ_TOWN)/(TOWN_NECROPOLIS)&-1000;
 ; Check if skeleton transformer is built, store the result in 1
 !!CA998:B3/22;
-!!FU&-1:E;
-
-!!FU(skeltran_TransformLivingMons):P;
+!!FU(skeltran_TransformLivingMons)&1:P;

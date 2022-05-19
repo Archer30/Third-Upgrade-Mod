@@ -1048,7 +1048,7 @@ Guarded by %Z1 {(%Y30-%Y31)} of %Z-1, %Z2 {(%Y32-%Y33)} of %Z-2, %Z3 {(%Y34-%Y35
 
 ****************************************************************************************************
 *Replace Objects when map starts
-!?FU(OnEveryDay);
+!?FU(OnEveryDay)&i^tum_replaceObj_on^;
 
 !!if&x1=1/x3=1:;                   (Run once at day 1)
   !!VRy1:Si^CB_013_Replace_Objects^; !!FU&y1=0:E;
@@ -1065,35 +1065,35 @@ Guarded by %Z1 {(%Y30-%Y31)} of %Z-1, %Z2 {(%Y32-%Y33)} of %Z-2, %Z3 {(%Y34-%Y35
     !!VRy7:Si^CB_013_Replace_%Vi_X_Offset^;
     !!if&y3>=0/y4>=0/y5>0:;
     !!UN:Uy3/-1/?y6;
-    !!VRv1:S-1;
+    !!VRv2:S-1;
     !!DO(CB_013_Replace)/1/y6/1:Py3/y4/y1/y2/y5/y7;
     !!en:;
   !!en:;
 !!en:;
 
 ********************************************************************************
-!?FU(CB_013_Replace)&i^tum_replaceObj_on^;
+!?FU(CB_013_Replace);
 
-!!UN:Ux1/-1/-1/1;
+!!UN:Ux1/-1/-1/2;
 
 !!VRy2:S0T99;                           (Calc chance to replace)
 !!if&x5>y2:;
-!!OBv1/v2/v3:T?y5 U?y6;                 (Get Type and Subtype)
+!!OBv2/v3/v4:T?y5 U?y6;                 (Get Type and Subtype)
 
-!!VRy30:Sv1+x6;                           (Offset in x)
+!!VRy30:Sv2+x6;                           (Offset in x)
 !!UN:X?y10/?y20; !!VRy10:-1; Get Map size to prevent wrong placement of x-coordinate
 
 !!if&x1=y5/x2=y6/y30<=y10/y30>=0:; If type and subtype match and if object is not outside of map
-  *!OBv1/v2/v3&x1=y5/x2=y6:B;           (Remove a description hint for an object.)
-  !!UN:Ov1/v2/v3/0/0;                   (delete old object)
-  !!OBv1/v2/v3:C-1;                     (Clear Control Word of deleted Object)
-  !!VRv1:+x6;                           (Offset in x)
-  !!UN:Iv1/v2/v3/x3/x4/x3/x4/-1/0;
-  !!POv1/v2/v3:N0;
-  !!VRi^CB_013_Set_Flag_%V1_%V2_%V3^:S1;
-  *!TRv1/v2/v3:E1;
+  *!OBv2/v3/v4&x1=y5/x2=y6:B;           (Remove a description hint for an object.)
+  !!UN:Ov2/v3/v4/0/0;                   (delete old object)
+  !!OBv2/v3/v4:C-1;                     (Clear Control Word of deleted Object)
+  !!VRv2:+x6;                           (Offset in x)
+  !!UN:Iv2/v3/v4/x3/x4/x3/x4/-1/0;
+  !!POv2/v3/v4:N0;
+  !!VRi^CB_013_Set_Flag_%v2_%v3_%v4^:S1;
+  *!TRv2/v3/v4:E1;
   *!IF:L^Map Start %V1 %V2 %V3^;
-  *!OBv1/v2/v3&x1=x3/x2=x4:H900;
+  *!OBv2/v3/v4&x1=x3/x2=x4:H900;
 !!en:;
 !!en:;
 
@@ -1157,25 +1157,25 @@ Guarded by %Z1 {(%Y30-%Y31)} of %Z-1, %Z2 {(%Y32-%Y33)} of %Z-2, %Z3 {(%Y34-%Y35
   !!VRy5:Sc;
 
   !!UN:Uy1/-1/?y6;                        (Get amount of objects on the map)
-  !!VRv1:S-1;
+  !!VRv2:S-1;
   !!DO(CB_013_Revisit)/1/y6/1:Py1/y2/y10/y5/y7; (Pass Type and Subtype and intervall in days and current gameday)
 !!en:;
 
 
 !?FU(CB_013_Revisit);
 
-!!UN:Ux1/-1/-1/1;
-!!OBv1/v2/v3:T?y5 U?y6;                 (Get Type and Subtype)
+!!UN:Ux1/-1/-1/2;
+!!OBv2/v3/v4:T?y5 U?y6;                 (Get Type and Subtype)
 *!VRv1:+x5;
-*!SN:W^CB_013_Set_Flag_%V1_%V2_%V3^/?y7;(Get Coordinate Flag)
-*!POv1/v2/v3:N?y20;
+*!SN:W^CB_013_Set_Flag_%v2_%v3_%v4^/?y7;(Get Coordinate Flag)
+*!POv2/v3/v4:N?y20;
 *!IF:L^Replace %V1 %V2 %V3   Flag is %Y7 and PO is %Y20^;
 *!VRv1:-x5;
 !!if&x1=y5/x2=y6:;                      (If same type and at that coordinate was a replace, and cleared at least once)
-  !!VRy1:Si^CB_013_Day_Cleared_%V1_%V2_%V3^; (get day on which the CB was cleared)
+  !!VRy1:Si^CB_013_Day_Cleared_%v2_%v3_%v4^; (get day on which the CB was cleared)
   !!VRy1:Sy1+x3;                        (Set to day on which was cleared + resetting intervall)
-  !!POv1/v2/v3:N?y3;                    (Check PO:N value  1 means visited)
-  !!POv1/v2/v3&y1<=x4/y3=1:N0;          (Reset PO value to 0, means not taken)
+  !!POv2/v3/v4:N?y3;                    (Check PO:N value  1 means visited)
+  !!POv2/v3/v4&y1<=x4/y3=1:N0;          (Reset PO value to 0, means not taken)
 !!en:;
 
 !#VA(x:x) (y:x) (z:x) (objType:x) (objSubtype:x);

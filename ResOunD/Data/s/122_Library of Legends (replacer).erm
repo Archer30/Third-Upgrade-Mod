@@ -95,13 +95,16 @@ Parameter Settings:
 ********************************************************************************
 !?FU(CB_122_Replace);
 
-!!UN:Ux1/-1/-1/2; !!FU|v2<0/v3<0/v4<0:E; [Archer]
+!!UN:Ux1/-1/-1/2;
 
 !!VRy2:S0T99;                           (Calc chance to replace)
 !!if&x5>y2:;
 !!OBv2/v3/v4:T?y5 U?y6;                 (Get Type and Subtype)
 
-!!if&x1=y5/x2=y6:;
+!!VRy30:Sv2+x6;                         (Offset in x) 
+!!UN:X?y10/?y20; !!VRy10:-1;            Get Map size to prevent wrong placement of x-coordinate
+
+!!if&x1=y5/x2=y6/y30<=y10/y30>=0:;      If type and subtype match and if object is not outside of map
   !!UN:Ov2/v3/v4/0/0;                   (delete old object)
   !!VRv2:+x6;                           (Offset in x)
   !!UN:Iv2/v3/v4/x3/x4/x3/x4/-1/0;

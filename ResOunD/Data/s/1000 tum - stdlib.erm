@@ -5,6 +5,7 @@ ZVSE2
 
 ; Standard library for Third Upgrade Mod
 
+
 ****************************
 **** Set Up WoG Options ****
 ****************************
@@ -21,20 +22,30 @@ ZVSE2
 !#UN:P281/0;                            [DISABLE buckler of Beelzebub]
 
 *********************************
-**** Set Up Global Variables ****
+**** Set up Global Variables ****
 *********************************
-; set up global vars
+
 !?FU(tum_SetUpGlobalVars);
-!!VRi^Typhon_Third_Upgrade_Mod_Active^:S(TRUE);
+!!VRi^Typhon_Third_Upgrade_Mod_Active^:S(TRUE); [Global var for TUM Enabled]
 !!FU(tum_CheckRandMap):P?i^tum_isRandMap^;
 !!UN:P195/?i^tum_replaceObj_on^;
 
 !#FU(tum_SetUpGlobalVars):P;
 
-!?FU(OnStartOrLoad);
+;  Set up global variable for whether Emerald is enabled. Note: Using On Start Or Load is not allowed as it is too late!
+!?FU(OnAfterErmInstructions);
 !!SN:L^emerald3_3.era^/?(emer3:y);
+!!SN:L^emerald3_3.dll^/?(emer3Var:y);
 !!SN:L^emerald_v202a.era^/?(emer2:y);
-!!VRi^tum_emerald_on^|(emer2)<>0/(emer3)<>0:S(TRUE);
+
+!!VRi^tum_emerald_on^|(emer3)<>0/(emer3Var)<>0/(emer2)<>0:S(TRUE);
+
+!?FU(OnAfterLoadGame);
+!!SN:L^emerald3_3.era^/?(emer3:y);
+!!SN:L^emerald3_3.dll^/?(emer3Var:y);
+!!SN:L^emerald_v202a.era^/?(emer2:y);
+
+!!VRi^tum_emerald_on^|(emer3)<>0/(emer3Var)<>0/(emer2)<>0:S(TRUE);
 
 ; Set up town screen variable (to prevent triggering several events)
 !?FU(OnOpenTownScreen);
@@ -43,14 +54,25 @@ ZVSE2
 !?FU(OnCloseTownScreen);
 !!VRi^tum_onTownScreen^:S(FALSE);
 
-**************************
-**** Special Settings ****
-**************************
-
+; special settings
 !?FU(OnAfterErmInstructions);
 !!VRi^wog78_howlingHollow_on^:S(FALSE); [disable generation of Howling Hollow]
 !!VRi^colmagi_chance^:S25;              [reduce the chance of Colosseum replacement]
-!!VRi^pandora_on^&i^tum_replaceObj_on^=(FALSE):S(FALSE); [disable ElfbI's Pandora script if object replacement is disabled]
+
+; Set up hook for opening creature info dialogue
+!?FU(OnStartOrLoad);
+!!SN:L^erm_hooker.era^/?(ermHooker:y);
+!!FU&(ermHooker)=(FALSE):E;
+
+!!SN:A(ermHooker)/^SetHook^/?(value:y);
+!!FU(tum_CreateERMHook):P(value);
+
+; Set up varible for whether key A is pressed
+!?FU(OnKeyPressed)&i^key^=(KEY_A);
+!!VRi^key_a^:S(TRUE);
+
+!?FU(OnKeyReleased)&i^key^=(KEY_A);
+!!VRi^key_a^:S(FALSE);
 
 *******************************************************
 **** Function to get the latest creature ID of TUM ****
@@ -93,6 +115,7 @@ ZVSE2
 ****************************************************
 **** Function to check if WoG Sctipts is loaded ****
 ****************************************************
+
 !?FU(tum_CheckWoGScripts);
 !#VA(result:x);
 
@@ -103,6 +126,7 @@ ZVSE2
 *********************************************************
 **** Function to check whether a map is a random map ****
 *********************************************************
+
 !?FU(tum_CheckRandMap);
 !#VA(result:x);
 
@@ -128,3 +152,51 @@ ZVSE2
 !!VR(flag)&(art)>=(ART_BLANK_HELMET)/(art)<=(ART_LAST_WOG):S(FALSE); [unused]
 
 !!FU(tum_GetRandH3WoGArt)&(flag)=(FALSE):P(artClass)/?(art);
+
+*********************************************************
+**** Function to play a custom animation by Hawaiing ****
+*********************************************************
+
+!?FU(tum_PlayCustomAnimation);
+!#VA(animPtr:x);                        [Filename of the animation]
+!#VA(pos:x);                            [Position of the animation]
+!#VA(delay:x);                          [Optional. Delay (ms)]
+!#VA(flags:x);                          [Optional. Flags. 0-4.]
+!#VA(isTransparent:x);                  [Optional. Transparent (boolean)]
+!#VA(flagAlterationOn:x);               [Optional. Allow changes to flags (boolean)]
+
+; Set up values
+!!VR(bmvIndex:y):S82;                   [Poof]
+!!VRz1:Sz(animPtr);
+
+!!FU:A?(numArgs:y);
+
+!!if&(numArgs)<6;
+  !!VR(flagAlterationOn):S0;
+  !!VR(isTransparent):S(FALSE);
+  !!VR(flags):S0;
+!!en;
+
+!!VR(delay)|(delay)<0/(numArgs)<3:S100;
+
+!!VR(pos)|(pos)<0/(pos)>187:S93;        [Play the animation in the middle of the battlefield if posisiton is invalid]
+!!VR(flags):F0/4;
+!!VR(isTransparent):F(FALSE)/(TRUE);
+
+!!UN:C6919200/4/?(value:y);             [战场内存]
+!!VR(defAdd:y):S(value) +78568;         [动画DEF]
+!!VR(indexAdd:y):S(value) +78572;       [动画索引]
+!!UN:C4454270/4/?(basicAdd:y);          [BM:V调用动画时用到的基址]
+!!UN:C(defAdd)/4/0 C(indexAdd)/4/-1;    [清除内存多余数据]
+!!VR(origDefPtr:y):S(bmvIndex) *12 +(basicAdd); [魔法动画名字的指针地址]
+!!VR(origFlagsPtr:y):S(origDefPtr) +8;  [魔法动画播放标志的内存(这里可由x5和x6组成)]
+!!VR(zPtr:y):S512 +9597416;             [z1变量对应的内存地址(ERA下)]
+!!VR(newFlags:y):S(isTransparent) *256 +(flags); [自定义播放标志(否则采用x1动画的原有标志)]
+!!UN:C(origDefPtr)/4/?(origNamePtr:y);  [原动画名指针]
+!!UN:C(origFlagsPtr)/4/?(origFlags:y);  [原有播放标志]
+!!UN:C(origDefPtr)/4/(zPtr);            [新指针]
+!!UN&(flagAlterationOn)<>(FALSE):C(origFlagsPtr)/4/(newFlags); [自定义播放标志]
+!!SN:E4810128/2/(value)/(bmvIndex)/(pos)/(delay)/0; [调用内部函数播放战场动画]
+!!UN:C(origDefPtr)/4/(origNamePtr);     [还原]
+!!UN&(flagAlterationOn)<>(FALSE):C(origFlagsPtr)/4/(origFlags); [还原]
+!!UN:C(defAdd)/4/0 C(indexAdd)/4/-1;    [清除内存多余数据]

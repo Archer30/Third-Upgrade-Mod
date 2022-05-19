@@ -48,7 +48,7 @@ Set the guards and the number of each slot.
 !#VRi^CB_004_Guards_Number_Slot_6^:S1;
 !#VRi^CB_004_Guards_Number_Slot_7^:S-1;
 
-!#VRi^CB_004_Different_Size^:S0;        (1=yes 0=no, If yes the creature banks can spwan with increased size based on your current settings(small) 1xSmall30%, 2xMedium30%, 3xBig30%, 4xLarge10% like in H3 or HotA. The number of guards will be multiplied. So your slection should be the "minimal" setting.)
+!#VRi^CB_004_Different_Size^:S1;        (1=yes 0=no, If yes the creature banks can spwan with increased size based on your current settings(small) 1xSmall30%, 2xMedium30%, 3xBig30%, 4xLarge10% like in H3 or HotA. The number of guards will be multiplied. So your slection should be the "minimal" setting.)
 
 
 ******Rewards********
@@ -59,8 +59,8 @@ You can choose several rewards. The rewards are processed one after the other.
 !#VRi^CB_004_Reward_Sulfur^:S-1;           (Write here the amount of Sulfur 1-1000000)
 !#VRi^CB_004_Reward_Crystal^:S-1;          (Write here the amount of Crystal 1-1000000)
 !#VRi^CB_004_Reward_Gems^:S-1;             (Write here the amount of Gems 1-1000000)
-!#VRi^CB_004_Reward_Gold^:S1000;             (Write here the amount of Gold 1-1000000)
-!#VRi^CB_004_Reward_Mithril^:S-1;          (Write here the amount of Mithril 1-1000000)
+!#VRi^CB_004_Reward_Gold^:S3000;             (Write here the amount of Gold 1-1000000)
+!#VRi^CB_004_Reward_Mithril^:S2;          (Write here the amount of Mithril 1-1000000)
 
 !#VRi^CB_004_Reward_Creatures_Type^:S-1;   (The Type of Creature 0-196. Also works with higher creature IDs from mods)
 !#VRi^CB_004_Reward_Creatures_Number^:S-1;  (The amount of Creatures 0-10000)
@@ -86,7 +86,7 @@ Random Artifacts can also be generated in a certain range x1-x2. If you want to 
 !#VRi^CB_004_Reward_Spell_Points^:S-1;     (0-Attack, 1-Defense, 2-Power Skill, 3-Knowledge, 4-random)
 !#VRi^CB_004_Reward_Spell^:S-1;     (-1=disabled, 0-69 Spell ID, 70=Random, 71=Random LvL1, 72=Random LvL2, 73=Random LvL3, 74=Random LvL4, 75=Random LvL5)
 
-!#VRi^CB_004_Reward_Scales_with_size^:S0;(1=yes, 0=no, Requires CB_004_Different_Size to be active, when defeating bigger CB the rewards are increased. Level 1=1 (your settings), Level 2=*1,5, Level 3=*2, Level 4=*3 increase. Artifacts might increase in class for level 3 and 4. But never to relicts.)
+!#VRi^CB_004_Reward_Scales_with_size^:S1;(1=yes, 0=no, Requires CB_004_Different_Size to be active, when defeating bigger CB the rewards are increased. Level 1=1 (your settings), Level 2=*1,5, Level 3=*2, Level 4=*3 increase. Artifacts might increase in class for level 3 and 4. But never to relicts.)
 
 
 ******Type of Object you want to replace********
@@ -1045,7 +1045,7 @@ Guarded by %Z1 {(%Y30-%Y31)} of %Z-1, %Z2 {(%Y32-%Y33)} of %Z-2, %Z3 {(%Y34-%Y35
 
 ****************************************************************************************************
 *Replace Objects when map starts
-!?FU(OnEveryDay);
+!?FU(OnEveryDay)&i^tum_replaceObj_on^;
 
 !!if&x1=1/x3=1:;                   (Run once at day 1)
   !!VRy1:Si^CB_004_Replace_Objects^; !!FU&y1=0:E;
@@ -1062,35 +1062,35 @@ Guarded by %Z1 {(%Y30-%Y31)} of %Z-1, %Z2 {(%Y32-%Y33)} of %Z-2, %Z3 {(%Y34-%Y35
     !!VRy7:Si^CB_004_Replace_%Vi_X_Offset^;
     !!if&y3>=0/y4>=0/y5>0:;
     !!UN:Uy3/-1/?y6;
-    !!VRv1:S-1;
+    !!VRv2:S-1;
     !!DO(CB_004_Replace)/1/y6/1:Py3/y4/y1/y2/y5/y7;
     !!en:;
   !!en:;
 !!en:;
 
 ********************************************************************************
-!?FU(CB_004_Replace)&i^tum_replaceObj_on^;
+!?FU(CB_004_Replace);
 
-!!UN:Ux1/-1/-1/1;
+!!UN:Ux1/-1/-1/2;
 
 !!VRy2:S0T99;                           (Calc chance to replace)
 !!if&x5>y2:;
-!!OBv1/v2/v3:T?y5 U?y6;                 (Get Type and Subtype)
+!!OBv2/v3/v4:T?y5 U?y6;                 (Get Type and Subtype)
 
-!!VRy30:Sv1+x6;                           (Offset in x)
+!!VRy30:Sv2+x6;                           (Offset in x)
 !!UN:X?y10/?y20; !!VRy10:-1; Get Map size to prevent wrong placement of x-coordinate
 
 !!if&x1=y5/x2=y6/y30<=y10/y30>=0:; If type and subtype match and if object is not outside of map
-  *!OBv1/v2/v3&x1=y5/x2=y6:B;           (Remove a description hint for an object.)
-  !!UN:Ov1/v2/v3/0/0;                   (delete old object)
-  !!OBv1/v2/v3:C-1;                     (Clear Control Word of deleted Object)
-  !!VRv1:+x6;                           (Offset in x)
-  !!UN:Iv1/v2/v3/x3/x4/x3/x4/-1/0;
-  !!POv1/v2/v3:N0;
-  !!VRi^CB_004_Set_Flag_%V1_%V2_%V3^:S1;
-  *!TRv1/v2/v3:E1;
+  *!OBv2/v3/v4&x1=y5/x2=y6:B;           (Remove a description hint for an object.)
+  !!UN:Ov2/v3/v4/0/0;                   (delete old object)
+  !!OBv2/v3/v4:C-1;                     (Clear Control Word of deleted Object)
+  !!VRv2:+x6;                           (Offset in x)
+  !!UN:Iv2/v3/v4/x3/x4/x3/x4/-1/0;
+  !!POv2/v3/v4:N0;
+  !!VRi^CB_004_Set_Flag_%v2_%v3_%v4^:S1;
+  *!TRv2/v3/v4:E1;
   *!IF:L^Map Start %V1 %V2 %V3^;
-  *!OBv1/v2/v3&x1=x3/x2=x4:H900;
+  *!OBv2/v3/v4&x1=x3/x2=x4:H900;
 !!en:;
 !!en:;
 
@@ -1154,25 +1154,25 @@ Guarded by %Z1 {(%Y30-%Y31)} of %Z-1, %Z2 {(%Y32-%Y33)} of %Z-2, %Z3 {(%Y34-%Y35
   !!VRy5:Sc;
 
   !!UN:Uy1/-1/?y6;                        (Get amount of objects on the map)
-  !!VRv1:S-1;
+  !!VRv2:S-1;
   !!DO(CB_004_Revisit)/1/y6/1:Py1/y2/y10/y5/y7; (Pass Type and Subtype and intervall in days and current gameday)
 !!en:;
 
 
 !?FU(CB_004_Revisit);
 
-!!UN:Ux1/-1/-1/1;
-!!OBv1/v2/v3:T?y5 U?y6;                 (Get Type and Subtype)
+!!UN:Ux1/-1/-1/2;
+!!OBv2/v3/v4:T?y5 U?y6;                 (Get Type and Subtype)
 *!VRv1:+x5;
-*!SN:W^CB_004_Set_Flag_%V1_%V2_%V3^/?y7;(Get Coordinate Flag)
-*!POv1/v2/v3:N?y20;
+*!SN:W^CB_004_Set_Flag_%v2_%v3_%v4^/?y7;(Get Coordinate Flag)
+*!POv2/v3/v4:N?y20;
 *!IF:L^Replace %V1 %V2 %V3   Flag is %Y7 and PO is %Y20^;
 *!VRv1:-x5;
 !!if&x1=y5/x2=y6:;                      (If same type and at that coordinate was a replace, and cleared at least once)
-  !!VRy1:Si^CB_004_Day_Cleared_%V1_%V2_%V3^; (get day on which the CB was cleared)
+  !!VRy1:Si^CB_004_Day_Cleared_%v2_%v3_%v4^; (get day on which the CB was cleared)
   !!VRy1:Sy1+x3;                        (Set to day on which was cleared + resetting intervall)
-  !!POv1/v2/v3:N?y3;                    (Check PO:N value  1 means visited)
-  !!POv1/v2/v3&y1<=x4/y3=1:N0;          (Reset PO value to 0, means not taken)
+  !!POv2/v3/v4:N?y3;                    (Check PO:N value  1 means visited)
+  !!POv2/v3/v4&y1<=x4/y3=1:N0;          (Reset PO value to 0, means not taken)
 !!en:;
 
 !#VA(x:x) (y:x) (z:x) (objType:x) (objSubtype:x);

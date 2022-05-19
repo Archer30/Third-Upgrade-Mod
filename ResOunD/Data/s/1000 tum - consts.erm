@@ -24,14 +24,23 @@ ZVSE2
 !#DC(MON_SERAPH)                = 202;
 !#DC(MON_PURE_DIAMOND_DRAGON)   = 207;
 !#DC(MON_GUARDIAN_OF_ZEUS)      = 212;
-*#DC(MON_ANTICHRIST)            = 219;  [WIP]
+!#DC(MON_ANTICHRIST)            = 219;
 !#DC(MON_RED_BONES_DRAGON)      = 224;
 !#DC(MON_CHASM_DRAGON)          = 231;
 !#DC(MON_SPECTRAL_BEHEMOTH)     = 238;
 !#DC(MON_NIGHTMARE_HYDRA)       = 245;
+!#DC(MON_FAERIE)                = 246;
+!#DC(MON_HURRICANE_ELEMENTAL)   = 247;
+!#DC(MON_LIFE_ELEMENTAL)        = 248;
+!#DC(MON_PLASMA_ELEMENTAL)      = 249;
+!#DC(MON_MINERAL_ELEMENTAL)     = 250;
+!#DC(MON_VOID_ELEMENTAL)        = 251;
 !#DC(MON_DIVINE_PHOENIX)        = 252;
 
-!#DC(MON_TEMPLAR)               = 269;
+!#DC(MON_FANGARM)               = 263;
+
+!#DC(MON_EIGHTH_FIRST)          = 269;
+!#DC(MON_LIGHT_TEMPLAR)         = 269;
 !#DC(MON_DRYAD)                 = 270;
 !#DC(MON_DRAKE_GOLEM)           = 271;
 !#DC(MON_SUCCUBUS)              = 272;
@@ -42,7 +51,7 @@ ZVSE2
 !#DC(MON_TROLL_HAG)             = 276;
 !#DC(MON_TRITON)                = 277;
 
-!#DC(MON_PALADIN)               = 278;
+!#DC(MON_LIGHT_PALADIN)         = 278;
 !#DC(MON_OAK_DRYAD)             = 279;
 !#DC(MON_DRAGON_GOLEM)          = 280;
 !#DC(MON_LILIM)                 = 281;
@@ -51,17 +60,20 @@ ZVSE2
 !#DC(MON_QUERZALCOATL)          = 283;
 !#DC(MON_TROLL_WITCH)           = 284;
 !#DC(MON_ABYSSAL_TRITON)        = 285;
+!#DC(MON_EIGHTH_LAST)           = 285;
 
 !#DC(MON_SKELETON_ARCHER)       = 295;
 !#DC(MON_MANA_SKELETON)         = 297;
 !#DC(MON_SHARPSHOOTER_SKELETON) = 299;
+
+!#DC(MON_SHADOW_DRAGON)         = 325;
 ; =============  END MONSTERS  =============
 
 
 ; ==============  ARTIFACTS  ===============
 !#DC(ART_RING_OF_ELEMENTS)      = 197;
 
-!#DC(ART_LAST_TUM)              = 267;  [Updated to TUM 2.11.7]
+!#DC(ART_HORN_OF_THE_ABYSS)     = 266;
 ; ============  END ARTIFACTS  =============
 
 
@@ -80,7 +92,8 @@ ZVSE2
 
 ; =============  WOG OPTIONS  ==============
 !#DC(WOG_OPT_4TH_UPGRADES)      = 300; 
-!#DC(WOG_OPT_8TH_MONSTERS)      = 301; 
+!#DC(WOG_OPT_8TH_MONSTERS)      = 301;
+!#DC(WOG_OPT_DWELLING_BANKS)    = 302;
 ; ===========  END WOG OPTIONS  ============
 
 

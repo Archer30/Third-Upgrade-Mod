@@ -1,102 +1,166 @@
 ZVSE2
 ; Author:   Archer30
 ; Engine:   ERM 2.0+
-; Requires: ERA 3.0+, Era Erm Framework, Third Upgrade Mod, WoG Scripts
+; Requires: ERA 3.9+, Era Erm Framework, Third Upgrade Mod
 
 ; (Tiny little bit of) Archer's hacks for TUM
 
 
-*****************************
-**** Replace map objects ****
-*****************************
+*************************************
+**** WoG Scripts Compatibilities ****
+*************************************
+// The following lines must be executed later than WoG Scripts
+!?FU(OnAfterErmInstructions);
+// Battle Extender
+!!UN:P41/?(battExtender:y);
 
-!?FU(OnAfterErmInstructions)&i^tum_replaceObj_on^;
-; deleting the sound in the delete object function
-; because it causes a crash
-!!UN:C4893167/2/?(patch:y);
-!!UN:C4893167/2/24555;
-; get size of the map
-!!UN:X?(mapSize:y)/?(hasUnderground:y); 
-; pass once through all cells of the map
-!!re l/0/(hasUnderground)/1;  coord z
-  !!re k/0/(mapSize)/1/-1;    coord y
-    !!re i/0/(mapSize)/1/-1;  coord x
-      !!OBi/k/l:T?(objType:y) U?(objSubtype:y);
-      !!TRi/k/l:E?(isYellowSquare:y) P?(isPassable:y); 
-      !!VR(isYellowSquare):X1;  reverse param isYellowSquare
-      !!FU(tum_OnIterateAllMapObjects):Pi/k/l/(objType)/(objSubtype)/(isYellowSquare)/(isPassable);
-    !!en;
-  !!en;
-!!en;
-; restoring the source code of the sound
-; in the delete objects function
-!!UN:C4893167/2/(patch);
-
-******************************
-**** Fix Ring of Elements ****
-******************************
-; Allow summoning different elementals with Ring of Elements.
-!?FU(OnGameEnter);
-!!UN:C5896327/1/?i^tum_origElemLimit^;
-
-!?FU(OnBattleRound)&i^battle_round^=0;
-!!VRi^tum_elemRingDiff^:S(FALSE);
-
-!!BA:A?(isOnlyAi:y) Q?(isQuick:y);
-!!FU|(isOnlyAi)/(isQuick):E;
-
-!!BA:H0/?(attacker:y) H1/?(defender:y);
-
-!!HE(attacker):A2/(ART_RING_OF_ELEMENTS)/?(qty:y)/?(atkEquipped:y);
-!!HE(defender)&(defender)>(NO_HERO):A2/(ART_RING_OF_ELEMENTS)/?(qty)/?(defEquipped:y);
-
-!!FU(tum_ActivateElemRing)&(atkEquipped)/(defEquipped):P(TRUE);
-!!FU(tum_ActivateElemRing)&(atkEquipped)=(FALSE)/(defEquipped)=(FALSE):P(FALSE);
-
-!!VRi^tum_elemRingDiff^&(atkEquipped)<>(defEquipped):S(TRUE);
-
-!?FU(OnBattleStackObtainsTurn)&i^tum_elemRingDiff^;
-!#VA(stackSide:x) (stackInd:x);
-
-!!BH(stackSide):N?(hero:y);
-
-!!if&(hero)>(NO_HERO);
-  !!HE(hero):A2/(ART_RING_OF_ELEMENTS)/?(qty:y)/?(equipped:y);
-  !!FU(tum_ActivateElemRing):P(equipped);
+!!if&(battExtender);
+  !!MA:C(MON_HOLY_CHAMPION)/(RES_ORE)/2;
+  !!MA:C(MON_LEGENDARY_UNICORN)/(RES_GEMS)/1;
+  !!MA:C(MON_NAGA_EMPRESS)/(RES_MERCURY)/1;
+  !!MA:C(MON_EFREETI_RAJAH)/(RES_SULFUR)/1;
+  !!MA:C(MON_DEATH_NIGHT)/(RES_CRYSTAL)/1;
+  !!MA:C(MON_CHIMERA)/(RES_ORE)/1;
+  !!MA:C(MON_CYCLOPS_EMPEROR)/(RES_GEMS)/1;
+  !!MA:C(MON_ACID_WYVERN)/(RES_MERCURY)/1;
+  !!MA:C(MON_VOID_ELEMENTAL)/(RES_SULFUR)/1;
 !!en;
 
-!?FU(tum_ActivateElemRing);
-!#VA(equipped:x);
+// Berserker Chaotic Flies
+!!UN:P(WOG_OPT_STACK_EXPERIENCE)/?(stackExp:y) P46/?(berserkerFlies:y);
 
-!!UN&(equipped)<>(FALSE):C5896327/1/235;
-!!UN&(equipped)=(FALSE):C5896327/1/i^tum_origElemLimit^;
-
-*************************************************************
-**** Fix TUM werewolf faction with Mixed Neutrals option ****
-*************************************************************
-
-!?FU(OnAfterErmInited);
-!!MA:O(MON_DIRE_WEREWOLF)/(TOWN_NECROPOLIS);
-
-************************************************
-**** Disable unused artifacts from the game ****
-************************************************
-; All the blank artifacts would be disabled if ACM is not presented
-!?FU(tum_DisableUnusedArtifacts)&i^Advanced_Classes_Mod_Active^=(FALSE);
-!!re i/(ART_BLANK_HELMET)/(ART_BLANK_HORN);
-  !!UN:Ai/1;
+!!if&(stackExp)/(berserkerFlies);
+  !!VR(availSlot:y):S(NULL);
+  !!EA(MON_CHAOTIC_DRAGON_FLY):F0/?(availSlot:y);
+  !!EA(MON_CHAOTIC_DRAGON_FLY)&(availSlot)>-1:B(availSlot)/1/102/98/1/1/1/1/1/1/1/1/1/1/1;
+  !!EA(MON_CHAOTIC_DRAGON_FLY):F0/?(availSlot);
+  !!EA(MON_CHAOTIC_DRAGON_FLY)&(availSlot)>-1:B(availSlot)/1/99/59/20/25/30/35/40/45/50/55/60/65/70;
 !!en;
 
-!#FU(tum_DisableUnusedArtifacts):P;
-
-*****************************************
-**** Fix Emerald Tower Compatibility ****
-*****************************************
-; The following lines must be executed later than WoG Scripts
+// Emerald Tower
 !?FU(WOG_44_CheckIfMonDrainsLife);
 !#VA(mon:x) (result:x);
 
 !!VR(result)&(mon)=(MON_SHADOW_DRAGON):S(TRUE);
+
+*************************************
+**** Era Scripts Compatibilities ****
+*************************************
+// The following lines must be executed later than WoG Scripts
+!?FU(OnAfterErmInstructions);
+// Demonic Rage
+!!UN:P750/?(demonicRage:y);
+
+!!if&(demonicRage);
+  !!SN:H^monname^/(MON_SHARP_HORNED_DEMON)/2/?(desc:z);
+  !!SN:H^monname^/(MON_SHARP_HORNED_DEMON)/2/^%(desc)%T(es.750.desc)^;
+
+  !!MA:F(MON_SHARP_HORNED_DEMON)/?(fv:y);
+  !!VR(fv):*110 :100;
+  !!MA:F(MON_SHARP_HORNED_DEMON)/(fv);
+!!en;
+
+// Devils Sacrificing
+!!UN:P759/?(devilsSacrifice:y);
+
+!!if&(devilsSacrifice);
+  !!MA:B(MON_ANTICHRIST)/d3;
+  !!SN:H^monname^/(MON_ANTICHRIST)/2/?(desc);
+  !!SN:H^monname^/(MON_ANTICHRIST)/2/^%(desc)%T(es.759.desc)^;
+!!en;
+
+// Berserker Dwarves Reinforcement
+!!UN:P761/?(dwarvesReinforcement:y);
+
+!!if&(dwarvesReinforcement);
+  !!SN:H^monname^/(MON_BERSERKER_DWARF)/2/?(desc:z);
+  !!SN:H^monname^/(MON_BERSERKER_DWARF)/2/^%(desc)%T(es.761.desc)^;
+
+  !!MA:F(MON_BERSERKER_DWARF)/?(fv:y);
+  !!VR(fv):*105 :100;
+  !!MA:F(MON_BERSERKER_DWARF)/(fv);
+!!en;
+
+// Blocking Spectres
+!!UN:P(WOG_OPT_STACK_EXPERIENCE)/?(stackExp:y) P822/?(specterBlock:y);
+
+!!if&(stackExp)/(specterBlock);
+  !!EA(MON_SPECTER):F0/?(availSlot:y);
+  !!EA(MON_SPECTER)&(availSlot)>-1:B(availSlot)/1/76/99/0/5/10/15/20/25/30/35/40/45/50/50;
+
+  !!MA:P(MON_SPECTER)/?(hp:y);
+  !!VR(newHp:y):S(hp) :6 *5;
+  !!MA:P(MON_SPECTER)/(newHp);
+!!en;
+
+// Conflux Balancing
+!!UN:P781/?(confluxBalancing:y);
+
+!!if&(confluxBalancing);
+  !!MA:G(MON_PIXIE)/?(growth:y);
+  !!MA:G(MON_FAERIE)/(growth);
+
+  !!MA:G(MON_AIR_ELEMENTAL)/?(growth);
+  !!MA:G(MON_HURRICANE_ELEMENTAL)/(growth);
+
+  !!MA:G(MON_WATER_ELEMENTAL)/?(growth);
+  !!MA:G(MON_LIFE_ELEMENTAL)/(growth);
+
+  !!MA:G(MON_FIRE_ELEMENTAL)/?(growth);
+  !!MA:G(MON_PLASMA_ELEMENTAL)/(growth);
+
+  !!MA:G(MON_EARTH_ELEMENTAL)/?(growth);
+  !!MA:G(MON_MINERAL_ELEMENTAL)/(growth);
+
+  !!FU(ES_781_ConvertMonToElem):P(MON_DIVINE_PHOENIX);
+!!en;
+
+// Inferno Balancing
+!!UN:P825/?(infernoBalancing:y);
+!!MA&(infernoBalancing):F(MON_WINGED_MAGOG)/d|(MON_FLAG_ATTACKS_TWICE);
+
+// Demonic Rage
+!?FU(ES_750_CheckIfMonIsEligible);
+!#VA(mon:x) (result:x);
+
+!!VR(result)&(mon)=(MON_SHARP_HORNED_DEMON):S(TRUE);
+
+// Devils Sacrificing
+!?FU(ES_759_CheckIfMonIsEligible);
+!#VA(mon:x) (result:x);
+
+!!VR(result)&(mon)=(MON_ANTICHRIST):S(TRUE);
+
+// Berserker Dwarves Reinforcement
+!?FU(ES_761_CheckIfMonIsEligible);
+!#VA(mon:x) (result:x);
+
+!!VR(result)&(mon)=(MON_BERSERKER_DWARF):S(TRUE);
+
+// Ranged Death Stare
+!?FU(ES_995_CheckIfMonIsEligible);
+!#VA(mon:x) (result:x);
+
+!!VR(result)&(mon)=(MON_CATOBLEPAS):S(TRUE);
+
+// Gnoll Shamans Stike First
+!?FU(ES_996_CheckIfMonIsEligible);
+!#VA(mon:x) (result:x);
+
+!!VR(result)&(mon)=(MON_GNOLL_SHAMAN):S(TRUE);
+
+// Grand Manouvre
+!?FU(ES_997_CheckIfMonIsEligible);
+!#VA(mon:x) (result:x);
+
+!!VR(result)&(mon)=(MON_SHARPSHOOTER_ELF):S(TRUE);
+
+*************************************************************
+**** Fix TUM werewolf faction with Mixed Neutrals option ****
+*************************************************************
+; The following lines must be executed later than Mixed Neutrals
+!?FU(OnAfterErmInited);
+!!MA:O(MON_DIRE_WEREWOLF)/(TOWN_NECROPOLIS);
 
 ********************************************************
 **** Enable Horn of the Abyss (artifact) for Utopia ****
@@ -202,29 +266,6 @@ ZVSE2
   !!BMi&(type)=(MON_ASTRAL_SPIRIT_D):E0;
 !!en;
 
-**************************************************************
-**** Third Upgrade Mod Chinese Edition special treatments ****
-**************************************************************
-; The following lines works only for TUM Chinese Edition
-; Dirty fix: Temporarily disable Emissary CBs as they appear to be buggy
-!?FU(tum_DisableEmissaryCreatureBanks_Chn);
-!!SN:L^wogcn.dll^/?(wogcn:y);
-!!FU&(wogcn)=0:E;
-
-!!re i/119/122;
-  !!VRi^CB_%i_Replace_Objects^:S(FALSE);
-!!en;
-
-!#FU(tum_DisableEmissaryCreatureBanks_Chn):P;
-
-*************************************************
-**** Replace Dens of Thieves with Treehouses ****
-*************************************************
-; Here we uses Den of Thieves for the replacement of Treehouses as the original repalcent - Mage Schools does not fit in tiles
-!?FU(OnAfterErmInstructions);
-!!VRi^CB_133_Replace_0_Type_Number^:S(OBJ_DEN_OF_THIEVES);
-!!VRi^CB_133_Replace_0_Percentage^:S15;
-
 *******************************
 **** Manage Creature Stats ****
 *******************************
@@ -242,3 +283,10 @@ ZVSE2
   !!EA(MON_CENTAUR_CAPTAIN):B3/1/109/43/?(r0:y)/?(r1:y)/?(r2:y)/?(r3:y)/?(r4:y)/?(r5:y)/?(r6:y)/?(r7:y)/?(r8:y)/?(r9:y)/?(r10:y);
   !!EA(MON_CENTAUR):B3/1/109/43/(r0:y)/(r1:y)/(r2:y)/(r3:y)/(r4:y)/(r5:y)/(r6:y)/(r7:y)/(r8:y)/(r9:y)/(r10:y);
 !!en;
+
+************************************************
+**** Fix AI crashes with Devilish Sacrifice ****
+************************************************
+; Dirty Fix: Prevent Ai from casting Devilish Sacrifice until Majaczek sorted out his crap
+!?FU(ES_759_GetAiVictim);
+!!VRx3:S(NO_STACK);

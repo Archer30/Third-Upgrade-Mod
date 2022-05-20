@@ -1848,6 +1848,7 @@ script by Perry R
 
 
 **Pathfinding boots**
+; Wayfayer's boots
 
 
 !?AE1&v998=260;
@@ -1889,8 +1890,44 @@ script by Perry R
 !!FU&y40=0:E;
 !!HEy1:S0/?y2;
 !!HEy1&y2<3:S0/2;
-****************************
-!!SN:L^emerald3_3.era^/?v3; !!SN:Av3/^art_AI_report^/?v4; !!SN:Ev4/1;
+
+**************************************************************************************************
+; Allow summoning different elementals with Ring of Elements.
+; Script by Archer30
+!?FU(OnGameEnter);
+!!UN:C5896327/1/?i^tum_origElemLimit^;
+
+!?FU(OnBattleRound)&i^battle_round^=0;
+!!VRi^tum_elemRingDiff^:S(FALSE);
+
+!!BA:A?(isOnlyAi:y) Q?(isQuick:y);
+!!FU|(isOnlyAi)/(isQuick):E;
+
+!!BA:H0/?(attacker:y) H1/?(defender:y);
+
+!!HE(attacker):A2/(ART_RING_OF_ELEMENTS)/?(qty:y)/?(atkEquipped:y);
+!!HE(defender)&(defender)>(NO_HERO):A2/(ART_RING_OF_ELEMENTS)/?(qty)/?(defEquipped:y);
+
+!!FU(tum_ActivateElemRing)&(atkEquipped)/(defEquipped):P(TRUE);
+!!FU(tum_ActivateElemRing)&(atkEquipped)=(FALSE)/(defEquipped)=(FALSE):P(FALSE);
+
+!!VRi^tum_elemRingDiff^&(atkEquipped)<>(defEquipped):S(TRUE);
+
+!?FU(OnBattleStackObtainsTurn)&i^tum_elemRingDiff^;
+!#VA(stackSide:x) (stackInd:x);
+
+!!BH(stackSide):N?(hero:y);
+
+!!if&(hero)>(NO_HERO);
+  !!HE(hero):A2/(ART_RING_OF_ELEMENTS)/?(qty:y)/?(equipped:y);
+  !!FU(tum_ActivateElemRing):P(equipped);
+!!en;
+
+!?FU(tum_ActivateElemRing);
+!#VA(equipped:x);
+
+!!UN&(equipped)<>(FALSE):C5896327/1/235;
+!!UN&(equipped)=(FALSE):C5896327/1/i^tum_origElemLimit^;
 
 ****************************************************************************
 Necromancy script by PerryR

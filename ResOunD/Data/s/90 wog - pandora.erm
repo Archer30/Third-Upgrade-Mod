@@ -12,6 +12,18 @@ ZVSE2
 ; Enable new pandora only when object replacement is enabled
 !#UN:P195/?(wogOption:y);
 !#VRi^pandora_enabled^&(wogOption):S(TRUE);
+
+!?FU(OnStartOrLoad);
+!!SN:L^erm_hooker.era^/?(hooker:y);
+!!FU&(hooker)=0:E;
+
+!!SN:A(hooker)/^SetHook^/?(hookingFuncAddress:y);
+!!FU(pandora_CreateERMHook):P(hookingFuncAddress);
+
+!?FU(pandora_CreateERMHook);                      [функция создания хука (см.1000 wog - base)]
+!!UN:C4603972/1/235;                              [нет проверки на в подземелье (Z=1)]
+!!SN:Ex1/1/4601891/(pandora_SetNewBattleFields);
+
 *************************************************Initial Timer Set******************************************************
 !?FU(OnAfterErmInstructions)&i^pandora_enabled^;
 !!UN:U6/-1/?y1;                         [count boxes->count_pandora_90]
@@ -61,6 +73,8 @@ ZVSE2
 **************************
 *****************************значение y34=6, игрок получает ресурсы каждого вида
 !?FU(Pandora90_main);
+!!VRi^Box_variant_90^:S12;
+
 !!SN:W^opt_149_mythril^/?y1 W^Box_variant_90^/?y34 W^Bless_variant_90^/?y35;
 !!if&203/y34=6;
  !!HE-1:S13/?y61;                                                               check estates
@@ -357,7 +371,7 @@ ZVSE2
 !!IF:V203/0;
 *****************************END MAIN TRIGGER*****************************
 **************************** Pre-battle trigger
-!?BA52&203/i^pandora_enabled^;
+!?FU(pandora_SetNewBattleFields)&203/i^pandora_enabled^;
 !!SN:W^Box_variant_90^/?y34 W^Bless_variant_90^/?y35;
 !!if&y34=12;
  !!BA&y35=0:B9;                                                   set field
@@ -548,7 +562,6 @@ ZVSE2
 ******************
 *********************Or**********************                                                   или
   !!if&y35=1;
-    !!IF:M^1^;
    !!FU(pandora90_give_abil):P;                             для варианта с лазурными генерируем и даем отряду способность
    !!VRy69:S0 R100;                                         5% шанс на Sword of Armageddon
    !!if&y69>=96;

@@ -51,11 +51,15 @@ ZVSE2
     ; Summon the fangarms if the result is more than 0
     !!if&(summNum)>0;
       !!FU(hota_RemoveDeadBody):P(defStack)/(FALSE);
-      !!SN:P^FNGRSUMM.wav^;
       !!BM(defStack):P?(pos:y);
-      !!FU(tum_PlayCustomAnimation):P^SP16.def^/(pos);
+
+      !!if&i^battle_isVisible^;
+        !!FU(tum_PlayCustomAnimation):P^SP16.def^/(pos);
+        !!SN:P^FNGRSUMM.wav^;
+      !!en;
+
       !!BU:S(MON_FANGARM)/(summNum)/(pos)/(atkSide)/-1/1 E(pos)/?(stack:y);
-      !!BM(stack)&(stack)>(NO_STACK):Fd|(MON_FLAG_SUMMONED);
+      !!BM(stack)&(stack)>(NO_STACK):B0 Fd|(MON_FLAG_SUMMONED);
     !!en;
   !!en;
 !!en;

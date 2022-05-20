@@ -10,17 +10,17 @@ ZVSE2
 **** Set Up WoG Options ****
 ****************************
 
-!#UN:P67/0;                             [DISABLE Neutral Town]
-!#UN:P173/0;                            [DISABLE Extended Upgrades]
-!#UN:P174/0;                            [DISABLE Universal Upgrades]
-!#UN:P125/0;                            [DISABLE the rule if the rule upg level 7 become level 8]
-!#UN:P820/0;                            [DISABLE Adittional Uprades]
+!#UN:P0/1;                              [ENABLE Level 8 dwellings function as normal]
 !#UN:P37/0;                             [DISABLE Rebalanced Creatures]
 !#UN:P50/0;                             [DISABLE Enhanced Monsters]
-!#UN:P188/0;                            [Disable Rampart Farie Dragon]
-!#UN:P0/1;                              [ENABLE Level 8 dwellings function as normal]
+!#UN:P67/0;                             [DISABLE Neutral Town]
+!#UN:P125/0;                            [DISABLE Upg level 7 become level 8]
 !#UN:P137/1;                            [ENABLE Level 8 dwellings]
+!#UN:P173/0;                            [DISABLE Extended Upgrades]
+!#UN:P174/0;                            [DISABLE Universal Upgrades]
+!#UN:P188/0;                            [Disable Rampart Farie Dragon]
 !#UN:P281/0;                            [DISABLE buckler of Beelzebub]
+!#UN:P820/0;                            [DISABLE Adittional Uprades]
 
 *********************************
 **** Set up Global Variables ****
@@ -62,28 +62,58 @@ ZVSE2
 !?FU(OnKeyReleased)&i^key^=(KEY_A);
 !!VRi^key_a^:S(FALSE);
 
+; Generate Emerald AI report
+!?FU(OnAfterErmInstructions);
+!!SN:L^emerald3_3.era^/?(emerald:y);
+
+!!if&(emerald)<>0;
+  !!SN:A(emerald)/^art_AI_report^/?(aiReport:y);
+  !!SN:E(aiReport)/1;
+!!en;
+
 ************************************
 **** WoG Option Compatibilities ****
 ************************************
-
+; Disable the generation of Howling Hollow - must be executed sooner than 78 wog - wogify
 !?FU(OnAfterErmInstructions);
-; Disable the generation of Howling Hollow
 !!VRi^wog78_howlingHollow_on^:S(FALSE);
 
-; Increase the cost of third upgraded level 6 monsters if Battle Extender is enabled
-!!UN:P41/?(battExtender:y);
+*****************************
+**** Replace map objects ****
+*****************************
 
-!!if&(battExtender);
-  !!MA:C(MON_HOLY_CHAMPION)/(RES_ORE)/2;
-  !!MA:C(MON_LEGENDARY_UNICORN)/(RES_GEMS)/1;
-  !!MA:C(MON_NAGA_EMPRESS)/(RES_MERCURY)/1;
-  !!MA:C(MON_EFREETI_RAJAH)/(RES_SULFUR)/1;
-  !!MA:C(MON_DEATH_NIGHT)/(RES_CRYSTAL)/1;
-  !!MA:C(MON_CHIMERA)/(RES_ORE)/1;
-  !!MA:C(MON_CYCLOPS_EMPEROR)/(RES_GEMS)/1;
-  !!MA:C(MON_ACID_WYVERN)/(RES_MERCURY)/1;
-  !!MA:C(MON_VOID_ELEMENTAL)/(RES_SULFUR)/1;
+!?FU(OnAfterErmInstructions)&i^tum_replaceObj_on^;
+; deleting the sound in the delete object function
+; because it causes a crash
+!!UN:C4893167/2/?(patch:y);
+!!UN:C4893167/2/24555;
+; get size of the map
+!!UN:X?(mapSize:y)/?(hasUnderground:y); 
+; pass once through all cells of the map
+!!re l/0/(hasUnderground)/1;  coord z
+  !!re k/0/(mapSize)/1/-1;    coord y
+    !!re i/0/(mapSize)/1/-1;  coord x
+      !!OBi/k/l:T?(objType:y) U?(objSubtype:y);
+      !!TRi/k/l:E?(isYellowSquare:y) P?(isPassable:y); 
+      !!VR(isYellowSquare):X1;  reverse param isYellowSquare
+      !!FU(tum_OnIterateAllMapObjects):Pi/k/l/(objType)/(objSubtype)/(isYellowSquare)/(isPassable);
+    !!en;
+  !!en;
 !!en;
+; restoring the source code of the sound
+; in the delete objects function
+!!UN:C4893167/2/(patch);
+
+************************************************
+**** Disable unused artifacts from the game ****
+************************************************
+; All the blank artifacts would be disabled if ACM is not presented
+!?FU(tum_DisableUnusedArtifacts)&i^Advanced_Classes_Mod_Active^=(FALSE);
+!!re i/(ART_BLANK_HELMET)/(ART_BLANK_HORN);
+  !!UN:Ai/1;
+!!en;
+
+!#FU(tum_DisableUnusedArtifacts):P;
 
 *******************************************************
 **** Function to get the latest creature ID of TUM ****

@@ -95,7 +95,7 @@ ZVSE2
 
 ; ==============  ARTIFACTS  ===============
 !#DC(ART_RING_OF_ELEMENTS)         = 197;
-
+!#DC(ART_WAYFARERS_BOOTS)          = 260;
 !#DC(ART_HORN_OF_THE_ABYSS)        = 266;
 ; ============  END ARTIFACTS  =============
 

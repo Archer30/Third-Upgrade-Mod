@@ -1845,51 +1845,62 @@ script by Perry R
 !!VRy1:|524288; [set attack twice bit]
 !!BMx16|y2<145/y2>149:Fy1;                                                         [Defense]
 
+** Wayfarer's boots (260) **
+; Script by Archer30
 
+!?FU(OnAfterErmInstructions);
+!!FU(NewIntArray):P?i^tum_terrainPenaltyValues^/(M_TEMP);
 
-**Pathfinding boots**
-; Wayfayer's boots
+; The following lines must be executed later than option 739 - pathfinding.erm - OnStartOrLoad in order to store the latest terrain penalty values
+!?FU(OnStartOrLoad);
+!!re (address:y)/6546704/6546908/4;
+  !!UN:C(address)/(UNC_INT)/?(value:y);
+  !!FU(Array_Push):Pi^tum_terrainPenaltyValues^/(value);
+!!en;
 
+!!VRi^tum_game_left^:S(FALSE);
 
-!?AE1&v998=260;
-!!OW:A-1/?y1;
-!!FU&y40=0:E;
-!!HEy1:S0/?y2;
-!!SN:W^KO_Path%Y1^/y2;
+; Set or restore terrain penalty values depeding on whether Wayfarer's boots are equipped
+!?FU(tum_OnSetActiveHero)|i^timerIsAi^/999;
+!!OW:A(CURRENT_PLAYER)/?i^tum_active_hero^;
 
-!?HM-1;
-!!OW:A-1/?y1;
-!!HEy1:A2/260/?y30/?y40;
-!!FU&y40=0:E;
-!!HEy1:S0/?y2;
-!!HEy1&y2<3:S0/2;
+!!if&i^tum_active_hero^>(NO_HERO);
+  !!HEi^tum_active_hero^:A2/(ART_WAYFARERS_BOOTS)/?(has:y)/?(equipped:y);
 
-!?AE0&v998=260;
-!!OW:A-1/?y1;
-!!FU&y40=0:E;
-!!SN:W^KO_Path%Y1^/?y1;
-!!HEy1:S0/y1;
+  !!FU(tum_SetTerrainPenaltyValues):P(equipped);
+!!en;
 
-!?HL-1&1000;
-!!HE(CURRENT_HERO):N?y1;
-!!HEy1:A2/260/?y30/?y40;
-!!FU&y40=0:E;
-!!SN:W^KO_Path%Y1^/?y1;
-!!HEy1:S0/y1;
+!?FU(OnEquipArt)|i^timerIsAi^/999;
+!!if&v998=(ART_WAYFARERS_BOOTS);
+  !!HE(CURRENT_HERO):N?(hero:y);
+  !!FU(tum_SetTerrainPenaltyValues)&i^tum_active_hero^=(hero):P(TRUE);
+!!en;
 
-!?FU(OnOpenHeroScreen);
-!!HE(CURRENT_HERO):N?y1;
-!!HEy1:A2/260/?y30/?y40;
-!!FU&y40=0:E;
-!!SN:W^KO_Path%Y1^/?y2;
-!!HEy1:S0/y2;
+!?FU(OnUnequipArt)|i^timerIsAi^/999;
+!!if&v998=(ART_WAYFARERS_BOOTS);
+  !!HE(CURRENT_HERO):N?(hero:y);
+  !!FU(tum_SetTerrainPenaltyValues)&i^tum_active_hero^=(hero):P(FALSE);
+!!en;
 
-!?FU(OnCloseHeroScreen);
-!!HE(CURRENT_HERO):N?y1;
-!!HEy1:A2/260/?y30/?y40;
-!!FU&y40=0:E;
-!!HEy1:S0/?y2;
-!!HEy1&y2<3:S0/2;
+!?FU(tum_SetTerrainPenaltyValues);
+!#VA(equippedWayfarersBoots:x);
+
+; Set Bonuses
+!!if&(equippedWayfarersBoots)>0;
+  !!re (address:y)/6546704/6546908/4;
+    !!UN:C(address)/(UNC_INT)/100;
+  !!en;
+; Set original values
+!!el;
+  !!SN:Mi^tum_terrainPenaltyValues^/?(size:y);
+  !!VR(index:y):S0;
+
+  !!re (address:y)/6546704/6546908/4;
+    !!SN:Mi^tum_terrainPenaltyValues^/(index)/?(value:y);
+    !!UN:C(address)/(UNC_INT)/(value);
+    !!VR(index):+1;
+  !!en;
+!!en;
 
 **************************************************************************************************
 ; Allow summoning different elementals with Ring of Elements.

@@ -22,6 +22,47 @@ ZVSE2
 !#UN:P281/0;                            [DISABLE buckler of Beelzebub]
 !#UN:P820/0;                            [DISABLE Adittional Uprades]
 
+**************************
+**** Create TUM Hooks ****
+**************************
+
+!?FU(OnStartOrLoad);
+!!SN:L^erm_hooker.era^/?(hooker:y);
+!!FU&(hooker)=0:E;
+
+!!SN:A(hooker)/^SetHook^/?(hookingFuncAddress:y);
+!!FU(tum_CreateERMHook):P(hookingFuncAddress);
+
+!?FU(tum_CreateERMHook);
+!#VA(address:x);
+
+!!SN:E(address)/1/4292703/(tum_OnSetActiveHero);
+!!SN:E(address)/1/4462998/(tum_HOOK_AfterAttackMainFunc); [Trigger after melee attack, before retaliation]
+!!SN:E(address)/1/4455129/(tum_HOOK_AfterAttackMainFunc); [Trigger after shooting]
+
+!?FU(tum_HOOK_AfterAttackMainFunc);      [by igrik]
+!!SN:X?(hook:y);
+!!UN:C(hook)/0/(UNC_INT)/?(stackStrucktDefender:y);   
+!!UN:C(hook)/4/(UNC_INT)/?(stackStrucktAttacker:y);  
+!!BG:A?(typeAttack:y);
+!!VR(stackAttackerID:y):S(NO_MON); 
+!!VR(stackDefenderID:y):S(NO_MON); 
+
+!!if&(stackStrucktAttacker)<>(FALSE); 
+  !!UN:C(stackStrucktAttacker)/244/(UNC_INT)/?(attakerSide:y); 
+  !!UN:C(stackStrucktAttacker)/248/(UNC_INT)/?(attakerStackIdInSide:y);
+  !!VR(stackAttackerID):S(attakerSide) *(BATTLE_STACKS_PER_SIDE) +(attakerStackIdInSide); 
+!!en;
+
+!!if&(stackStrucktDefender)<>(FALSE);
+  !!UN:C(stackStrucktDefender)/244/(UNC_INT)/?(defenderSide:y);
+  !!UN:C(stackStrucktDefender)/248/(UNC_INT)/?(defenderStackIdInSide:y);
+  !!VR(stackDefenderID):S(defenderSide) *(BATTLE_STACKS_PER_SIDE) +(defenderStackIdInSide);
+!!en;
+
+!!FU(tum_OnAfterMelee)&(typeAttack)=(BATTLE_ACTION_WALK_AND_ATTACK):P(stackAttackerID)/(stackDefenderID);
+!!FU(tum_OnAfterShoot)&(typeAttack)=(BATTLE_ACTION_SHOOT):P(stackAttackerID)/(stackDefenderID);
+
 *********************************
 **** Set up Global Variables ****
 *********************************
@@ -114,6 +155,13 @@ ZVSE2
 !!en;
 
 !#FU(tum_DisableUnusedArtifacts):P;
+
+**********************************************************
+**** Restore the original values of terrain penalties ****
+**********************************************************
+; The following lines must be executed ealier than option 739 - pathfinding.erm - OnGameLeave to be overriden.
+!?FU(OnGameLeave);
+!!FU(tum_SetTerrainPenaltyValues):P(FALSE);
 
 *******************************************************
 **** Function to get the latest creature ID of TUM ****

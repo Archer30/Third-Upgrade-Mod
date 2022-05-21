@@ -86,7 +86,7 @@ Random Artifacts can also be generated in a certain range x1-x2. If you want to 
 !#VRi^CB_006_Reward_Spell_Points^:S-1;     (0-Attack, 1-Defense, 2-Power Skill, 3-Knowledge, 4-random)
 !#VRi^CB_006_Reward_Spell^:S-1;     (-1=disabled, 0-69 Spell ID, 70=Random, 71=Random LvL1, 72=Random LvL2, 73=Random LvL3, 74=Random LvL4, 75=Random LvL5)
 
-!#VRi^CB_006_Reward_Scales_with_size^:S0;(1=yes, 0=no, Requires CB_006_Different_Size to be active, when defeating bigger CB the rewards are increased. Level 1=1 (your settings), Level 2=*1,5, Level 3=*2, Level 4=*3 increase. Artifacts might increase in class for level 3 and 4. But never to relicts.)
+!#VRi^CB_006_Reward_Scales_with_size^:S1;(1=yes, 0=no, Requires CB_006_Different_Size to be active, when defeating bigger CB the rewards are increased. Level 1=1 (your settings), Level 2=*1,5, Level 3=*2, Level 4=*3 increase. Artifacts might increase in class for level 3 and 4. But never to relicts.)
 
 
 ******Type of Object you want to replace********

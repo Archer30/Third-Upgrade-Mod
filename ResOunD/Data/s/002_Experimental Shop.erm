@@ -39,11 +39,11 @@ Set the guards and the number of each slot.
 !#VRi^CB_002_Guards_Type_Slot_6^:S-1;
 !#VRi^CB_002_Guards_Type_Slot_7^:S-1;
 
-!#VRi^CB_002_Guards_Number_Slot_0^:S15; (Write here the Number of Creatures Guarding the CB for each slot. If no type for that slot is selected (-1) also put in (-1) for the number.)
-!#VRi^CB_002_Guards_Number_Slot_1^:S15;
-!#VRi^CB_002_Guards_Number_Slot_2^:S15;
-!#VRi^CB_002_Guards_Number_Slot_3^:S15;
-!#VRi^CB_002_Guards_Number_Slot_4^:S10;
+!#VRi^CB_002_Guards_Number_Slot_0^:S8; (Write here the Number of Creatures Guarding the CB for each slot. If no type for that slot is selected (-1) also put in (-1) for the number.)
+!#VRi^CB_002_Guards_Number_Slot_1^:S8;
+!#VRi^CB_002_Guards_Number_Slot_2^:S8;
+!#VRi^CB_002_Guards_Number_Slot_3^:S8;
+!#VRi^CB_002_Guards_Number_Slot_4^:S8;
 !#VRi^CB_002_Guards_Number_Slot_5^:S-1;
 !#VRi^CB_002_Guards_Number_Slot_6^:S-1;
 !#VRi^CB_002_Guards_Number_Slot_7^:S-1;

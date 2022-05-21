@@ -255,9 +255,9 @@ ZVSE2
   !!EAi&(fightValue)>=(bloodFightValue):L(r10Exp) P(topExp);
 !!en;
 
-*****************************************************************
-**** Dirty fix for Astral Spirit summoning massive Air Elem. ****
-*****************************************************************
+*******************************************************
+**** Fix Astral Spirit summoning massive Air Elem. ****
+*******************************************************
 ; Remove spells of Astral Spirits without a hero
 !?FU(OnBattleRound)&i^battle_round^=0/i^battle_hero_1^=(NO_HERO)/i^battle_ai_1^;
 !!re i/(BATTLE_DEFENDER_STACK_FIRST)/(BATTLE_DEFENDER_STACK_LAST);
@@ -292,7 +292,7 @@ ZVSE2
 !!VRx3:S(NO_STACK);
 
 
-******************* The following code would only be applied to the Chinese TUM *******************
+********************* The following code would only be applied to TUM Chinese *********************
 
 
 ********************************
@@ -338,3 +338,12 @@ ZVSE2
     !!CA(x)/(y)/(z):M1/6/d/d1;
   !!en;
 !!en;
+
+********************************************************
+**** Disable Illithids and Alhoons' ability to cast ****
+********************************************************
+; Bad Fix: Temporarily disable these creature's ability to cast until Majaczek fix them
+!?FU(OnAfterErmInstructions)&i^tum_wogcn_on^;
+!!SN:L^amethyst2_4.dll^/?(amethyst:y) A(amethyst)/^ChangeCreatureTable^/?(address:y);
+!!SN:E(address)/1/274/^Spell 1=9^ E(address)/1/274/^Spell 2=8^ E(address)/1/274/^Spell 3=3^;
+!!SN:E(address)/1/282/^Spell 1=9^ E(address)/1/282/^Spell 2=8^ E(address)/1/282/^Spell 3=3^;

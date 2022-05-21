@@ -290,3 +290,51 @@ ZVSE2
 ; Dirty Fix: Prevent Ai from casting Devilish Sacrifice until Majaczek sorted out his crap
 !?FU(ES_759_GetAiVictim);
 !!VRx3:S(NO_STACK);
+
+
+******************* The following code would only be applied to the Chinese TUM *******************
+
+
+********************************
+**** Disable Emissary Banks ****
+********************************
+; Bad fix: Temporarily disable Emissary CBs as they appear to be buggy
+!?FU(tum_DisableEmissaryCreatureBanks)&i^tum_wogcn_on^;
+!!re i/119/122;
+  !!VRi^CB_%i_Replace_Objects^:S(FALSE);
+!!en;
+
+!#FU(tum_DisableEmissaryCreatureBanks):P;
+
+*************************************************
+**** Replace Dens of Thieves with Treehouses ****
+*************************************************
+; Here we uses Den of Thieves for the replacement of Treehouses as the original repalcent - Mage Schools does not fit in tiles
+!?FU(OnAfterErmInstructions)&i^tum_wogcn_on^;
+!!VRi^CB_133_Replace_0_Type_Number^:S(OBJ_DEN_OF_THIEVES);
+!!VRi^CB_133_Replace_0_Percentage^:S15;
+
+*******************************************************************
+**** Rebalance the growth of Sacred Phoenix and Divine Phoenix ****
+*******************************************************************
+; Reduce the growth of Firebird and Phoenix but gives one extra to be recruited if Castle is built in the town
+!?FU(OnAfterErmInstructions)&i^tum_wogcn_on^;
+; Set all the growth of phoenix to 1
+!!MA:G(MON_FIREBIRD)/1;
+!!MA:G(MON_PHOENIX)/1;
+
+!?FU(OnEveryDay)&i^timerWeekday^=1/i^timerOnce^/i^tum_wogcn_on^; 
+; Loop though all the towns and give one extra Phoenix to towns with Castle Built
+!!VR(x:y):S-1;
+
+!!re i;
+  !!UN:U(OBJ_TOWN)/(ANY_OBJ)/-1/(x)/(y:y)/(z:y);
+  !!br&(x)<0;
+
+  ; Check the town type and if Castle is built, add one extra if castle is built
+  !!CA(x)/(y)/(z):T?(townType:y) B3/9;
+
+  !!if&1/(townType)=(TOWN_CONFLUX);
+    !!CA(x)/(y)/(z):M1/6/d/d1;
+  !!en;
+!!en;

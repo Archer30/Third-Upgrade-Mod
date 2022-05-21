@@ -76,18 +76,19 @@ ZVSE2
 
 ;  Set up global variable for whether Emerald is enabled. Note: Using On Start Or Load is not allowed as it is too late!
 !?FU(OnAfterErmInstructions);
-!!SN:L^emerald3_3.era^/?(emer3:y);
-!!SN:L^emerald3_3.dll^/?(emer3Var:y);
-!!SN:L^emerald_v202a.era^/?(emer2:y);
-
-!!VRi^tum_emerald_on^|(emer3)<>0/(emer3Var)<>0/(emer2)<>0:S(TRUE);
+!!FU(tum_CheckPlugins):P;
 
 !?FU(OnAfterLoadGame);
+!!FU(tum_CheckPlugins):P;
+
+!?FU(tum_CheckPlugins);
 !!SN:L^emerald3_3.era^/?(emer3:y);
 !!SN:L^emerald3_3.dll^/?(emer3Var:y);
 !!SN:L^emerald_v202a.era^/?(emer2:y);
-
 !!VRi^tum_emerald_on^|(emer3)<>0/(emer3Var)<>0/(emer2)<>0:S(TRUE);
+
+!!SN:L^wogcn.dll^/?(wogcn:y);
+!!VRi^tum_wogcn_on^&(wogcn)<>0:S(TRUE);
 
 ; Set up town screen variable (to prevent triggering several events)
 !?FU(OnOpenTownScreen);

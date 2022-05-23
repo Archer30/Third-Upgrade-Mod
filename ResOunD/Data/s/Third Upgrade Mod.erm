@@ -158,10 +158,8 @@ visit www.heroescommunity.com for updates and news
       !!HE(visitHero):C0/(slot)/(upg)/(num)/(newExp)/0;
     !!en;    
 
-    !!if&999;
-      !!SN:D;
-      !!UN:R2;
-    !!en;
+    !!SN:D;
+    !!UN:R2;
   !!en;
 !!en;
 
@@ -1825,7 +1823,7 @@ script by Perry R
 
 **************************************************************************************************
 **  Helm of the Hydra Queen (259) **
-!?BF&1000/&i^tum_emerald_on^;
+!?BF&1000/i^tum_emerald_on^;
 
 !!BA:H0/?y1;
 !!BA:H1/?y9;

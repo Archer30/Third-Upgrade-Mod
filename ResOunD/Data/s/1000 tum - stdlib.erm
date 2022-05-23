@@ -75,20 +75,23 @@ ZVSE2
 !#FU(tum_SetUpGlobalVars):P;
 
 ;  Set up global variable for whether Emerald is enabled. Note: Using On Start Or Load is not allowed as it is too late!
-!?FU(OnAfterErmInstructions);
-!!FU(tum_CheckPlugins):P;
-
-!?FU(OnAfterLoadGame);
-!!FU(tum_CheckPlugins):P;
-
 !?FU(tum_CheckPlugins);
 !!SN:L^emerald3_3.era^/?(emer3:y);
 !!SN:L^emerald3_3.dll^/?(emer3Var:y);
 !!SN:L^emerald_v202a.era^/?(emer2:y);
-!!VRi^tum_emerald_on^|(emer3)<>0/(emer3Var)<>0/(emer2)<>0:S(TRUE);
+
+!!if|(emer3)<>0/(emer3Var)<>0/(emer2)<>0;
+  !!VRi^tum_emerald_on^:S(TRUE);
+!!en;
 
 !!SN:L^wogcn.dll^/?(wogcn:y);
 !!VRi^tum_wogcn_on^&(wogcn)<>0:S(TRUE);
+
+!#FU(tum_CheckPlugins):P;
+!#VRi^tum_newCombiArts_on^&i^tum_emerald_on^:S(TRUE);
+
+!?FU(OnAfterLoadGame);
+!!FU(tum_CheckPlugins):P;
 
 ; Set up town screen variable (to prevent triggering several events)
 !?FU(OnOpenTownScreen);
@@ -110,7 +113,7 @@ ZVSE2
 
 !!if&(emerald)<>0;
   !!SN:A(emerald)/^art_AI_report^/?(aiReport:y);
-  !!SN:E(aiReport)/1;
+  !!SN&(aiReport)<>0:E(aiReport)/1;
 !!en;
 
 ************************************
@@ -161,7 +164,8 @@ ZVSE2
 **** Restore the original values of terrain penalties ****
 **********************************************************
 ; The following lines must be executed ealier than option 739 - pathfinding.erm - OnGameLeave to be overriden.
-!?FU(OnGameLeave);
+; Wayfarer's Boots Part 2
+!?FU(OnGameLeave)&i^tum_emerald_on^;
 !!FU(tum_SetTerrainPenaltyValues):P(FALSE);
 
 *******************************************************

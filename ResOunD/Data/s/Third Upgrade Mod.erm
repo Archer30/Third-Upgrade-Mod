@@ -158,8 +158,10 @@ visit www.heroescommunity.com for updates and news
       !!HE(visitHero):C0/(slot)/(upg)/(num)/(newExp)/0;
     !!en;    
 
-    !!SN:D;
-    !!UN:R2;
+    !!if&999;
+      !!SN:D;
+      !!UN:R2;
+    !!en;
   !!en;
 !!en;
 
@@ -1568,22 +1570,20 @@ for Third Upgrade Mod by VMaiko
  184 (Shaman's Puppet) -2 Luck to Enemies
  219 (Compendium of Magic)
 
-!#FU(tum_SetUpComnbiArts)&i^tum_emerald_on^:P;
+Please use only combination artifact ID after #32 for better compatibilities!
+!?FU(OnGameEnter)&i^tum_emerald_on^/i^tum_newCombiArts_on^;
+!!FU(tum_SetUpNewComnbiArts):P;
 
-!?FU(OnGameEnter)&i^tum_emerald_on^;
-!!FU(tum_SetUpComnbiArts2):P;
-
-!?FU(tum_SetUpComnbiArts2);
-
-!!UN:A34/238/79/80/81/82;
-!!UN:A35/258/23/11/29/17;
-!!UN:A31/179/115/116/117;
-!!UN:A30/180/66/67/68;
-!!UN:A29/181/57/58/59;
-!!UN:A25/219/86/87/88/89;
-!!UN:A32/182/171/172/173/174;
-!!UN:A33/232/128/235/236/237;
-!!UN:A36/259/175/176/177/178;
+!?FU(tum_SetUpNewComnbiArts);
+!!UN:A32/219/86/87/88/89;
+!!UN:A33/181/57/58/59;
+!!UN:A34/180/66/67/68;
+!!UN:A35/179/115/116/117;
+!!UN:A36/182/171/172/173/174;
+!!UN:A37/232/128/235/236/237;
+!!UN:A38/238/79/80/81/82;
+!!UN:A39/258/23/11/29/17;
+!!UN:A40/259/175/176/177/178;
 
 ****************************************************************************************************
 !?FU(OnHeroScreenMouseClick);
@@ -1807,7 +1807,7 @@ script by Perry R
 
 
 *artifac doubles spell damage
-!?MR1;                                  [*Magical Combat Improvements*]
+!?MR1&i^tum_emerald_on^;                [*Magical Combat Improvements*]
 
 !!BG:A?y1;                              [Aktion in y1]
 !!FU&y1<>1:E;                           [Exit if no Hero cast]
@@ -1825,7 +1825,7 @@ script by Perry R
 
 **************************************************************************************************
 **  Helm of the Hydra Queen (259) **
-!?BF&1000;
+!?BF&1000/&i^tum_emerald_on^;
 
 !!BA:H0/?y1;
 !!BA:H1/?y9;
@@ -1842,17 +1842,17 @@ script by Perry R
 !!VRi:&1;
 !!FU&i>0:E;
 !!BMx16:F?y1;
-!!VRy1:|524288; [set attack twice bit]
-!!BMx16|y2<145/y2>149:Fy1;                                                         [Defense]
+!!VRy1:|524288;                         [set attack twice bit]
+!!BMx16|y2<145/y2>149:Fy1;              [Defense]
 
-** Wayfarer's boots (260) **
+; Wayfarer's boots Part 1 (260)
 ; Script by Archer30
 
-!?FU(OnAfterErmInstructions);
+!?FU(OnAfterErmInstructions)&i^tum_emerald_on^;
 !!FU(NewIntArray):P?i^tum_terrainPenaltyValues^/(M_TEMP);
 
 ; The following lines must be executed later than option 739 - pathfinding.erm - OnStartOrLoad in order to store the latest terrain penalty values
-!?FU(OnStartOrLoad);
+!?FU(OnStartOrLoad)&i^tum_emerald_on^;
 !!re (address:y)/6546704/6546908/4;
   !!UN:C(address)/(UNC_INT)/?(value:y);
   !!FU(Array_Push):Pi^tum_terrainPenaltyValues^/(value);
@@ -1861,25 +1861,31 @@ script by Perry R
 !!VRi^tum_game_left^:S(FALSE);
 
 ; Set or restore terrain penalty values depeding on whether Wayfarer's boots are equipped
-!?FU(tum_OnSetActiveHero)|i^timerIsAi^/999;
-!!OW:A(CURRENT_PLAYER)/?i^tum_active_hero^;
+!?FU(tum_OnSetActiveHero)&i^tum_emerald_on^;
+!!if|i^timerIsAi^/999;
+  !!OW:A(CURRENT_PLAYER)/?i^tum_active_hero^;
 
-!!if&i^tum_active_hero^>(NO_HERO);
-  !!HEi^tum_active_hero^:A2/(ART_WAYFARERS_BOOTS)/?(has:y)/?(equipped:y);
+  !!if&i^tum_active_hero^>(NO_HERO);
+    !!HEi^tum_active_hero^:A2/(ART_WAYFARERS_BOOTS)/?(has:y)/?(equipped:y);
 
-  !!FU(tum_SetTerrainPenaltyValues):P(equipped);
+    !!FU(tum_SetTerrainPenaltyValues):P(equipped);
+  !!en;
 !!en;
 
-!?FU(OnEquipArt)|i^timerIsAi^/999;
-!!if&v998=(ART_WAYFARERS_BOOTS);
-  !!HE(CURRENT_HERO):N?(hero:y);
-  !!FU(tum_SetTerrainPenaltyValues)&i^tum_active_hero^=(hero):P(TRUE);
+!?FU(OnEquipArt)&i^tum_emerald_on^;
+!!if|i^timerIsAi^/999;
+  !!if&v998=(ART_WAYFARERS_BOOTS);
+    !!HE(CURRENT_HERO):N?(hero:y);
+    !!FU(tum_SetTerrainPenaltyValues)&i^tum_active_hero^=(hero):P(TRUE);
+  !!en;
 !!en;
 
-!?FU(OnUnequipArt)|i^timerIsAi^/999;
-!!if&v998=(ART_WAYFARERS_BOOTS);
-  !!HE(CURRENT_HERO):N?(hero:y);
-  !!FU(tum_SetTerrainPenaltyValues)&i^tum_active_hero^=(hero):P(FALSE);
+!?FU(OnUnequipArt)&i^tum_emerald_on^;
+!!if|i^timerIsAi^/999;
+  !!if&v998=(ART_WAYFARERS_BOOTS);
+    !!HE(CURRENT_HERO):N?(hero:y);
+    !!FU(tum_SetTerrainPenaltyValues)&i^tum_active_hero^=(hero):P(FALSE);
+  !!en;
 !!en;
 
 !?FU(tum_SetTerrainPenaltyValues);
@@ -1905,10 +1911,10 @@ script by Perry R
 **************************************************************************************************
 ; Allow summoning different elementals with Ring of Elements.
 ; Script by Archer30
-!?FU(OnGameEnter);
+!?FU(OnGameEnter)&i^tum_emerald_on^;
 !!UN:C5896327/1/?i^tum_origElemLimit^;
 
-!?FU(OnBattleRound)&i^battle_round^=0;
+!?FU(OnBattleRound)&i^battle_round^=0/i^tum_emerald_on^;
 !!VRi^tum_elemRingDiff^:S(FALSE);
 
 !!BA:A?(isOnlyAi:y) Q?(isQuick:y);

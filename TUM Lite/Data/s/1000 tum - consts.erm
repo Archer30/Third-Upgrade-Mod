@@ -26,7 +26,7 @@ ZVSE2
 !#DC(MON_BERSERKER_DWARF)          = 204;
 !#DC(MON_SHARPSHOOTER_ELF)         = 205;
 !#DC(MON_GOLDEN_PEGASUS)           = 206;
-!#DC(MON_ELDER_DENDROID)           = 207;
+!#DC(MON_DENDROID_ELDER)           = 207;
 !#DC(MON_LEGENDARY_UNICORN)        = 208;
 !#DC(MON_PURE_DIAMOND_DRAGON)      = 122;
 
@@ -85,7 +85,7 @@ ZVSE2
 !#DC(MON_NIGHTMARE_HYDRA)          = 122;
 
 ; Conflux
-!#DC(MON_FAERIE)                   = 245;
+!#DC(MON_FAIRY)                    = 245;
 !#DC(MON_HURRICANE_ELEMENTAL)      = 246;
 !#DC(MON_LIFE_ELEMENTAL)           = 247;
 !#DC(MON_PLASMA_ELEMENTAL)         = 248;

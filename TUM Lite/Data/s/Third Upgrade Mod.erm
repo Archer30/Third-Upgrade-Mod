@@ -25,7 +25,7 @@ visit www.heroescommunity.com for updates and news
 !#VA(townType:x) (level:x) (basicMon:x) (upgMon:x) (thirdUpgMon:x);
 
 ; Get non-upgrade
-!!UN:T(townType)/(level)/0/?(basicMon);      [won't be compatible with Neutral Towns]
+!!UN:T(townType)/(level)/0/?(basicMon);
 
 ; Get upgraded monster
 !!VR(counter:y):S14 *(townType) +7 +(level);
@@ -101,7 +101,7 @@ visit www.heroescommunity.com for updates and news
 !!MA:U131/158;                          [Phoenixes to Sacred Phoenixes] *Conflux Level 8*]
 
  [The following can only be upgraded at Hill Forts]
-!!MA&i^TUM_Enchanted^=(FALSE):U(MON_GOLD_GOLEM)/(MON_DIAMOND_GOLEM);
+!!MA:U(MON_GOLD_GOLEM)/(MON_DIAMOND_GOLEM);
 
 !#FU(tum_SetUpNewUpgrades):P;
 
@@ -134,9 +134,16 @@ script by Archer30 and daemon_n
 
 ****************************************************************************************************
 *Creature_Specialist Third Upgrade Mod* A Mod for ERA 2.9
-*Author PerryR
+*Author PerryR, updated by Archer30
 *Sets new description for all creature Specialists and gives them a scaling, script taken from Advanced Classes Mod
-*Disabled WoG Script "39 wog - hero specialization boost"
+
+!?FU(OnAfterErmInstructions);
+!!SN:W^Advanced_Classes_Mod_Active^/?y1; !!FU&y1=1:E; [Exit if ACM mod active]
+
+!!re i/(HERO_FIRST)/(HERO_LAST_WOG);
+  !!HEi:X?(specType:y)/?(specSubtype:y);
+  !!HEi&(specType)=4:X1/?(specSubtype);
+!!en;
 
 !?CM2&1000;                             [Show Correct Info for Creature Specialists]
 !!SN:W^Advanced_Classes_Mod_Active^/?y1; !!FU&y1=1:E; [Exit if ACM mod active]

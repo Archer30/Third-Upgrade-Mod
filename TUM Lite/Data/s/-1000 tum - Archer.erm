@@ -6,9 +6,79 @@ ZVSE2
 ; (Tiny little bit of) Archer's hacks for TUM
 
 
-****************************************************************************
-**** Fix occasionally not able to loot all the artifacts from the enemy ****
-****************************************************************************
+************************************************************************
+**** Disable RK/igrk's fix of Water Walk in game bug fixes extended ****
+************************************************************************
+; There is a report about AI stuck after using water walk
+; It may be related to the AI behaviour alternation in Third Upgrade Mod or may not
+; I failed to reproduce the issue in a fresh game anyway
+; Thus I decide to disable to fix in TUM only for now
+!?FU(OnGameEnter);
+!!UN:C4391438/4/1357925771;
+!!UN:C4391442/2/1642;
+
+******************************************************
+**** Release binded stacks if no adjacent enemies ****
+******************************************************
+; This is likely an Aemthyst problem: There is a chance when the stack binding is killed, the binded stack is not released.
+; The reported player mention that it could be possible to happen if the killed stack is not the main target (e.g. killed by Strike All Around)
+
+; RK's info - doesn't seem to be correct
+/** @brief [0x4F4] which dendroids have binded the current target (used for animation requirement)*/
+H3Vector<H3CombatCreature*> dendroidBinder;
+/** @brief [0x504] list of H3CombatCreature binded by this dendroid*/
+H3Vector<H3CombatCreature*> dendroidBinds;
+
+; Better implementation but complicated
+; I failed
+*?FU(tum_OnBattleStackKilled);
+*#VA(stackId:x) (side:x);
+
+*!BM(stackId):T?(type:y);
+*!FU(tum_CheckIfMonHasPoisonNova):P(type)/?(result:y);
+
+*!if&(result);
+  ; Get all the adjacent stacks nearby
+  *!FU(tum_GetAdjacentStacksOfStack):P(stackId)/?(adjacentStacksList:y)/0/(FALSE);
+
+  *!SN:M(adjacentStacksList)/?(size:y);
+
+  *!if&(size)>0;
+    ; Loop through all the stacks found and check their duration of Bind
+    *!re i/0/(size)/1/-1;
+      *!SN:M(adjacentStacksList)/i/?(targetStack:y);
+
+      *!BM(targetStack):G72/?(duration:y)/?(level:y); [Bind]
+
+      ; If there is any stack found with Bind, check their list of binders
+      *!if&(duration)>0;
+        *!BM(targetStack):Z?(stackStuct:y);
+
+      *!en;
+    *!en;
+  *!en;
+*!en;
+
+; Simpler solution
+; Check out on every stack turn and see if they are binded without enemy nearby. If they do, release them
+!?FU(OnBattleStackObtainsTurn)&i^battle_round^>0;
+!!BMi^battle_current_stack^:G72/?(duration:y)/?(level:y);
+
+!!if&(duration)>0;
+  !!VR(stackId:y):Si^battle_current_stack^;
+  !!FU(tum_GetAdjacentStacksOfStack):P(stackId)/?(adjacentStacksList:y)/-1/(FALSE);
+  !!SN:M(adjacentStacksList)/?(size:y);
+
+  ; If no enemy nearby, release it
+  !!if&(size)=0;
+    !!FU(tum_RemoveSpellFromStack):P(stackId)/72;
+  !!en;
+!!en;
+
+**************************************************
+**** Fix abnormal artifact looting behaviours ****
+**************************************************
+; Fix occasionally not able to loot all the artifacts from the enemy (Human vs AI)
 ; It's likely to be an Emerald issue
 !?FU(tum_CreateERMHook);
 !#VA(hook:x);
@@ -106,6 +176,10 @@ ZVSE2
 *************************************
 // The following lines must be executed later than WoG Scripts
 !?FU(OnAfterErmInstructions);
+// Week of Monsters
+!!UN:P20/?(weekOfMonsters:y);
+!!FU(Array_Push)&(weekOfMonsters):Pi^wog_20_deityOfFireExtraMonsters^/(MON_VERMIN);
+
 // Battle Extender
 !!UN:P41/?(battExtender:y);
 
@@ -161,6 +235,12 @@ ZVSE2
 !!BM(atkStack):T?(type:y);
 !!FU(tum_CastSpellAfterAttack)&(type)=(MON_CHAOTIC_DRAGON_FLY):P(atkStack)/(defStack)/20/(SPELL_BERSERK)/(SKILL_NOT_LEARNED);
 
+// Death Chamber
+!?FU(WOG_70_GetUndeadKingMonType);
+!#VA(monType:x);
+
+!!VR(monType):S(MON_LICH_KING);
+
 // Enhanced Artifact II
 !?FU(WOG_71_GetDiploBonus);
 !#VA(hero:x) (result:x);
@@ -176,7 +256,7 @@ ZVSE2
 !!VR(artBonus)&(equipped)>0:S1;
 
 // Universal Upgrades
-!?FU(OnDetermineMonInfoDlgUpgrade_Quit);
+!?FU(OnDetermineMonInfoDlgUpgrade_Quit)&i^tum_newTowns_on^<>(TRUE);
 !#VA(monType:x) (upgType:x) (town:x) (hero:x);
 
 !!UN:P174/?(wogOption:y);
@@ -226,7 +306,6 @@ ZVSE2
   !!FU(GetUpgradedMonster):P(monType)/?(upgraded:y);
   !!VR(upgType)&(upgraded)>(NO_MON):S(upgraded);
 !!en;
-
 
 *************************************
 **** Era Scripts Compatibilities ****
@@ -323,7 +402,7 @@ ZVSE2
 
 !!if&(confluxBalancing);
   !!MA:G(MON_PIXIE)/?(growth:y);
-  !!MA:G(MON_FAERIE)/(growth);
+  !!MA:G(MON_FAIRY)/(growth);
 
   !!MA:G(MON_AIR_ELEMENTAL)/?(growth);
   !!MA:G(MON_HURRICANE_ELEMENTAL)/(growth);
@@ -416,11 +495,24 @@ ZVSE2
 !!HE(CURRENT_HERO):A2/(ART_DIPLOMATS_CLOAK)/?(has:y)/?(equipped:y);
 !!VR(discount)&(equipped)>0:+3;
 
+// Night Scouting (Assassins)
+!?FU(ES_795_GetAssassinMonType);
+!#VA(monType:x);
+
+!!VR(monType):S(MON_ASSASSIN);
+
 // Blocking Specters
 !?FU(ES_822_CheckIfMonHasBlock);
 !#VA(mon:x) (result:x);
 
 !!VR(result)&(mon)=(MON_SPECTRE):S(TRUE);
+
+// Skeleton Artifact
+!?FU(ES_882_GetSkeletonMonType);
+!#VA(artLevel:x) (monType:x);
+
+!!VR(monType)&(artLevel)=2:S(MON_SKELETON_KNIGHT);
+!!VR(monType)&(artLevel)=3:S(MON_GOLD_SKELETON);
 
 // Ranged Death Stare
 !?FU(ES_995_CheckIfMonIsEligible);
@@ -441,6 +533,7 @@ ZVSE2
 !!VR(result)&(mon)=(MON_SHARPSHOOTER_ELF):S(TRUE);
 
 // Military Duty
+; to be added?
 
 
 **********************************************************************
@@ -982,6 +1075,27 @@ C(ebp)/16/4/d-i^tum_MonPlusLuckPower^ C(ebp)/20/4/di^tum_MonPlusLuckPower^;
 **** Bad fix: Fix Strike And Return cannot be switched with igrik's action switching plugin ****
 ************************************************************************************************
 ; Strike and Return by Archer30
+
+; Failed implementation: This also does not work with Switching actions
+*?FU(tum_CreateERMHook);
+*!SN:Ex1/1/7725162/(arch_OnStackStrikeAndReturn);
+
+*?FU(arch_OnStackStrikeAndReturn);
+*#VA(hook:x);
+
+*!UN:C(hook)/(STRUCT_HOOK_CONTEXT_EAX)/4/?(monType:y);
+*!FU(tum_CheckIfMonCanStrikeAndReturn):P(monType)/?(result:y);
+*!FU&(result)=0:E;
+
+*!SN:X?t/0;
+
+*!if&(result)=1;
+  *!UN:C(hook)/(STRUCT_HOOK_CONTEXT_RET)/4/7725243;
+*!el&(result)=2;
+  *!UN:C(hook)/(STRUCT_HOOK_CONTEXT_RET)/4/7725195;
+*!en;
+
+; Real implementation
 // Initialization
 !?FU(OnAfterErmInited);
 ; Check if Strike and Return value has been modified by the other sources. Skip this feature if positive
@@ -1030,10 +1144,10 @@ C(ebp)/16/4/d-i^tum_MonPlusLuckPower^ C(ebp)/20/4/di^tum_MonPlusLuckPower^;
 ; Everything must be in the same framework in order not to produce duplicated resources
 !?FU(OnGameEnter);
 ; Disable Crystal Dragons' crystal generation
-!!UN:C4950323/4/1000;
-!!UN:C4950736/4/1000;
+!!UN:C4950323/4/9999;
+!!UN:C4950736/4/9999;
 ; Disable Diamond Dragons' gem generation
-!!UN:C7691000/4/1000;
+!!UN:C7691000/4/9999;
 
 ***************************************************
 **** Bad fix: Fix Artifact levels and bannings ****
@@ -1227,15 +1341,47 @@ C(ebp)/16/4/d-i^tum_MonPlusLuckPower^ C(ebp)/20/4/di^tum_MonPlusLuckPower^;
 **** Bad Fix: Fix first stack turn on the battlefield ****
 **********************************************************
 ; For some reason the first stack of the battlefield is frequently wrong. This script fixes it.
-!?FU(OnSetupBattlefield);
-!!VRi^tum_firstStackFixed^:S(FALSE);
 
-!?FU(OnBattleRound_Quit)&i^tum_firstStackFixed^<>(TRUE);
-!!FU(tum_GetCorrectActiveStack):P?(activeStack:y);
-!!FU(BattleStack_MakeActive):P(activeStack);
+; First and Second implementation 
+*?FU(OnSetupBattlefield);
+*!VRi^tum_firstStackFixed^:S(FALSE);
 
+; First implementation
+; Can't recall why it was not good. Because of the first 77007 after tactics phase ended is still at tactics phase?
 *?FU(OnBeforeBattleStackTurn)&i^tum_firstStackFixed^<>(TRUE);
-!?FU(tum_GetCorrectActiveStack);
+
+; Second implementation
+; It makes wights draining mana twice
+*?FU(OnBattleRound_Quit)&i^tum_firstStackFixed^<>(TRUE);
+*!FU(tum_GetCorrectFirstStack):P?(firstStack:y);
+*!FU(BattleStack_MakeActive):P(firstStack);
+
+; Third implementation
+!?FU(tum_OnFindNextStackTurn);
+!#VA(hook:x);
+
+!!UN:C(hook)/(STRUCT_HOOK_CONTEXT_EBP)/4/?(ebp:y);
+!!UN:C(ebp)/8/4/?(isNotStart:y);
+!!FU&(isNotStart):E;
+
+!!UN:C(hook)/(STRUCT_HOOK_CONTEXT_EDI)/4/?(firstStackStruct:y);
+!!FU&(firstStackStruct)=0:E;
+
+!!UN:C(firstStackStruct)/244/4/?(side:y) C(firstStackStruct)/248/4/?(stackOfSide:y);
+; Get the current first stack
+!!VR(firstStack:y):S(side) *(BATTLE_STACKS_PER_SIDE) +(stackOfSide);
+; Get the first stack in theory
+!!FU(tum_GetCorrectFirstStack):P?(newFirstStack:y);
+; Test
+*!IF:M^%(stack) %(firstStack)^;
+; Set up the new first stack
+!!if&(firstStack)<>(newFirstStack);
+  !!BM(newFirstStack):Z?(newFirstStackStruct:y);
+  !!UN:C(hook)/(STRUCT_HOOK_CONTEXT_EDI)/4/(newFirstStackStruct);
+!!en;
+
+; mutual part
+!?FU(tum_GetCorrectFirstStack);
 !#VA(activeStack:x);
 
 ; Initialise tactics levels and tactics status
@@ -1297,7 +1443,9 @@ C(ebp)/16/4/d-i^tum_MonPlusLuckPower^ C(ebp)/20/4/di^tum_MonPlusLuckPower^;
   !!en;
 !!en;
 
-!!VRi^tum_firstStackFixed^:S(TRUE);
+; Mark the procedure as done
+; For the first and second implementation only
+*!VRi^tum_firstStackFixed^:S(TRUE);
 
 !?FU(tum_GetMaxSpeedStack);
 !#VA(startStack:x) (endStack:x) (result:x);
@@ -1327,13 +1475,13 @@ C(ebp)/16/4/d-i^tum_MonPlusLuckPower^ C(ebp)/20/4/di^tum_MonPlusLuckPower^;
 ************************************************************************
 ; Monsters wih casting ability have high priority in casting, which doesn't make sense at all
 ; This script blocks casting with a chance
-; Note that this script relies on i^tum_firstStackFixed^ from Bad Fix: Fix first stack turn on the battlefield to work
-; This script currently works for TUM Reborn only (or not? Let's see)
+; This script currently works for TUM Reborn only (maybe it can be extend later)
 
-; Warning: it turns out the script doesn't work as Amethyst spell casting happens before FU(OnBeforeBattleStackTurn)
+; Warning: it turns out the script doesn't work well as Amethyst spell casting happens before FU(OnBeforeBattleStackTurn), but it still has some effects for some reason.
 
 ; Remove spells for monster casting Slayer or Frenzy for AI
-!?FU(tum_BattleStack_InitParams);
+
+!?FU(tum_BattleStack_InitParams)&i^tum_reborn_on^;
 !#VA(stack:x) (side:x);
 
 !!if&i^battle_ai_%(side)^;
@@ -1349,7 +1497,7 @@ C(ebp)/16/4/d-i^tum_MonPlusLuckPower^ C(ebp)/20/4/di^tum_MonPlusLuckPower^;
   !!en;
 !!en;
 
-!?FU(OnBattleStackObtainsTurn)&i^tum_firstStackFixed^;
+!?FU(OnBattleStackObtainsTurn)&i^tum_tacticsIsEnded^;
 !!BG:Q?(side:y);
 
 !!if&i^battle_ai_%(side)^;
@@ -1371,7 +1519,7 @@ C(ebp)/16/4/d-i^tum_MonPlusLuckPower^ C(ebp)/20/4/di^tum_MonPlusLuckPower^;
   !!en;
 !!en;
 
-!?FU(OnBeforeBattleAction)&i^tum_firstStackFixed^;
+!?FU(OnBeforeBattleAction)&i^tum_tacticsIsEnded^;
 !!BG:Q?(castingSide:y);
 !!FU&i^battle_ai_%(castingSide)^<>(TRUE):E;
 
@@ -1465,9 +1613,6 @@ C(ebp)/16/4/d-i^tum_MonPlusLuckPower^ C(ebp)/20/4/di^tum_MonPlusLuckPower^;
 
 !!VR(result):S(FALSE);
 
-; Works for TUM Reborn only
-!!FU&i^tum_reborn_on^<>(TRUE):E;
-
 ; Castle
 !!VR(result)&(mon)=(MON_HIGH_PRIEST):S(SPELL_PRAYER);
 ; Rampart
@@ -1478,7 +1623,7 @@ C(ebp)/16/4/d-i^tum_MonPlusLuckPower^ C(ebp)/20/4/di^tum_MonPlusLuckPower^;
 ; Fortress
 !!VR(result)&(mon)=(MON_GNOLL_SHAMAN):S(SPELL_SLAYER);
 ; Conflux
-!!VR(result)&(mon)=(MON_FAERIE):S(SPELL_BLESS);
+!!VR(result)&(mon)=(MON_FAIRY):S(SPELL_BLESS);
 !!VR(result)&(mon)=(MON_HURRICANE_ELEMENTAL):S(SPELL_AIR_SHIELD);
 !!VR(result)&(mon)=(MON_LIFE_ELEMENTAL):S(SPELL_BLESS);
 !!VR(result)&(mon)=(MON_PLASMA_ELEMENTAL):S(SPELL_FIRE_SHIELD);

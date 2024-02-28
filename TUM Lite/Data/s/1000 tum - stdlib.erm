@@ -14,7 +14,7 @@ ZVSE2
 !!UN:V?(wogVer:y)/?(ermVer:y)/?(hasHumanPlayer:y)/?(isNetworkGame:y)/?(networkType:y);
 
 ; Show msg if the ERA version is outdated
-!!if&(ermVer)<3904;
+!!if&(ermVer)<3910;
   !!SN:H^art^/(ART_PENDANT_OF_DEATH)/0/?(artName:z) H^art^/(ART_PENDANT_OF_DEATH)/0/^^;
   !!IF:Q1/(PIC_TYPE_ART)/(ART_PENDANT_OF_DEATH)/(PIC_TYPE_ART)/(ART_PENDANT_OF_DEATH)/(MSG_TYPE_CHOOSE_PIC)/^%T(Third_Upgrade_Mod.outOfDate)^;
   !!SN:H^art^/(ART_PENDANT_OF_DEATH)/0/(artName);
@@ -68,15 +68,13 @@ ZVSE2
 ****************************************************
 **** Set Up Global Variables (Erm Instructions) ****
 ****************************************************
-; Note: This function must be placed here in order to be executed by erm instruction commands
+// Warning: This function must be placed here in order to be executed by erm instruction commands
 !?FU(tum_CheckRandMap);
 !#VA(result:x);
 
 !!VR(result):S(FALSE);
-!!UN:C6919480/4/?(value:y);
-!!VR(add:y):S(value) +128980;
-!!UN:C(add)/1/?(value2:y);               [(value2)=114 -> random map]
-!!VR(result)&(value2)=114:S(TRUE);
+!!UN:C(GAME_MANAGER)/4/?(gameMgr:y) C(gameMgr)/128980/1/?(value:y);
+!!VR(result)&(value)=114:S(TRUE);
 
 !?FU(tum_SetUpGlobalVars);
 !!VRi^Typhon_Third_Upgrade_Mod_Active^:S(TRUE); [Global var for TUM Enabled]
@@ -98,6 +96,9 @@ ZVSE2
 !!if|(emer3)/(emer3Var)/(emer2)/(emer2Var);
   !!VRi^tum_emerald_on^:S(TRUE);
 !!en;
+
+!!SN:L^newtown.era^/?(newTowns:y);
+!!VRi^tum_newTowns_on^&(newTowns):S(TRUE);
 
 !!SN:L^wogcn.dll^/?(wogcn:y);
 !!VRi^tum_wogcn_on^&(wogcn):S(TRUE);
@@ -123,7 +124,7 @@ ZVSE2
 !?FU(OnAfterErmInstructions);
 !!VRi^wog_39_monsterSpecialtiesEnabled^:S(FALSE); [DISABLE monster specialties from Hero Spec Booost]
 !!VRi^wog_71_newCombiArtEnabled^:S(FALSE); [DISABLE new combination artifacts from Enhanced Artifact II]
-!!VRi^wog_174_enabled^:S(FALSE);        [DISABLE the original Universal Upgrades and recreate it]
+!!VRi^wog_174_enabled^&i^tum_newTowns_on^<>(TRUE):S(FALSE); [DISABLE the original Universal Upgrades and recreate it]
 !!VRi^wog_195_objReplaceMult^:S66;      [Reduce the WoG replacements to 66% of the original percentage]
 !!VRi^wog_195_howlingHollow_on^&i^tum_reborn_on^<>(TRUE):S(FALSE);   [DISABLE the generation of Howling Hollow - must be executed sooner than 78 wog - wogify]
 
@@ -141,47 +142,35 @@ ZVSE2
 !?FU(tum_CreateERMHook);
 !#VA(setHook:x);
 
-!!SN:E(setHook)/1/4445639/(tum_HOOK_AfterStackInitParams); [Trigger after initialising the stats of a stack on the battlefield]
-!!SN:E(setHook)/1/4454655/(tum_OnCalcMonsterDamage); [trigger on calculating monster damage]
+!!SN:E(setHook)/1/6058213/(tum_HOOK_PrepareTownScreen); [For TUM Full only - manage TUM/8th creatures/virtural dwelling/upgrade guild. This is a replacement of FU(OnPreTownScreen)]
+
+; Native after attack spells/abilities
+!!SN:E(setHook)/1/4457003/(tum_OnAfterHitSpells); [Trigger when after hit speslls is about to cast] 44022B
+!!SN:E(setHook)/1/4458758/(tum_OnAfterAttackAbilities); [Trigger when after attack ability is about to initiate] 440906
+
+; New after attack spells/abilites
+!!SN:E(setHook)/1/4462998/(tum_HOOK_AfterAttackMainFunc); [Trigger after melee attack, before retaliation] 441996
 !!SN:E(setHook)/1/4455129/(tum_HOOK_AfterAttackMainFunc); [Trigger after shooting]
+
+!!SN:E(setHook)/1/4445639/(tum_HOOK_AfterStackInitParams); [Trigger after initialising the stats of a stack on the battlefield] 43D5C7
+!!SN:E(setHook)/1/4454655/(tum_OnCalcMonsterDamage); [trigger on calculating monster damage] 43F8FF
 !!SN:E(setHook)/1/4461377/(tum_HOOK_BeforeMeleeMainFunc); [Trigger before melee attack, works for retaliation. Won't triggered if the target is killed]
-!!SN:E(setHook)/1/4461657/(tum_OnBeforeBreathAttack); [Trigger before breath attack]
-!!SN:E(setHook)/1/4462998/(tum_HOOK_AfterAttackMainFunc); [Trigger after melee attack, before retaliation]
+!!SN:E(setHook)/1/4461657/(tum_OnBeforeBreathAttack); [Trigger before breath attack] 441459
+!!SN:E(setHook)/1/4461703/(tum_OnAfterGetBreathSecondaryTarget); [Trigger after the secondary breath attack target is found] 441487
 !!SN:E(setHook)/1/4463326/(tum_BeforeStackMeleeAttack); [Trigger right before melee attack, obviously before retaliation]
 !!SN:E(setHook)/1/4464284/(tum_OnStackMakesStep); // hook in "while" loop of the walking stacks each HEX passed;
-*!SN:E(setHook)/1/4472251/(tum_OnDoDamage); [Trigger when any damage inflicts]
-!!SN:E(setHook)/1/4472412/(tum_HOOK_BattleStackKilled); [Trigger when a stack is killed]
+
+!!SN:E(setHook)/1/4472412/(tum_HOOK_BattleStackKilled); [Trigger when a stack is killed] 443E5C
 !!SN:E(setHook)/1/4479657/(tum_OnAttackWalls); [Triger on attacking walls]
 !!SN:E(setHook)/1/4484764/(tum_OnAfterRetaliationSetUp); [Trigger right after standard retaliation set up every turn (starts from the second turn)]
-!!SN:E(setHook)/1/4624553/(tum_HOOK_PhoenixResurrection); [Trigger on Phoenix about to resurrect]
+
 !!SN:E(setHook)/1/4627361/(tum_OnNecromancyAddCreatures); [Trigger on adding Necromancy creatures]
 !!SN:E(setHook)/1/4681149/(tum_OnBeforeBattleResult); [Ring of Oblivion but may also be used in other places]
 !!SN:E(setHook)/1/5137595/(tum_GetHeroSpecMon_BeforeMonIdCheck); [Trigger before showing monster stats from hero screen]
-!!SN:E(setHook)/1/6020320/(tum_OnTownGiveBonusesToHero); [Trigger on town giving bonuses to hero]
 
-*!SN:E(setHook)/1/7427990/(tum_HOOK_BMKDamage); [Trigger on BM:K inflicting damage] - Disabled for now as we don't need it
-
-!!if&i^tum_emerald_on^;
-  *!SN:E(setHook)/1/5085308/(tum_OnArtifactGiveSpell); [Trigger when artifact with spell given is about to be equipped (not compatible with emerald 3)]
-
-  ; Auto spell arts
-  !!SN:E(setHook)/1/4607930/(tum_OnBeforeArtifactAutoSpells); [Trigger before the native artifact auto spell casting]
-  *!SN:E(setHook)/1/4608191/(tum_OnAfterArtifactAutoSpells); [Trigger right after the native artifact auto spell casting - Warning: Don't use it as it triggers aslo in the later turns]
-
-  ; Interference Artifacts
-  !!SN:E(setHook)/1/4638788/(tum_OnDlg_HeroPreview_SpellPowerWrite); [Trigger on setting hero's power on the battlefield]
-
-  ; Diplomat's Cloak
-  !!SN:E(setHook)/1/4355710/(tum_OnGetArmyDiplomacyValue); [Trigger on getting a hero's diplomacy value (for neutral armies and Thieves' Guild)]
-
-  ; Ring of Oblivion
-  !!SN:E(setHook)/1/4472337/(tum_OnAfterDoPhysicalDamage);
-  !!SN:E(setHook)/1/4920480/(tum_OnCalcMovementPointsCost); [Trigger on calculating the cost of movement points]
-  !!SN:E(setHook)/1/5128574/(tum_OnCalcNecromancyPower); [Trigger on calculating Necromancy power]
-
-  ; Atma Robe
-  !!SN:E(setHook)/1/5930059/(tum_OnAfterCalcSpellDamage); [Trigger right after calculating spell damage]
-!!en;
+!!SN:E(setHook)/1/6029174/(tum_Town_GetDwellingGrowth_GetTownId); [Trigger on getting the growth of creature = beginning of foo]
+!!SN:E(setHook)/1/6029756/(tum_Town_GetDwellingGrowth); [Trigger on getting the growth of creature - end of foo]
+!!SN:E(setHook)/1/6113249/(tum_Town_GetCreatureIncomeText); [Trigger on checking the creature growth from town screen]
 
 ; For 4th upgrade attack abilities
 !!SN:E(setHook)/1/7695135/(tum_OnWoGAttackAbilityProc);
@@ -189,9 +178,67 @@ ZVSE2
 !!SN:E(setHook)/1/7724547/(tum_OnHellBaronStoneGazeProc);
 !!SN:E(setHook)/1/7724587/(tum_OnBloodDragonAgeProc);
 
+; Bad Fix
+; These hooks are needed in order to fix Amethyst's problem
+!!SN:E(setHook)/1/4607483/(tum_OnFindNextStackTurn); [Trigger on determine the next stack in a battle (exclusing waiting stack and tactics phase), here we use it for the first stack in the game]
+
+; Unused
+*!SN:E(setHook)/1/4472251/(tum_OnDoDamage); [Trigger when any damage inflicts, a bit overkill]
+*!SN:E(setHook)/1/7427990/(tum_HOOK_BMKDamage); [Trigger on BM:K inflicting damage] - Disabled for now as we don't need it 715796
+
+!!if&i^tum_emerald_on^;
+  *!SN:E(setHook)/1/5085308/(tum_OnArtifactGiveSpell); [Trigger when artifact with spell given is about to be equipped (not compatible with emerald 3)]
+
+  ; Auto spell arts
+  !!SN:E(setHook)/1/4607930/(tum_OnBeforeArtifactAutoSpells); [Trigger before the native artifact auto spell casting] 464FBA
+  *!SN:E(setHook)/1/4608191/(tum_OnAfterArtifactAutoSpells); [Trigger right after the native artifact auto spell casting - Warning: Don't use it as it triggers aslo in the later turns]
+
+  ; Interference Artifacts
+  !!SN:E(setHook)/1/4638788/(tum_OnDlg_HeroPreview_SpellPowerWrite); [Trigger on setting hero's power on the battlefield]
+
+  ; Diplomat's Cloak
+  !!SN:E(setHook)/1/4355710/(tum_OnGetArmyDiplomacyValue); [Trigger on getting a hero's diplomacy value (for neutral armies and Thieves' Guild)]
+  !!SN:E(setHook)/1/4685669/(tum_OnAfterSetRetreatSurrenderButtons); [Trigger after Retreat/Surrender buttons got set]
+
+  ; Ring of Oblivion
+  !!SN:E(setHook)/1/4472337/(tum_OnAfterDoPhysicalDamage);
+  !!SN:E(setHook)/1/4920510/(tum_OnCalcMovementPointsCost); [Trigger on calculating the cost of movement points] 4B14A3 
+  !!SN:E(setHook)/1/5128574/(tum_OnCalcNecromancyPower); [Trigger on calculating Necromancy power]
+
+  ; Atma Robe
+  !!SN:E(setHook)/1/5930059/(tum_OnAfterCalcSpellDamage); [Trigger right after calculating spell damage]
+!!en;
+
+!!if&i^tum_reborn_on^;
+  *!SN:E(setHook)/1/7722330/(tum_OnBehemothReduceDefenseProc); [Trigger on determine whether to reduce enemy defense to 0] 7722330 - this hook doesn't trigger for some reason. 0075D551 results in wrong damage and crashes
+
+  !!SN:E(setHook)/1/7725329/(tum_OnPhoenixResurrectionProc); [Trigger on determine whether to resurrect like Phoenix]
+  !!SN:E(setHook)/1/4624553/(tum_HOOK_PhoenixResurrection); [Trigger on Phoenix about to resurrect]
+
+  !!SN:E(setHook)/1/4488516/(tum_OnEnchanterCastsMassSpell); [Trigger on Enchanter casts mass spells]
+ 
+  ; Custom buffs
+  !!SN:E(setHook)/1/4473430/(tum_OnResetSpellFromStack); [Trigger on reseting a spell - prevent custom buffs to be removed here] 444256
+  !!SN:E(setHook)/1/5893401/(tum_OnBeforeSpellBookDlgCreate); [Trigger on spell book dlg create in battle]
+  !!SN:E(setHook)/1/5893444/(tum_OnAfterSpellBookDlgDestroy); [Trigger on spell book dlg destroy in battle]
+
+  ; Whirlpool
+  !!SN:E(setHook)/1/4900801/(tum_OnEnterWhirlpool); [Trigger on entering Whirlpool] 004AC7C1
+
+  ; Scouting
+  !!SN:E(setHook)/1/5129161/(tum_OnGetScoutingRadius); [Trigger on getting the radius of Scouting] 004E43C9
+!!en;
+
 ; Disable War Machines in CB
 *!SN:E(setHook)/1/7780489/(tum_OnNpcPlacesWarMachine); [for tents with npc]
 *!SN:E(setHook)/1/7780731/(tum_OnNpcPlacesWarMachine); [for ballistas with npc]
+
+!?FU(tum_HOOK_PrepareTownScreen);
+!#VA(hook:x);
+
+!!UN:C(hook)/(STRUCT_HOOK_CONTEXT_ECX)/(UNC_INT)/?(townStruct:y);
+!!UN:C(townStruct)/1/?(townId:y);
+!!FU(tum_OnPrepareTownScreen):P(townId);
 
 !?FU(tum_HOOK_AfterAttackMainFunc);      [by igrik]
 !#VA(hook:x);
@@ -295,9 +342,9 @@ ZVSE2
 
 !!VR(finalDmg):S(finalDmgConst);
 
-********************************************
-**** Set Up Global Variables and Arrays ****
-********************************************
+*****************************************************
+**** Set Up Global Variables and Arrays (battle) ****
+*****************************************************
 
 // Set up town screen variable (to prevent triggering several events)
 !?FU(OnOpenTownScreen);
@@ -322,6 +369,23 @@ ZVSE2
   !!SN&(aiReport)<>0:E(aiReport)/1;
 !!en;
 
+// Set up varible for the end of Tactics phase
+!?FU(OnSetupBattlefield);
+!!VRi^tum_tacticsIsEnded^:S(FALSE);
+
+!?FU(OnAfterTacticsPhase);
+!!VRi^tum_tacticsIsEnded^:S(TRUE);
+
+!?FU(OnAfterBattleUniversal);
+!!VRi^tum_tacticsIsEnded^:S(FALSE);
+
+// Set up varible for stack action
+!?FU(OnBeforeBattleAction)&i^battle_round^>=0;
+!!VRi^tum_isOnAction^:S(TRUE);
+
+!?FU(OnBattleActionEnd)&i^battle_round^>=0;
+!!VRi^tum_isOnAction^:S(FALSE);
+
 // Set up special ability counter
 ; Reset special ability counter to 0 at the start of battle
 ; i^tum_abilityCounter3_%i^ is not currently used
@@ -342,7 +406,7 @@ ZVSE2
 ; Reduce i^tum_abilityCounter_%i^ by 1 every round
 ; i^tum_abilityCounter2_%i^ would only be reset for each battle
 ; Reset i^tum_abilityCounter3_%i^ to 0 at the end of start of every round
-!?FU(OnBattleRound_Quit)&i^battle_round^>0;
+!?FU(OnBattleRound_Quit)&i^battle_round^>=1;
 !!re i/(BATTLE_STACK_FIRST)/(BATTLE_STACK_LAST);
   !!VRi^tum_abilityCounter_%i^:-1 F0/(INT_MAX);
 
@@ -381,7 +445,7 @@ ZVSE2
 *!en;
 
 // Set up target stack
-; This is crucial for OnBattleActionEnd as the target would become -1 when killed
+; This is crucial for OnBattleActionEnd as the BG:E OnBattleActionEnd would become -1 when the target is killed
 !?FU(OnBeforeBattleAction);
 !!BG:E?i^tum_targetStack^;
 
@@ -635,6 +699,10 @@ ZVSE2
   !!en;
 !!en;
 
+*******************************************************************
+**** Functions * Functions * Functions * Functions * Functions ****
+*******************************************************************
+
 *******************************************************
 **** Function to get the latest creature ID of TUM ****
 *******************************************************
@@ -680,6 +748,50 @@ ZVSE2
 !!UN:J8/1/^wog scripts.pac^;            [check and export result to 1]
 !!VR(result)&1:S(TRUE);
 
+***************************************************
+**** Function to gernerate a random monster ID ****
+***************************************************
+; Get a random valid monster, aka all except not-used, warmachines, emissaries and commanders
+!?FU(tum_GetRandomMonster);             [by Archer30]
+!#VA(mon:x);                            [Return the random monster ID]
+!#VA(minLevel:x);                       [Optional. Min Monster level, including the level specified]
+!#VA(maxLevel:x);                       [Optional. Man Monster level, including the level specified]
+!#VA(maxFightValue:x);                  [Optional. Max fight value allowed, including the value specified]
+
+!!FU:A?(numArgs:y);
+
+!!if&(numArgs)<3;
+  !!VR(minLevel):S(MON_MIN_LEVEL);
+  !!VR(maxLevel):S(MON_MAX_LEVEL);
+!!en;
+
+!!MA&(numArgs)<4:F(MON_AZURE_DRAGON)/?(maxFightValue); [by default the max fight value is not greater than Azure Dragon's]
+
+!!VR(mon):S(NO_MON);
+!!FU(GetMaxMonsterId):P?(lastMon:y);
+
+!!re i;
+  !!VR(randMon:y):R0/(MON_FIRST)/(lastMon);
+  ; Skip invalid monsters
+  !!co|(randMon)=(MON_NOT_USED_1)/(randMon)=(MON_NOT_USED_2)/(randMon)=(MON_NOT_USED_3)/(randMon)=(MON_NOT_USED_4);
+  !!co&(randMon)>=(MON_CATAPULT)/(randMon)<=(MON_ARROW_TOWERS);
+  !!co&(randMon)>=(MON_EMISSARY_OF_WAR)/(randMon)<=(MON_EMISSARY_OF_LORE);
+  !!co&(randMon)>=(MON_COMMANDER_FIRST_A)/(randMon)<=(MON_COMMANDER_LAST_D);
+
+  ; Check if the level and fight value are ideal
+  !!MA:L(randMon)/?(level:y);
+
+  !!if&(level)>=(minLevel)/(level)<=(maxLevel);
+    !!MA:F(randMon)/?(fightValue:y);
+
+    !!if&(fightValue)>0/(fightValue)<=(maxFightValue);
+      !!VR(mon):S(randMon);
+
+      !!br;
+    !!en;
+  !!en;
+!!en;
+
 *******************************************************************
 **** Function to gernerate a random Heroes 3 / WoG artifact ID ****
 *******************************************************************
@@ -693,7 +805,7 @@ ZVSE2
 **** Function to play a custom animation on a given position ****
 *****************************************************************
 
-!?FU(tum_playCustomAnimationOnPosition);[by Hawaiing]
+!?FU(tum_PlayCustomAnimationOnPosition);[by Hawaiing]
 !#VA(filenamePtr:x);                    [Filename of the animation]
 !#VA(position:x);                       [positionition of the animation]
 !#VA(delay:x);                          [Optional. Delay (ms)]
@@ -741,7 +853,7 @@ ZVSE2
 **** Function to play a custom animation on a stack ****
 ********************************************************
 
-!?FU(tum_playCustomAnimationOnStack);
+!?FU(tum_PlayCustomAnimationOnStack);
 !#VA(filenamePtr:x);                    [Filename of the animation]
 !#VA(stack:x);                          [Stack for playing the anmation]
 !#VA(mode:x);                           [Mode. 0 - play the animation from the bottom of the stack. 1 - from the centre]
@@ -755,13 +867,13 @@ ZVSE2
 
 ; Play the animation
 !!if&(mode)=0;
-  !!SN:R^poof.def^/z(filenamePtr);
+  !!SN:B6835288/d/z(filenamePtr);
   !!BM(stack):V82;
-  !!SN:R^poof.def^/^^;
+  !!SN:B6835288/d/^Poof.def^;
 !!el&(mode)=1;
-  !!SN:R^C04SPF0.def^/z(filenamePtr);
+  !!SN:B6837180/d/z(filenamePtr);
   !!BM(stack):V9;
-  !!SN:R^C04SPF0.def^/^^;
+  !!SN:B6837180/d/^C04SPF0.def^;
 !!en;
 
 ; Reset changes
@@ -770,9 +882,9 @@ ZVSE2
 ****************************************************************
 **** Function to play a custom animation on multiple stacks ****
 ****************************************************************
-; Play a SPELL animation on multiple stacks at the same time (@ feanor and Archer30)
+; Play a SPELL animation on multiple stacks at the same time (@feanor and Archer30)
 !?FU(tum_PlayAnimationOnMultipleStacks);
-!#VA(animation:x);                      [Index of the animation (BM:V) or filename pointer]
+!#VA(animation:x);                      [Index of the animation (BM:V)]
 !#VA(stacksList:x);                     [Array of Stack numbers for animation]
 !#VA(playDamagedAnimation:x);           [Optional. Boolean. Whether to play the damaged animation]
 
@@ -856,7 +968,6 @@ ZVSE2
   !!VRy11:Sy16 *112 +y13 +452;
   !!SN:E5928496/1/y11/y3/y9;
 !!en;
-
 
 **************************************************************
 **** Function to check if a hero equip a set of artifacts ****
@@ -1007,7 +1118,7 @@ ZVSE2
 
 !!BM(stackId):Z?(stack:y);
 !!UN:C(COMBAT_MANAGER)/(UNC_INT)/?(cmbMgr:y);
-!!SN:E5933392/(CALLCONV_THISCALL)/(cmbMgr)/(spellID)/(castingSide)/(stack)/1/1;
+!!SN:E5933392/(CALLCONV_THISCALL)/(cmbMgr)/(spellID)/(castingSide)/(stack)/1/1; 5A8950
 !!VR(result):Sv1;
 
 *******************************************************************
@@ -1048,7 +1159,9 @@ ZVSE2
 !!FU|(hex)<=(BATTLE_HEX_FIRST)/(hex)>=(BATTLE_HEX_LAST):E;
 !!FU|(index)<0/(index)>5:E;
 
-!#VA(inValidHexes[20]:y):C16/17/33/34/50/51/67/68/84/85/101/102/118/119/135/136/152/153/169/170;
+!#VA(inValidHexes[20]:y);
+!!VR(inValidHexes[0]):C16/17/33/34/50/51/67/68/84/85;
+!!VR(inValidHexes[10]):C101/102/118/119/135/136/152/153/169/170;
 
 !!re i/0/19;
   !!FU&(hex)=(inValidHexes[i]):E;
@@ -1102,6 +1215,10 @@ ZVSE2
 !!BU:E(pos)/?(targetStack:y);
 !!FU&(targetStack)=(NO_STACK):E;
 
+; Check if the target is possessed by a controling spell, exit if positive
+!!BM(targetStack):G(SPELL_BLIND)/?(blindTurns:y)/d G70/?(stoneTurns:y)/d G74/?(paralyzeTurns:y)/d;
+!!FU|(blindTurns)>0/(stoneTurns)>0/(paralyzeTurns)>0:E;
+
 ; Store the original data of the spell and change
 !!SS(spell):E(SKILL_NOT_LEARNED)/?(origEffect:y) E(SKILL_NOT_LEARNED)/0;
 !!SS(spell):P?(origPower:y) P(powerCoef);
@@ -1121,8 +1238,8 @@ ZVSE2
 !?FU(tum_RemoveSpellFromStack);
 !#VA(stack:x) (spell:x);
 
-!!BM(stack):Z?(stackStuct:y);
-!!SN:E4473392/2/(stackStuct)/(spell);
+!!BM(stack):Z?(stackStruct:y);
+!!SN:E4473392/2/(stackStruct)/(spell);
 
 **************************************************************
 **** Function to Calculate the distance between two hexes ****
@@ -1448,6 +1565,9 @@ ZVSE2
 !#VA(stack:x) (adjacentStacksList:x);
 !#VA(type:x);                           [Optional. -1 for hostile units only, 0 for all, 1 for friendly]
 !#VA(canBeDead:x);                      [Optional. Whether to included dead units]
+!#VA(revertHypnotizedSide:x);           [Optional. If this is true, then the stacks around with Hypnotize spell would be considered belongs to the opposite side.
+                                        ; This does not include the side of the stack input (Hypnotized is always considered)
+                                        ; This should be TRUE for aura ability]
 
 !#VA(poses[2]:y);
 
@@ -1455,9 +1575,10 @@ ZVSE2
 !!FU:A?(numArgs:y);
 !!VR(type)&(numArgs)<3:S0;
 !!VR(canBeDead)&(numArgs)<4:S(FALSE);
+!!VR(revertHypnotizedSide)&(numArgs)<5:S(FALSE);
 
-; Get the actual side of the stack (in case it's Hypnotized)
-!!FU(tum_GetStackActualSide):P(stack)/?(side:y);
+; Get the actual side of the stack (side is reversed if Hypnotized)
+!!FU(tum_GetActualStackSide):P(stack)/?(side:y);
 !!BM(stack):P?(poses[0]) F?(flags:y);
 !!VR(poses[1]):S-1;
 
@@ -1465,10 +1586,13 @@ ZVSE2
 !!VR(isWide:y):S(flags) &(MON_FLAG_WIDE) B;
 
 !!if&(isWide);
-  !!if&(side)=(BATTLE_LEFT);
-    !!VR(poses[1]):S(poses[0]) +1;
-  !!el;
+  !!BM(stack):Z?(stackStruct:y);
+  !!UN:C(stackStruct)/68/4/?(secPosOrientation:y);
+
+  !!if&(secPosOrientation)=0;
     !!VR(poses[1]):S(poses[0]) -1;
+  !!el&(secPosOrientation)=1;
+    !!VR(poses[1]):S(poses[0]) +1;
   !!en;
 !!en;
 
@@ -1509,7 +1633,14 @@ ZVSE2
     !!if&(loopStack)>(NO_STACK);
       ; Skip if the looped stack doesn't belong to the side requested
       !!if&(type);
-        !!BM(loopStack):I?(loopSide:y);
+        ; Get the side of the looped stack depending on whether it requires to get the real controller of the stack
+        ; Question: Do we really need both?
+        !!if&(revertHypnotizedSide)=(FALSE);
+          !!BM(loopStack):I?(loopSide:y);
+        !!el;
+          !!FU(tum_GetActualStackSide):P(loopStack)/?(loopSide);
+        !!en;
+
         !!co&(type)=-1/(loopSide)=(side);
         !!co&(type)=1/(loopSide)<>(side);
       !!en;
@@ -1738,7 +1869,7 @@ Death Ripple? 005A106A (5902442)
 **** Get the actual side of a stack ****
 ****************************************
 ; The stack size would be reverted if the stack is hypnotized
-!?FU(tum_GetStackActualSide);
+!?FU(tum_GetActualStackSide);
 !#VA(stack:x) (side:x);
 
 !!BM(stack):I?(side) G(SPELL_HYPNOTIZE)/?(hypnotizeTurns:y)/d;
@@ -1801,7 +1932,7 @@ Death Ripple? 005A106A (5902442)
 
 !?FU(tum_GetStackLivingType);
 !#VA(stack:x);
-!#VA(result:x);                         [0 - Living, 1 - Undead, 2 - Construct, 3 - Elementals, 4 - others]
+!#VA(result:x);                         [0 - Living, 1 - Undead, 2 - Construct, 3 - Elementals, 4 - others (Gorynyches, Nightmares)]
 
 !!BM(stack):F?(flags:y);
 
@@ -1876,10 +2007,92 @@ Death Ripple? 005A106A (5902442)
 !!en;
 ; Cast the spell
 !!UN:C(COMBAT_MANAGER)/(UNC_INT)/?(combatManager:y);
-!!SN:E5898560/(CALLCONV_THISCALL)/(combatManager)/(spell)/(pos)/(TRUE)/-1/(level)/(power);[spell/pos/has spell book/(-1 valid/0 not valid)/level/power]
+!!SN:E5898560/(CALLCONV_THISCALL)/(combatManager)/(spell)/(pos)/1/-1/(level)/(power);[spell/pos/monster spell/(-1 valid/0 not valid)/level/power]
 ; Restore values
 !!if&(spell)=(SPELL_FIRE_WALL);
   !!UN:C5901158/4/2210438415;
   !!UN:C5901162/2/704;
   !!UN:C5901449/1/142;
 !!en;
+
+*****************************************************
+**** Heal and revive a stack with healing points ****
+*****************************************************
+; Heal the stack with a given amount of HP with the ability to revive when overhealing
+!?FU(tum_HealAndReviveStack);
+!#VA(stack:x);                          [Stack Id]
+!#VA(regenHp:x);                        [Amount of HP regen]
+!#VA(reviveNum:x);                      [Out. Number of creature revived]
+!#VA(actualRegenHp:x);                  [Out. Actual amount of HP regenerated. By default this equals to regen Hp unless the stack is neally full]
+
+; Initialise vars
+!!VR(reviveNum):S(FALSE);
+!!VR(actualRegenHp):S(regenHp);
+
+; Calculations
+!!BM(stack):H?(hp:y) L?(lostHp:y) N?(num:y) B?(initNum:y);
+!!VR(totalCurrHp:y):S(hp) *(num) -(lostHp);
+!!VR(totalInitHp:y):S(hp) *(initNum);
+
+; Exit if nothing to heal
+!!if&(totalInitHp)=(totalCurrHp);
+  !!VR(actualRegenHp):S0;
+  !!FU:E;
+!!en;
+
+!!VR(totalLostHp:y):S(totalInitHp) -(totalCurrHp);
+!!VR(totalNewHp:y):S(totalCurrHp) +(regenHp);
+
+; Fix if overflowed
+!!VR(totalNewHp)&(totalNewHp)<(totalCurrHp):S(totalInitHp);
+; Deal with overheal
+!!if&(totalNewHp)>(totalInitHp);
+  !!VR(overhealHp:y):S(totalNewHp) -(totalInitHp);
+  !!VR(actualRegenHp):S(regenHp) -(overhealHp);
+  !!VR(totalNewHp):S(totalInitHp);
+!!en;
+
+; Calculate new stats
+!!VR(newNum:y):S(totalNewHp) :(hp);
+!!VR(newCurrHp:y):S(totalNewHp) %(hp);
+
+!!if&(newCurrHp)=0;
+  !!VR(newCurrHp):S(hp);
+!!el;
+  !!VR(newNum):+1;
+!!en;
+
+!!VR(newLostHp:y):S(hp) -(newCurrHp);
+!!VR(reviveNum):S(newNum) -(num);
+
+; Set up new stack stats
+!!BM(stack):N(newNum) L(newLostHp);
+
+********************************************
+**** Get the max spell points of a hero ****
+********************************************
+
+!?FU(tum_Hero_GetFullSpellPoints);
+!#VA(hero:x) (result:x);
+
+!!HE(hero):Fd/d/d/?(knowledge:y);
+!!HE(hero):Z?(heroStruct:y);            [get hero structure]
+!!SN:E5131040/(CALLCONV_THISCALL_FLOAT)/(heroStruct); [get Intelligence power]
+!!VRe1:*10 *(knowledge);                [e1, emul to get max SP]
+!!VR(result):Se1;                       [return max hero SP]
+
+****************************
+**** Get town structure ****
+****************************
+; получение структуры города
+!?FU(tum_Town_GetStruct);
+; x1 - town number on map (0...47)
+;?x2 - return: ptr structure town
+!#VA(townId:x) (town:x); 
+!!IF&(townId)<(MAP_TOWN_FIRST)|(townId)>(MAP_TOWN_LAST):M^{FU(Town_GetStruct)}: Wrong town id.^;
+!!UN:C(GAME_MANAGER)/(UNC_UINT32)/?(game:y); 
+!!UN:C(game)/136724/(UNC_UINT32)/?(ptr:y); 
+!!VR(town):S(townId) *360 +(ptr);
+!!IF&(town)<43200000:M^{FU(Town_GetStruct): Attention!}
+Error in getting town structure address. 
+The game may fall at any time.^; 

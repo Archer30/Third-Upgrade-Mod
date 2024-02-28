@@ -1,0 +1,3 @@
+- Fixed Difficulty Mod / Creature Banks not working if wog option "Neutral Town and Creature Growth" is disabled
+- Fixed Hero Creature Specialist bonus not given to upgraded and TUM Upgraded creatures
+- Added TUM Compatibility for Universal Creature Upgrades wog option 

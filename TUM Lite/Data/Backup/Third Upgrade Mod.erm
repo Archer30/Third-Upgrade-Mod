@@ -1,0 +1,1647 @@
+ZVSE2
+****************************************************************************************************
+Third Upgrade Mod for ERA 3
+A Mod by VMaiko
+created 2020
+
+Scripts by Perry, Archer30 and Berseker 
+visit www.heroescommunity.com for updates and news
+****************************************************************************************************
+
+!#VRv9500:S-1;                          [Initialize v9500 to -1]
+
+****************************************************************
+************************ Upgrading Part ************************
+****************************************************************
+// Script by Archer30
+// Manage Creature upgrades in town
+!?FU(OnDetermineMonInfoDlgUpgrade);
+!#VA(monType:x) (upgType:x) (town:x) (hero:x);
+
+; Exit if Gelu or Dracon, or the third upgrade guild has not been built
+!!FU|(upgType)=(MON_SHARPSHOOTER)/(upgType)=(MON_ENCHANTER)/i^tum_upgGuild_%(town)^<>(TRUE):E;
+
+!!FU(tum_GetUpgMonInTown):P(monType)/(town)/?(upgType);
+
+!?FU(tum_GetUpgMonInTown);
+!#VA(monType:x) (town:x) (upgType:x);
+
+; Initialization
+!!VR(upgType):S(NO_MON);
+!!CA0/(town):T?(townType:y);
+; Get monster's level and get upgrade chain of the level
+!!MA:L(monType)/?(level:y);
+!!FU(tum_GetTownMon):P(townType)/(level)/?(mon:y)/?(upgMon:y)/?(thirdUpgMon:y);
+
+; Exit if upgraded dwelling is not built - might not be compatible with extended ugrades (is disabled anyway)
+!!VR(upgDwelling:y):S37 +(level);
+!!CA0/(town):B3/(upgDwelling);
+!!FU&-1:E;
+
+; Set up monster's upgrades
+!!if&(monType)=(mon);
+  !!VR(upgType):S(upgMon);
+!!el&(monType)=(upgMon);
+  !!VR(upgType)&i^tum_upgGuild_%(town)^:S(thirdUpgMon);
+!!en;
+
+; If the monster is a 3rd upgrade, get 4th upgrades if 4th upgrade option is enabled/monster is levle 7/upgraded level 7 dwelling, upgrade guild is built
+!!UN:P(WOG_OPT_4TH_UPGRADES)/?(fourthUpgOn:y);
+
+!!if&(fourthUpgOn)/(monType)=(thirdUpgMon)/(level)=6/i^tum_upgGuild_%(town)^;
+  !!FU(GetUpgradedMonster):P(monType)/?(upgType);
+!!en;
+
+!?FU(tum_GetTownMon);
+!#VA(townType:x) (level:x) (mon:x) (upgMon:x) (thirdUpgMon:x);
+
+; get original upgraded creatures
+!!if&(townType)<=(TOWN_STRONGHOLD);
+  !!VR(monFirstTown:y):S(level) *2 +1;
+  !!VR(upgMon):S(townType) *14 +(monFirstTown);
+!!el&(townType)=(TOWN_FORTRESS);
+  !!VR(fortressMons[7]:y):C(MON_GNOLL_MARAUDER)/(MON_LIZARD_WARRIOR)/(MON_DRAGON_FLY)/(MON_GREATER_BASILISK)/(MON_MIGHTY_GORGON)/(MON_WYVERN_MONARCH)/(MON_CHAOS_HYDRA);
+  !!VR(upgMon):S(fortressMons[level]);
+!!el&(townType)=(TOWN_CONFLUX);
+  !!VR(confluxMons[7]:y):C(MON_SPRITE)/(MON_STORM_ELEMENTAL)/(MON_ICE_ELEMENTAL)/(MON_ENERGY_ELEMENTAL)/(MON_MAGMA_ELEMENTAL)/(MON_MAGIC_ELEMENTAL)/(MON_PHOENIX);
+  !!VR(upgMon):S(confluxMons[level]);
+!!en;
+
+; get non-upgraded creatures
+!!VR(mon):S(upgMon) -1;
+; Fix Conflux mons
+!!VR(mon)&(upgMon)=(MON_STORM_ELEMENTAL):S(MON_AIR_ELEMENTAL);
+!!VR(mon)&(upgMon)=(MON_ICE_ELEMENTAL):S(MON_WATER_ELEMENTAL);
+!!VR(mon)&(upgMon)=(MON_ENERGY_ELEMENTAL):S(MON_FIRE_ELEMENTAL);
+!!VR(mon)&(upgMon)=(MON_MAGMA_ELEMENTAL):S(MON_EARTH_ELEMENTAL);
+
+; get third upgraded creatures
+!!FU(GetUpgradedMonster):P(upgMon)/?(thirdUpgMon);
+
+// Adapt fast upgrades with holding A + mouse click
+// Note: Clicking on the spot of the garrison hero/visiting hero has not been coded yet
+!?FU(OnTownMouseClick)&i^mouse_action^=(MOUSE_LMB_PRESSED)/i^key_a^/999;
+; Exit if not clicking on a possible creature slot
+!!VR(item:y):Si^mouse_item^;
+!!VR(flag:y):S(FALSE);
+!!VR(flag)&(item)>=115/(item)<=121:S(TRUE);
+!!CA(CURRENT_TOWN):H1/?(visitHero:y);
+!!VR(flag)&(item)>=140/(item)<=146/(visitHero)>(NO_HERO):S(TRUE);
+!!FU&(flag)=(FALSE):E;
+
+; Exit if the town is not owned by the player
+!!CA(CURRENT_TOWN):O?(owner:y);
+!!FU&(owner)<>i^timerOwner^:E;
+
+; Exit if the third upgrade building has not been built
+!!CA(CURRENT_TOWN):U?(townId:y) T?(townType:y);
+!!FU&i^tum_upgGuild_%(townId)^<>(TRUE):E;
+
+; Manage different actions depending on whether clicking on the garrison or a slot from the visiting hero
+!!if&(item)>=115/(item)<=121;
+  !!VR(slot:y):S(item) -115;
+
+  ; Use differernt receivers depending on whether the hero in the garrison is available
+  !!CA0/(townId):H0/?(garrisonHero:y);
+
+  !!if&(garrisonHero)=(NO_HERO);
+    !!CA0/(townId):M2/(slot)/?(type:y)/?(num:y);
+    !!CA0/(townId):P?(x:y)/?(y:y)/?(z:y);
+    !!EX(x)/(y)/(z)/(slot)/2:E?(exp:y);
+  !!el;
+    !!HE(garrisonHero):C0/(slot)/?(type)/?(num)/?(exp:y)/0;
+  !!en;
+!!el&(item)>=140/(item)<=146;
+  !!VR(slot):S(item) -140;
+  !!HE(visitHero):C0/(slot)/?(type)/?(num)/?(exp)/0;
+!!en;
+
+!!CM:R0;
+
+; Check for upgrade if it was clicked on a monster
+!!if&(type)>(NO_MON)/(num)>0;
+  !!FU(tum_GetUpgMonInTown):P(type)/(townId)/?(upg:y);
+
+  ; Check the cost of upgrade if the monster has one
+  !!if&(upg)>(NO_MON);
+    !#VA(leftRes[7]:y);
+
+    !!re i/(RES_FIRST)/(RES_LAST_SOD);
+      !!MA:C(type)/i/?(typeRes:y);
+      !!MA:C(upg)/i/?(upgRes:y);
+      !!VR(cost:y):S(upgRes) -(typeRes) *(num) F0/(INT_MAX);
+
+      !!OW:R(owner)/i/?(ownedRes:y);
+      !!VR(leftRes[i]):S(ownedRes) -(cost);
+
+      ; Exit the function if can't afford
+      !!FU&(leftRes[i])<0:E;
+    !!en;
+
+    ; Set new resource
+    !!re i/(RES_FIRST)/(RES_LAST_SOD);
+      !!OW:R(owner)/i/(leftRes[i]);
+    !!en;
+
+    ; Upgrade the creature with exp changes
+    !!EA(type):U?(upgMultiplier:y);
+    !!VR(newExp:y):S(exp) *(upgMultiplier) :1000;
+
+    !!if&(item)>=115/(item)<=121;
+      !!if&(garrisonHero)=(NO_HERO);
+        !!CA0/(townId):M2/(slot)/(upg)/(num);
+        !!EX(x)/(y)/(z)/(slot)/2:E(newExp);
+      !!el;
+        !!HE(garrisonHero):C0/(slot)/(upg)/(num)/(newExp)/0;
+      !!en;  
+    !!el&(item)>=140/(item)<=146;
+      !!HE(visitHero):C0/(slot)/(upg)/(num)/(newExp)/0;
+    !!en;    
+
+    !!SN:D;
+    !!UN:R2;
+  !!en;
+!!en;
+
+------------------------------------------------------------------------------------------------------------------
+
+ [Reset changed town creature types]
+!?FU9502;
+!!CA(CURRENT_TOWN):P?y1/?y2/?y3;        [Town's position: y1/y2/y3]
+
+ [Creature type: y4 (non-upgraded) and y5 (upgraded), y6 (level)]
+!!POy1/y2/y3:B0/?y4 B1/?y5;
+!!POy1/y2/y3:O?y6;                      [PO:B0: y4  PO:B1: y5  PO:O: y6]
+!!VRy4&y4>0:-1;                         [Subtract 1 from y4 to get non-upgraded creature number]
+!!VRy5&y5>0:-1;                         [Subtract 1 from y5 to get upgraded creature number]
+!!VRy6&y6>0:-1;                         [Subtract 1 from y6 to get creature level]
+
+!!UN&y4>=0:Tx1/y6/0/y4;                 [Reset non-upgraded]
+!!UN&y5>=0:Tx1/y6/1/y5;                 [Reset upgraded]
+
+!!FU&v9500<0:E;                         [Exit function if no creature changed]
+
+ [Restore creature: v9500]
+!!MA:Ov9500/v9501;                      [Restore creature's town type]
+
+ [Restore upgraded creature: v9510]
+!!MA:Ov9510/v9511;                      [Restore upgraded creature's town type]
+
+ [Reset v9500 to -1]
+!!VRv9500:S-1;
+
+************************* set new upgrades ***********************************
+!#MA:U01/197;                           [Halberdiers to Templar] *Castle*]
+!#MA:U03/198;
+!#MA:U05/199;
+!#MA:U07/200;
+!#MA:U09/201;                           [Zealots to War Zealots] *Castle*]
+!#MA:U13/150;                           [Archangels to Supreme Archangels] *Castle Level 8*]
+!#MA:U11/202;
+!#MA:U15/203;
+!#MA:U17/204;
+!#MA:U19/205;                           [Grand Elves to Sharpshooter] *Rampart*]
+!#MA:U21/206;                           [Silver Pegasi to Elves Sacred] *Rampart*]
+!#MA:U23/207;
+!#MA:U25/208;
+!#MA:U27/151;                           [Gold Dragons to Diamond Dragons] *Rampart Level 8*]
+!#MA:U29/209;                           [Master Gremlins to Santa Gremlins] *Tower*]
+!#MA:U31/210;
+!#MA:U33/211;                           [Iron Golems to Steel Golem] *Tower*]
+!#MA:U35/212;
+!#MA:U37/213;
+!#MA:U39/214;
+!#MA:U41/152;                           [Titans to Lords of Thunder] *Tower Level 8*]
+!#MA:U43/215;
+!#MA:U45/216;
+!#MA:U47/217;
+!#MA:U49/218;
+!#MA:U51/219;
+!#MA:U53/220;                           [Efreet Sultans to Efreet Rajah] *Inferno*]
+!#MA:U55/153;                           [Arch Devils to Hell Baron] *Inferno Level 8*]
+!#MA:U57/221;
+!#MA:U59/222;                           [Zombies to Mummies] *Necropolis*]
+!#MA:U61/223;                           [Wraiths to Ghosts] *Necropolis*]
+!#MA:U63/224;
+!#MA:U65/225;
+!#MA:U67/226;
+!#MA:U69/154;                           [Ghost Dragons to Blood Dragons] *Necropolis Level 8*]
+!#MA:U71/227;
+!#MA:U73/228;
+!#MA:U75/229;
+!#MA:U77/230;                           [Medusa Queens to Medusa Empress] *Dungeon*]
+!#MA:U79/231;                           [Minotaur Kings to Black Minotaur] *Dungeon*]
+!#MA:U81/232;
+!#MA:U83/155;                           [Black Dragons to Darkness Dragons] *Dungeon Level 8*]
+!#MA:U85/233;                           [Hobgoblins to Hobgoblins Overlord] *Stronghold*]
+!#MA:U87/234;
+!#MA:U89/235;
+!#MA:U91/236;                           [Ogre Magi to Elder Ogre] *Stronghold*]
+!#MA:U93/237;
+!#MA:U95/238;
+!#MA:U97/156;                           [Ancient Behemoths to Ghost Behemoths] *Stronghold Level 8*]
+!#MA:U99/239;                           [Upg. Gnolls to Centagnoll] *Fortress*]
+!#MA:U101/240;
+!#MA:U103/244;
+!#MA:U105/241;
+!#MA:U107/242;                          [Greater Basilisks to Lava Basilisks] *Fortress*]
+!#MA:U109/243;
+!#MA:U111/157;                          [Chaos Hydras to Hell Hydras] *Fortress Level 8*]
+!#MA:U119/245;
+!#MA:U121/250;
+!#MA:U123/247;
+!#MA:U125/249;                          [Magma Elementals to Mineral Elementals] *Conflux*]
+!#MA:U127/246;
+!#MA:U129/248;                          [Energy Elementals to Flux Elementals] *Conflux*]
+!#MA:U131/158;                          [Phoenixes to Sacred Phoenixes] *Conflux Level 8*]
+
+ [The following can only be upgraded at Hill Forts]
+!?FU(OnAfterErmInstructions);
+!!MA:U(MON_GOLD_GOLEM)/(MON_DIAMOND_GOLEM);
+
+*****************************************************************************
+************** the special structure in a town used for upgrading ***********
+*****************************************************************************
+; Set up monsters in the town
+; Script by Archer30
+!?FU(OnPreTownScreen);
+!#VA(townId:x);
+
+!!FU(tum_SetUpTownMons):P(townId);
+!!SN:D;
+
+!?FU(OnAfterBuildTownBuilding)&i^tum_onTownScreen^;
+!#VA(townId:x) (buildingId:x);
+
+!!FU(tum_SetUpTownMons)&(buildingId)=7:P(townId);
+!!FU(tum_SetUpTownMons)&(buildingId)>=37/(buildingId)<=43:P(townId);
+!!SN:D;
+
+!?FU(tum_SetUpTownMons);
+!#VA(townId:x);
+
+!!CA0/(townId):B3/7 T?(townType:y);
+!!VRi^tum_upgGuild_%(townId)^&-1:S(FALSE);
+
+; Set to third upgrade monsters if third upgrade building is built - depedning on whether the upgraded dwelling is built
+!!if&i^tum_upgGuild_%(townId)^;
+  !!re i/(MON_MIN_LEVEL)/(MON_MAX_LEVEL);
+    !!VR(building:y):Si +37;
+    !!CA0/(townId):B3/(building);
+
+    !!FU(tum_GetTownMon):P(townType)/i/?(mon:y)/?(upgMon:y)/?(thirdUpgMon:y)/;
+
+    !!if&1/i^tum_upgGuild_%(townId)^;
+      ; if both the upgraded dwelling and upgrade guild is built, get the third upgrade creature
+      !!UN:T(townType)/i/1/(thirdUpgMon);
+
+      ; if level 7, also 4th upgrade option is enabled, get the fourth upgrade creature
+      !!if&i=6;
+        !!UN:P(WOG_OPT_4TH_UPGRADES)/?(fourthUpgOn:y);
+
+        !!if&(fourthUpgOn);
+          !!FU(GetUpgradedMonster):P(thirdUpgMon)/?(fourthUpgMon:y);
+          !!UN&(fourthUpgMon)<>(NO_MON):T(townType)/i/1/(fourthUpgMon);
+        !!en;
+      !!en;
+    !!el;
+      ; if either upgraded dwelling or third upgrade building is not built, reset to original upgraded creature
+      !!UN:T(townType)/i/1/(upgMon);
+    !!en;
+  !!en;
+; Restore to the original town monsters if third upgrade building is not built
+!!el;
+  !!FU(tum_ResetTownMons):P(townId);
+!!en;
+
+; Manage town dwellings
+!!if&i^tum_upgGuild_%(townId)^;
+  !!FU(newup_ExtendTownDwellings):P(townId)/(townType);
+!!el;
+  !!FU(tum_DemolishExtTownDwell):P(townId)/(townType);
+!!en;
+
+// Restore UN:T values to their original
+!?FU(OnCloseTownScreen);
+!#VA(townId:x);
+
+!!FU(tum_ResetTownMons):P(townId);
+
+!?FU(tum_ResetTownMons);
+!#VA(townId:x);
+
+!!re i/(TOWN_FIRST)/(TOWN_LAST_WOG);
+  !!if&i<(TOWN_FORTRESS);
+    !!re j/0/6;
+      !!VR(townOffset:y):Si *14 +1;
+      !!VR(mon:y):Sj *2 +(townOffset);
+      !!UN:Ti/j/1/(mon);
+    !!en;
+  !!el&i=(TOWN_FORTRESS);
+    !!UN:Ti/0/1/(MON_GNOLL_MARAUDER);
+    !!UN:Ti/1/1/(MON_LIZARD_WARRIOR);
+    !!UN:Ti/2/1/(MON_DRAGON_FLY);
+    !!UN:Ti/3/1/(MON_GREATER_BASILISK);
+    !!UN:Ti/4/1/(MON_MIGHTY_GORGON);
+    !!UN:Ti/5/1/(MON_WYVERN_MONARCH);
+    !!UN:Ti/6/1/(MON_CHAOS_HYDRA);
+  !!el&i=(TOWN_CONFLUX);
+    !!UN:Ti/0/1/(MON_SPRITE);
+    !!UN:Ti/1/1/(MON_STORM_ELEMENTAL);
+    !!UN:Ti/2/1/(MON_ICE_ELEMENTAL);
+    !!UN:Ti/3/1/(MON_ENERGY_ELEMENTAL);
+    !!UN:Ti/4/1/(MON_MAGMA_ELEMENTAL);
+    !!UN:Ti/5/1/(MON_MAGIC_ELEMENTAL);
+    !!UN:Ti/6/1/(MON_PHOENIX);
+  !!en;
+!!en;
+
+*****************************************************************************
+; Destruct the special building if there is no fort
+; Script by Archer30
+!?FU(tum_DemolishExtTownDwell);
+!#VA(townId:x) (townType:x);
+
+!!if&(townType)=(TOWN_CASTLE);          [Castle]
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/0/1/0/(MON_PIKEMAN)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/0/1/1/(MON_HALBERDIER)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/1/1/0/(MON_ARCHER)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/1/1/1/(MON_MARKSMAN)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/2/1/0/(MON_GRIFFIN)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/2/1/1/(MON_ROYAL_GRIFFIN)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/3/1/0/(MON_SWORDSMAN)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/3/1/1/(MON_CRUSADER)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/4/1/0/(MON_MONK)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/4/1/1/(MON_ZEALOT)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/5/1/0/(MON_CAVALIER)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/5/1/1/(MON_CHAMPION)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/0/(MON_ARCHANGEL)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/1/(MON_ANGEL)/100;
+!!el&(townType)=(TOWN_RAMPART);         [Rampart]
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/0/1/0/(MON_CENTAUR)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/0/1/1/(MON_CENTAUR_CAPTAIN)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/1/1/0/(MON_DWARF)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/1/1/1/(MON_BATTLE_DWARF)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/2/1/0/(MON_WOOD_ELF)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/2/1/1/(MON_GRAND_ELF)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/3/1/0/(MON_PEGASUS)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/3/1/1/(MON_SILVER_PEGASUS)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/4/1/0/(MON_DENDROID_GUARD)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/4/1/1/(MON_DENDROID_SOLDIER)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/5/1/0/(MON_UNICORN)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/5/1/1/(MON_WAR_UNICORN)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/0/(MON_GREEN_DRAGON)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/1/(MON_GOLD_DRAGON)/100;
+!!el&(townType)=(TOWN_TOWER);           [Tower]
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/0/1/0/(MON_GREMLIN)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/0/1/1/(MON_MASTER_GREMLIN)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/1/1/0/(MON_STONE_GARGOYLE)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/1/1/1/(MON_OBSIDIAN_GARGOYLE)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/2/1/0/(MON_STONE_GOLEM)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/2/1/1/(MON_IRON_GOLEM)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/3/1/0/(MON_MAGE)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/3/1/1/(MON_ARCH_MAGE)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/4/1/0/(MON_GENIE)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/4/1/1/(MON_MASTER_GENIE)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/5/1/0/(MON_NAGA)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/5/1/1/(MON_NAGA_QUEEN)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/0/(MON_GIANT)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/1/(MON_TITAN)/100;
+!!el&(townType)=(TOWN_INFERNO);         [Inferno]
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/0/1/0/(MON_IMP)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/0/1/1/(MON_FAMILIAR)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/1/1/0/(MON_GOG)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/1/1/1/(MON_MAGOG)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/2/1/0/(MON_HELL_HOUND)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/2/1/1/(MON_CERBERUS)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/3/1/0/(MON_DEMON)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/3/1/1/(MON_HORNED_DEMON)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/4/1/0/(MON_PIT_FIEND)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/4/1/1/(MON_PIT_LORD)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/5/1/0/(MON_EFREETI)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/5/1/1/(MON_EFREET_SULTAN)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/0/(MON_DEVIL)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/1/(MON_ARCH_DEVIL)/100;
+!!el&(townType)=(TOWN_NECROPOLIS);      [Necropolis]
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/0/1/0/(MON_SKELETON)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/0/1/1/(MON_SKELETON_WARRIOR)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/1/1/0/(MON_WALKING_DEAD)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/1/1/1/(MON_ZOMBIE)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/2/1/0/(MON_WIGHT)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/2/1/1/(MON_WRAITH)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/3/1/0/(MON_VAMPIRE)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/3/1/1/(MON_VAMPIRE_LORD)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/4/1/0/(MON_LICH)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/4/1/1/(MON_POWER_LICH)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/5/1/0/(MON_BLACK_KNIGHT)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/5/1/1/(MON_DREAD_KNIGHT)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/0/(MON_BONE_DRAGON)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/1/(MON_GHOST_DRAGON)/100;
+!!el&(townType)=(TOWN_DUNGEON);         [Dungeon]
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/0/1/0/(MON_TROGLODYTE)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/0/1/1/(MON_INFERNAL_TROGLODYTE)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/1/1/0/(MON_HARPY)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/1/1/1/(MON_HARPY_HAG)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/2/1/0/(MON_BEHOLDER)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/2/1/1/(MON_EVIL_EYE)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/3/1/0/(MON_MEDUSA)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/3/1/1/(MON_MEDUSA_QUEEN)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/4/1/0/(MON_MINOTAUR)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/4/1/1/(MON_MINOTAUR_KING)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/5/1/0/(MON_MANTICORE)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/5/1/1/(MON_SCORPICORE)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/0/(MON_RED_DRAGON)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/1/(MON_BLACK_DRAGON)/100;
+!!el&(townType)=(TOWN_STRONGHOLD);      [Stronghold]
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/0/1/0/(MON_GOBLIN)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/0/1/1/(MON_HOBGOBLIN)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/1/1/0/(MON_WOLF_RIDER)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/1/1/1/(MON_WOLF_RAIDER)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/2/1/0/(MON_ORC)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/2/1/1/(MON_ORC_CHIEFTAIN)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/3/1/0/(MON_OGRE)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/3/1/1/(MON_OGRE_MAGE)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/4/1/0/(MON_ROC)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/4/1/1/(MON_THUNDERBIRD)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/5/1/0/(MON_CYCLOPS)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/5/1/1/(MON_CYCLOPS_KING)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/0/(MON_BEHEMOTH)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/1/(MON_ANCIENT_BEHEMOTH)/100;
+!!el&(townType)=(TOWN_FORTRESS);        [Fortress]
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/0/1/0/(MON_GNOLL)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/0/1/1/(MON_GNOLL_MARAUDER)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/1/1/0/(MON_LIZARDMAN)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/1/1/1/(MON_LIZARD_WARRIOR)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/2/1/0/(MON_GORGON)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/2/1/1/(MON_MIGHTY_GORGON)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/3/1/0/(MON_SERPENT_FLY)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/3/1/1/(MON_DRAGON_FLY)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/4/1/0/(MON_BASILISK)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/4/1/1/(MON_GREATER_BASILISK)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/5/1/0/(MON_WYVERN)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/5/1/1/(MON_WYVERN_MONARCH)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/0/(MON_HYDRA)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/1/(MON_CHAOS_HYDRA)/100;
+!!el&(townType)=(TOWN_CONFLUX);         [Conflux]
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/0/1/0/(MON_PIXIE)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/0/1/1/(MON_SPRITE)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/1/1/0/(MON_AIR_ELEMENTAL)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/1/1/1/(MON_STORM_ELEMENTAL)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/2/1/0/(MON_WATER_ELEMENTAL)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/2/1/1/(MON_ICE_ELEMENTAL)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/3/1/0/(MON_FIRE_ELEMENTAL)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/3/1/1/(MON_ENERGY_ELEMENTAL)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/4/1/0/(MON_EARTH_ELEMENTAL)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/4/1/1/(MON_MAGMA_ELEMENTAL)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/5/1/0/(MON_PSYCHIC_ELEMENTAL)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/5/1/1/(MON_MAGIC_ELEMENTAL)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/0/(MON_FIREBIRD)/100;
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/6/1/1/(MON_PHOENIX)/100;
+!!en;
+
+!!re i/(MON_MIN_LEVEL)/(MON_MAX_LEVEL);
+  !!FU(dex_SetDwellingSlotByTownId):P(townId)/i/1/2/(NO_MON)/100;
+!!en;
+
+*****************************************************************************
+!?FU(gem_OnOpenButtonDlg);              [Function from GEM Mod that is called when clicking the new buttons]
+    !!FU:E;
+
+    !!CA-1:T?y1;                        [Get Town type]
+    
+    !!VRz20&y1=0:Sz199863;              [The Heavenly Tower]
+    !!VRz21&y1=0:Sz199861;              [The Heavenly Tower]
+
+    !!VRz20&y1=1:Sz199866;              [Order of The Sun]
+    !!VRz21&y1=1:Sz199864;              [Order of The Sun]
+
+    !!VRz20&y1=2:Sz199869;              [Cloud Castle]
+    !!VRz21&y1=2:Sz199867;              [Cloud Castle]
+
+    !!VRz20&y1=3:Sz199872;              [Kreegans' Gate]
+    !!VRz21&y1=3:Sz199870;              [Kreegans' Gate]
+
+    !!VRz20&y1=4:Sz199875;              [Hall of The Pit]
+    !!VRz21&y1=4:Sz199873;              [Hall of The Pit]
+
+    !!VRz20&y1=5:Sz199881;              [Underworld Entrance]
+    !!VRz21&y1=5:Sz199879;              [Underworld Entrance]
+
+    !!VRz20&y1=6:Sz199884;              [Barbarian Citadel]
+    !!VRz21&y1=6:Sz199882;              [Barbarian Citadel]
+
+    !!VRz20&y1=7:Sz199887;              [Temple of The Snake]
+    !!VRz21&y1=7:Sz199885;              [Temple of The Snake]
+
+    !!VRz20&y1=8:Sz199860;              [Escaton's Crystal]
+    !!VRz21&y1=8:Sz199858;              [Escaton's Crystal]
+    
+  !!FU(gem_AddTownButton):P^007T8BTN.def^/10/10/^%Z20^/^%Z20^/^%Z21^/(TUM_Build_New_Building)/0/0/0; [Blacksmith button]
+
+; Build special buildings
+!?FU(OnTownMouseClick)&999;             [trigger on clicking in town screen)]
+
+!!CA(CURRENT_TOWN):U?y30;               [get town id]
+!!CA(CURRENT_TOWN):T?y2;                [get town type)]
+
+!!CA(CURRENT_TOWN):O?y-2;               [owner of the town: y-2)]
+!!FU&y-2<>i^timerOwner^:E;
+
+!!CM:S?y1;                              [Get what type of click)]
+!!FU&y1<>14:E;                          [exit if not right click)]
+
+!!CM:I?y1;                              [Get what type of click)]
+!!FU&y1<10:E;                           [abort if not town hall type)]
+!!FU&y1>13:E;                           [abort if not town hall type)]
+!!FU(TUM_Build_New_Building):P; 
+
+
+!?FU(TUM_Build_New_Building);           [trigger on clicking in town screen)]
+
+!!CM:R0;                                [Disable normal popup)]
+!!CA(CURRENT_TOWN):B3/13;               [if capitol built - reenable standard text)]
+!!CM&1:R1;
+
+!!VRv4:S0;
+!!VRv5:S0;
+!!VRv6:S0;
+!!CA(CURRENT_TOWN):B3/9;                [ckeck if there's a castle)]
+!!VRv4&1:S1;                            [set a helping var)]
+
+!!CA(CURRENT_TOWN):B3/8;                [check for citadel)]
+!!VRv5&1:S1;
+
+!!CA(CURRENT_TOWN):B3/7;                [check for fort)]
+!!VRv6&1:S1;
+
+!!CM&v4=0/v5=0/v6=0:R1;                 [if no fort, citadel or castle reenable standard text)]
+
+!!UN:P4/?y2;                            [check if town demolition is enabled]
+
+!!if&y2=1;
+  !!CM:R0;                              [if it is not enabled - disable any standard text]
+!!el;
+  !!CA(CURRENT_TOWN):B3/0;              [Cancel standard action if Level 1 Mage Guild is built - town hall can't be demolished in this case]
+
+  !!CM&1:R0;
+!!en;
+
+************ get current resources *************
+!!OW:Ri^timerOwner^/6/?v9541;                   [1 - gold]
+!!OW:Ri^timerOwner^/0/?v9542;                   [2 - wood]
+!!OW:Ri^timerOwner^/2/?v9543;                   [3 - ore]
+!!OW:Ri^timerOwner^/1/?v9544;                   [4 - mercury]
+!!OW:Ri^timerOwner^/3/?v9545;                   [5 - sulfur]
+!!OW:Ri^timerOwner^/4/?v9546;                   [6 - crystal]
+!!OW:Ri^timerOwner^/5/?v9547;                   [7 - gems]
+!!OW:Ri^timerOwner^/7/?v9548;                   [8 - mithril]
+
+************ set texts ********************
+!!VRz946:Sz199850;                      [already build]
+!!VRz947:Sz199851;                      [can build]
+!!VRz948:Sz199852;                      [not enough resources]
+!!VRz949:Sz199853;                      [need to have a castle]
+!!VRz945:S^^;
+!!VRz950:S^^;
+!!CA(CURRENT_TOWN):T?y2;                [check town type]
+
+************************ CONFLUX *****************************
+
+!!if&y2=8;
+  !!VRz945:Sz199858;                 [text before building]
+  !!VRz950:Sz199859;                 [text after building]
+  !!VRz953:Sz199860;                 [the name of the graphic]
+  !!VRz952:S^../data/p/conflux.bmp^; [path to builging graphics]
+  !!VRv9551:S20000;                  [price in gold]
+  !!VRv9552:S30;                     [price in crystals]
+  !!VRv9553:S15;                     [price in gems]
+  !!VRv9554:Sv9546;                  [second resource amount]
+  !!VRv9555:Sv9547;                  [third resource amount]
+  !!VRv9556:S4;                      [second resource is crystal]
+  !!VRv9557:S5;                      [third resource is gems]
+!!en;
+
+************************* CASTLE *****************************
+
+!!if&y2=0;
+  !!VRz945:Sz199861;                 [text before building]
+  !!VRz950:Sz199862;                 [text after building]
+  !!VRz953:Sz199863;                 [the name of the graphic]
+  !!VRz952:S^../data/p/castle.bmp^;  [path to builging graphics]
+  !!VRv9551:S22000;                  [price in gold]
+  !!VRv9552:S30;                     [price in gems]
+  !!VRv9553:S30;                     [price in ore]
+  !!VRv9554:Sv9547;                  [second resource amount]
+  !!VRv9555:Sv9543;                  [third resource amount]
+  !!VRv9556:S5;                      [second resource is gems]
+  !!VRv9557:S2;                      [third resource is ore]
+!!en;
+
+************************ RAMPART ****************************
+
+!!if&y2=1;
+  !!VRz945:Sz199864;                 [text before building]
+  !!VRz950:Sz199865;                 [text after building]
+  !!VRz953:Sz199866;                 [the name of the graphic]
+  !!VRz952:S^../data/p/rampart.bmp^; [path to builging graphics]
+  !!VRv9551:S20000;                  [price in gold]
+  !!VRv9552:S25;                     [price in crystals]
+  !!VRv9553:S40;                     [price in wood]
+  !!VRv9554:Sv9546;                  [second resource amount]
+  !!VRv9555:Sv9542;                  [third resource amount]
+  !!VRv9556:S4;                      [second resource is crystal]
+  !!VRv9557:S0;                      [third resource is wood]
+!!en;
+
+************************ TOWER *****************************
+
+!!if&y2=2;
+  !!VRz945:Sz199867;                 [text before building]
+  !!VRz950:Sz199868;                 [text after building]
+  !!VRz953:Sz199869;                 [the name of the graphic]
+  !!VRz952:S^../data/p/tower.bmp^;   [path to builging graphics]
+  !!VRv9551:S25000;                  [price in gold]
+  !!VRv9552:S30;                     [price in gems]
+  !!VRv9553:S15;                     [price in mercury]
+  !!VRv9554:Sv9547;                  [second resource amount]
+  !!VRv9555:Sv9544;                  [third resource amount]
+  !!VRv9556:S5;                      [second resource is gems]
+  !!VRv9557:S1;                      [third resource is mercury]
+!!en;
+
+************************ INFERNO *****************************
+
+!!if&y2=3;
+  !!VRz945:Sz199870;                 [text before building]
+  !!VRz950:Sz199871;                 [text after building]
+  !!VRz953:Sz199872;                 [the name of the graphic]
+  !!VRz952:S^../data/p/inferno.bmp^; [path to builging graphics]
+  !!VRv9551:S19000;                  [price in gold]
+  !!VRv9552:S30;                     [price in mercury]
+  !!VRv9553:S15;                     [price in sulfur]
+  !!VRv9554:Sv9544;                  [second resource amount]
+  !!VRv9555:Sv9545;                  [third resource amount]
+  !!VRv9556:S1;                      [second resource is mercury]
+  !!VRv9557:S3;                      [third resource is sulfur]
+!!en;
+
+************************ NECROPOLIS *****************************
+
+!!if&y2=4;
+  !!VRz945:Sz199873;                 [text before building]
+  !!VRz950:Sz199874;                 [text after building]
+  !!VRz953:Sz199875;                 [the name of the graphic]
+  !!VRz952:S^../data/p/necropol.bmp^;[path to builging graphics]
+  !!VRv9551:S21000;                  [price in gold]
+  !!VRv9552:S25;                     [price in mercury]
+  !!VRv9553:S35;                     [price in wood]
+  !!VRv9554:Sv9544;                  [second resource amount]
+  !!VRv9555:Sv9542;                  [third resource amount]
+  !!VRv9556:S1;                      [second resource is mercury]
+  !!VRv9557:S0;                      [third resource is wood]
+!!en;
+
+************************ DUNGEON *****************************
+
+!!if&y2=5;
+  !!VRz945:Sz199879;                 [text before building]
+  !!VRz950:Sz199880;                 [text after building]
+  !!VRz953:Sz199881;                 [the name of the graphic]
+  !!VRz952:S^../data/p/dungeon2.bmp^;[path to builging graphics]
+  !!VRv9551:S23000;                  [price in gold]
+  !!VRv9552:S30;                     [price in sulfur]
+  !!VRv9553:S35;                     [price in ore]
+  !!VRv9554:Sv9545;                  [second resource amount]
+  !!VRv9555:Sv9543;                  [third resource amount]
+  !!VRv9556:S3;                      [second resource is sulfur]
+  !!VRv9557:S2;                      [third resource is ore]
+!!en;
+
+************************ STRONGHOLD *****************************
+
+!!if&y2=6;
+  !!VRz945:Sz199882;                 [text before building]
+  !!VRz950:Sz199883;                 [text after building]
+  !!VRz953:Sz199884;                 [the name of the graphic]
+  !!VRz952:S^../data/p/strongho.bmp^;[path to builging graphics]
+  !!VRv9551:S19000;                  [price in gold]
+  !!VRv9552:S60;                     [price in crystals]
+  !!VRv9553:S15;                     [price in gems]
+  !!VRv9554:Sv9543;                  [second resource amount]
+  !!VRv9555:Sv9546;                  [third resource amount]
+  !!VRv9556:S2;                      [second resource is ore]
+  !!VRv9557:S4;                      [third resource is crystal]
+!!en;
+
+************************ FORTRESS *****************************
+
+!!if&y2=7;
+  !!VRz945:Sz199885;                 [text before building]
+  !!VRz950:Sz199886;                 [text after building]
+  !!VRz953:Sz199887;                 [the name of the graphic]
+  !!VRz952:S^../data/p/fortress.bmp^;[path to builging graphics]
+  !!VRv9551:S18000;                  [price in gold]
+  !!VRv9552:S50;                     [price in wood]
+  !!VRv9553:S20;                     [price in sulfur]
+  !!VRv9554:Sv9542;                  [second resource amount]
+  !!VRv9555:Sv9545;                  [third resource amount]
+  !!VRv9556:S0;                      [second resource is wood]
+  !!VRv9557:S3;                      [third resource is sulfur]
+!!en;
+
+
+********************** check if the building is built ****************
+!!VRv9520:S(FALSE);
+!!CA(CURRENT_TOWN):U?y30;
+!!VRv9520&i^tum_upgGuild_%y30^:S(TRUE); [set a check value for 'yes' on v9520 - Archer]
+
+!!if&v9520=1;
+  !!CA(CURRENT_TOWN):U?n T?t;
+  !!FU(newup_ExtendTownDwellings):Pn/t;
+!!en;
+
+********************** handle texts on the town screen ***************
+!!CA(CURRENT_TOWN):R?y3;
+
+!!if&v9520=0;
+  !!if&y3=1;
+    !!VRz945:Sz945+z946;
+  !!el;
+    !!if&v4=1;
+
+      !!if&v9541>=v9551;
+
+        !!if&v9554>=v9552;
+          !!VRz945&v9555>=v9553:Sz945+z947;
+          !!VRz945&v9555<v9553:Sz945+z948;
+        !!el;
+          !!VRz945:Sz945+z948;
+        !!en;
+      !!el;
+        !!VRz945:Sz945+z948;
+      !!en;
+    !!el;
+      !!VRz945:Sz945+z949;
+    !!en;
+  !!en;
+
+  !!IF:V1/0;
+
+  !!if&y3=1;
+    !!IF:M1/945;
+  !!el;
+    !!if&v4=1;
+
+      !!if&v9541<v9551;
+        !!IF:Q2/6/v9551/v9556/v9552/v9557/v9553/1/945;
+      !!el;
+        !!if&v9554<v9552;
+          !!IF:Q2/6/v9551/v9556/v9552/v9557/v9553/1/945;
+        !!el;
+          !!IF&v9555<v9553:Q2/6/v9551/v9556/v9552/v9557/v9553/1/945;
+          !!IF&v9555>=v9553:Q1/6/v9551/v9556/v9552/v9557/v9553/2/945;
+        !!en;
+      !!en;
+    !!el;
+      !!IF:M1/945;
+    !!en;
+  !!en;
+
+  !!FU&-1:E;                      [(exit if player doesn't build)]
+
+******************************* building the special structure procedure *************
+  !!VRv9541:Sv9541-v9551;         [substract 'price' from 'gold']
+  !!VRv9554:Sv9554-v9552;         [substract 'price' from 'second resource amount']
+  !!VRv9555:Sv9555-v9553;         [substract 'price' from 'third resource amount']
+  !!OW:Ri^timerOwner^/6/v9541;            [set new gold value]
+  !!OW:Ri^timerOwner^/v9556/v9554;        [set new second resource]
+  !!OW:Ri^timerOwner^/v9557/v9555;        [set new third resource]
+  !!VRz10:S^..\data\p\BUILDTWN.WAV^;
+  !!SN:Pz10;                      [Play the sound of a new building]
+
+  !!CA(CURRENT_TOWN):U?y30;             [get town id - Archer]
+  !!VRi^tum_upgGuild_%y30^:S(TRUE);     [set flag]
+  !!FU(tum_SetUpTownMons):P;
+  !!FU(eighth_Update8thDwell):P;        [upgrade 8th dwelling]
+
+  !!CA(CURRENT_TOWN):R1;                [no more building today for this town]
+
+  !!VRv9520:S1;                         [set the helping v9520 because I don't want to re-write the entire code :P]
+  !!CA(CURRENT_TOWN):U?n T?t;
+  !!FU(newup_ExtendTownDwellings):Pn/t;
+!!en;
+
+**************************** text if the structure is built **************
+
+!!if&v9520=1;
+  !!IF:D3/950/0/0/952/0/0/0/953/0/0/0/0/0/0/0;
+  !!IF:F3/0/0/0/0/0;              [disabled cancel button]
+  !!IF:E1/3;                      [Display dialogue box]
+!!en;
+
+
+**************************** Third Upgrade Mod Town dwellings enhancement ****************************
+!?FU(newup_ExtendTownDwellings);
+; x1 - town ID
+; x2 - town type
+!!if&x2=0;                             [Castle]
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/2/0/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/1/1/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/0/197/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/2/2/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/1/3/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/0/198/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/2/4/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/1/5/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/0/199/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/2/6/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/1/7/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/0/200/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/2/8/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/1/9/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/0/201/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/2/10/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/1/11/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/0/202/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/2/12/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/1/13/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/0/150/100;
+!!el&x2=1;                             [Rampart]
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/2/14/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/1/15/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/0/203/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/2/16/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/1/17/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/0/204/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/2/18/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/1/19/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/0/205/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/2/20/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/1/21/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/0/206/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/2/22/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/1/23/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/0/207/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/2/24/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/1/25/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/0/208/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/2/26/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/1/27/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/0/151/100;
+!!el&x2=2;                             [Tower]
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/2/28/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/1/29/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/0/209/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/2/30/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/1/31/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/0/210/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/2/32/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/1/33/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/0/211/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/2/34/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/1/35/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/0/212/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/2/36/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/1/37/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/0/213/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/2/38/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/1/39/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/0/214/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/2/40/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/1/41/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/0/152/100;
+!!el&x2=3;                             [Inferno]
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/2/42/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/1/43/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/0/215/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/2/44/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/1/45/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/0/216/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/2/46/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/1/47/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/0/217/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/2/48/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/1/49/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/0/218/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/2/50/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/1/51/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/0/219/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/2/52/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/1/53/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/0/220/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/2/54/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/1/55/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/0/153/100;
+!!el&x2=4;                             [Necropolis]
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/2/56/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/1/57/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/0/221/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/2/58/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/1/59/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/0/222/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/2/60/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/1/61/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/0/223/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/2/62/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/1/63/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/0/224/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/2/64/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/1/65/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/0/225/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/2/66/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/1/67/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/0/226/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/2/68/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/1/69/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/0/154/100;
+!!el&x2=5;                             [Dungeon]
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/2/70/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/1/71/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/0/227/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/2/72/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/1/73/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/0/228/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/2/74/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/1/75/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/0/229/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/2/76/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/1/77/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/0/230/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/2/78/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/1/79/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/0/231/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/2/80/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/1/81/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/0/232/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/2/82/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/1/83/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/0/155/100;
+!!el&x2=6;                             [Stronghold]
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/2/84/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/1/85/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/0/233/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/2/86/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/1/87/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/0/234/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/2/88/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/1/89/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/0/235/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/2/90/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/1/91/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/0/236/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/2/92/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/1/93/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/0/237/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/2/94/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/1/95/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/0/238/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/2/96/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/1/97/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/0/156/100;
+!!el&x2=7;                             [Fortress]
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/2/98/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/1/99/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/0/239/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/2/100/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/1/101/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/0/240/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/2/104/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/1/105/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/0/241/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/2/106/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/1/107/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/0/242/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/2/102/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/1/103/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/0/244/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/2/108/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/1/109/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/0/243/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/2/110/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/1/111/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/0/157/100;
+!!el&x2=8;                             [Conflux]
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/2/118/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/1/119/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/0/1/0/245/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/2/112/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/1/127/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/1/1/0/246/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/2/115/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/1/123/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/2/1/0/247/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/2/114/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/1/129/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/3/1/0/248/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/2/113/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/1/125/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/4/1/0/249/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/2/120/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/1/121/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/5/1/0/250/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/2/130/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/1/131/100;
+  !!FU(dex_SetDwellingSlotByTownId):Px1/6/1/0/158/100;
+!!en;
+
+***************************************************************************
+************ AI building the special structure and upgrading **************
+***************************************************************************
+
+!?OB98&-1000;
+!!FU9504:P;               [-occur when AI is entering town]
+
+!$OB98&-1000;
+!!FU9504:P;               [-occur when AI is leaving town]
+
+!?FU9504;
+***************************** building part ******************************
+
+!!CA998:O?y-2;                          [(owner of the town: y-2)]
+!!FU&y-2<>i^timerOwner^:E;
+
+!!VRv4:S0;
+!!CA998:B3/9;                           [(ckeck if there's a castle)]
+!!VRv4&1:S1;                            [(set a helping var)]
+
+;get money
+!!OW:Ri^timerOwner^/6/?v9541;                   [1 - gold]
+!!OW:Ri^timerOwner^/0/?v9542;                   [2 - wood]
+!!OW:Ri^timerOwner^/2/?v9543;                   [3 - ore]
+!!OW:Ri^timerOwner^/1/?v9544;                   [4 - mercury]
+!!OW:Ri^timerOwner^/3/?v9545;                   [5 - sulfur]
+!!OW:Ri^timerOwner^/4/?v9546;                   [6 - crystal]
+!!OW:Ri^timerOwner^/5/?v9547;                   [7 - gems]
+!!OW:Ri^timerOwner^/7/?v9548;                   [8 - mithril]
+
+!!CA998:T?y2;                           [check town type]
+
+************************ CONFLUX *****************************
+!!if&y2=8;
+  !!VRv9551:S15000;                  [price in gold]
+  !!VRv9552:S30;                     [price in crystals]
+  !!VRv9553:S15;                     [price in gems]
+  !!VRv9554:Sv9546;                  [second resource amount]
+  !!VRv9555:Sv9547;                  [third resource amount]
+  !!VRv9556:S4;                      [second resource is crystal]
+  !!VRv9557:S5;                      [third resource is gems]
+!!en;
+
+************************* CASTLE *****************************
+!!if&y2=0;
+  !!VRv9551:S16000;                  [price in gold]
+  !!VRv9552:S30;                     [price in gems]
+  !!VRv9553:S30;                     [price in ore]
+  !!VRv9554:Sv9547;                  [second resource amount]
+  !!VRv9555:Sv9543;                  [third resource amount]
+  !!VRv9556:S5;                      [second resource is gems]
+  !!VRv9557:S2;                      [third resource is ore]
+!!en;
+
+************************ RAMPART ****************************
+!!if&y2=1;
+  !!VRv9551:S15000;                  [price in gold]
+  !!VRv9552:S25;                     [price in crystals]
+  !!VRv9553:S40;                     [price in wood]
+  !!VRv9554:Sv9546;                  [second resource amount]
+  !!VRv9555:Sv9542;                  [third resource amount]
+  !!VRv9556:S4;                      [second resource is crystal]
+  !!VRv9557:S0;                      [third resource is wood]
+!!en;
+
+************************ TOWER *****************************
+!!if&y2=2;
+  !!VRv9551:S17000;                  [price in gold]
+  !!VRv9552:S30;                     [price in gems]
+  !!VRv9553:S15;                     [price in mercury]
+  !!VRv9554:Sv9547;                  [second resource amount]
+  !!VRv9555:Sv9544;                  [third resource amount]
+  !!VRv9556:S5;                      [second resource is gems]
+  !!VRv9557:S1;                      [third resource is mercury]
+!!en;
+
+************************ INFERNO *****************************
+!!if&y2=3;
+  !!VRv9551:S14500;                  [price in gold]
+  !!VRv9552:S30;                     [price in mercury]
+  !!VRv9553:S15;                     [price in sulfur]
+  !!VRv9554:Sv9544;                  [second resource amount]
+  !!VRv9555:Sv9545;                  [third resource amount]
+  !!VRv9556:S1;                      [second resource is mercury]
+  !!VRv9557:S3;                      [third resource is sulfur]
+!!en;
+
+************************ NECROPOLIS *****************************
+!!if&y2=4;
+  !!VRv9551:S15500;                  [price in gold]
+  !!VRv9552:S25;                     [price in mercury]
+  !!VRv9553:S35;                     [price in wood]
+  !!VRv9554:Sv9544;                  [second resource amount]
+  !!VRv9555:Sv9542;                  [third resource amount]
+  !!VRv9556:S1;                      [second resource is mercury]
+  !!VRv9557:S0;                      [third resource is wood]
+!!en;
+
+************************ DUNGEON *****************************
+!!if&y2=5;
+  !!VRv9551:S17000;                  [price in gold]
+  !!VRv9552:S30;                     [price in sulfur]
+  !!VRv9553:S35;                     [price in ore]
+  !!VRv9554:Sv9545;                  [second resource amount]
+  !!VRv9555:Sv9543;                  [third resource amount]
+  !!VRv9556:S3;                      [second resource is sulfur]
+  !!VRv9557:S2;                      [third resource is ore]
+!!en;
+
+************************ STRONGHOLD *****************************
+!!if&y2=6;
+  !!VRv9551:S14500;                  [price in gold]
+  !!VRv9552:S60;                     [price in crystals]
+  !!VRv9553:S15;                     [price in gems]
+  !!VRv9554:Sv9543;                  [second resource amount]
+  !!VRv9555:Sv9546;                  [third resource amount]
+  !!VRv9556:S2;                      [second resource is ore]
+  !!VRv9557:S4;                      [third resource is crystal]
+!!en;
+
+************************ FORTRESS *****************************
+!!if&y2=7;
+  !!VRv9551:S14000;                  [price in gold]
+  !!VRv9552:S50;                     [price in wood]
+  !!VRv9553:S20;                     [price in sulfur]
+  !!VRv9554:Sv9542;                  [second resource amount]
+  !!VRv9555:Sv9545;                  [third resource amount]
+  !!VRv9556:S0;                      [second resource is wood]
+  !!VRv9557:S3;                      [third resource is sulfur]
+!!en;
+
+
+********************** check if the building is built ****************
+!!VRv9520:S(FALSE);
+!!CA998:U?y30;                          [get town ID]
+!!VRv9520&i^tum_upgGuild_%y30^:S(TRUE); [set a check value for 'yes' on the v9520 - Archer]
+
+
+********************** set a flag if the right conditions are met  ***************
+*** NOTE: to make it easier for the AI, it builds as soon as it gets the right resources,
+*** no matter if AI built in tis turn or not
+
+!!if&v9520=0;
+  !!IF&v4=0:V1/0;
+
+  !!if&v4=1;
+    !!IF&v9541>=v9551:V1/1;
+    !!IF&v9541<v9551:V1/0;
+  !!en;
+
+  !!if&-1;
+    !!FU:E;                      [(exit if player doesn't build)]
+  !!el;
+
+******************************* building the special structure procedure **************
+***** NOTE: AI has to have only the right ammount of gold - resources will be substracted
+***** (if not enough resources, then take away what AI has), but the building procedure
+***** for the AI doesn't depend on them - only on gold.
+***** (this is because AI doesn't know it 'needs' the right resources and won't use the
+***** marketplace or won't save resources to get them)
+***************************************************************************************
+***** UPDATE: AI now has to have only about 75% of the gold ammount for human players
+***************************************************************************************
+
+    !!VRv9541:Sv9541-v9551;       [substract 'price' from 'gold']
+    !!VRv9554&v9554<v9552:S0;     [set '0' for 'second resource amount' (if NOT enough)]
+    !!VRv9554&v9554>=v9552:Sv9554-v9552; [substract 'price' from 'second resource amount' (if enough)]
+    !!VRv9555&v9555<v9553:S0;     [set '0' for 'third resource amount'  (if NOT enough)]
+    !!VRv9555&v9555>=v9553:Sv9555-v9553; [substract 'price' from 'third resource amount'  (if enough)]
+
+    !!OW:Ri^timerOwner^/6/v9541;          [set new gold value]
+    !!OW:Ri^timerOwner^/v9556/v9554;      [set new second resource]
+    !!OW:Ri^timerOwner^/v9557/v9555;      [set new third resource]
+
+    !!VRi^tum_upgGuild_%y30^:S(TRUE);     [set flag - Archer]
+    !!FU(eighth_Update8thDwell):P;        [upgrade 8th dwelling]
+  !!en;
+!!en;
+
+
+***************************** upgrading part *****************************
+
+!!FU&i^tum_upgGuild_%y30^=(FALSE):E;    [Exit if there's no special structure in town - Archer]
+
+!!HE(CURRENT_HERO):N?v1;                [Hero number: v1]
+!!CA998:T?v2;                           [Town type: v2]
+
+ [Check each creature in AI hero's army]
+!!DO9503/0/6/1:Pv1/v2;
+
+
+ [Check each creature in AI hero's army]
+ [x1=hero number, x2=town type]
+!?FU9503;
+
+!!HEx1:C0/x16/?y1/?y7;                  [Type of creature: y1, Number: y7]
+
+!!FU|y1<0/y7=0:E;                       [Exit if creature slot is empty]
+
+!!MA:Oy1/?y2;                           [Town creature belongs to: y2]
+!!MA:Uy1/?y3;                           [Creature's upgrade number: y3]
+!!MA:Ly1/?y4;                           [Creature's level: y4]
+
+
+!!VRy6:Sy4 +37;                         [Upgraded dwelling number in town: y6]
+!!CA998:B3/y6;                          [Check if upgraded dwelling is built: Flag 1 is true if yes]
+!!CA998&-1:B3/19;                       [Check if horde building 1 is built: Flag 1 is true if yes]
+!!CA998&-1:B3/25;                       [Check if horde building 2 is built: Flag 1 is true if yes]
+
+ [Exit if NOT native town, creature has no upgrade, creature has default upgrade or upgraded dwelling isn't built]
+!!FU|y3<=(NO_MON)/y2<>x2/-1:E;
+
+* [Default upgrade for all towns except Conflux: y3]
+*!VRy5&y3=-1/y1<=111:Sy1 %2; [Remainder of creature number divided by 2: y5]
+*!VRy3&y3=-1/y1<=111/y5=0:Sy1 +1; [If non-upgraded, upgrade is y3]
+
+* [Default upgrade for Conflux: y3]
+*!VRy3&y3=-1/y1=112:S127; [Air Elemental]
+*!VRy3&y3=-1/y1=113:S125; [Earth Elemental]
+*!VRy3&y3=-1/y1=114:S129; [Fire Elemental]
+*!VRy3&y3=-1/y1=115:S123; [Water Elemental]
+*!VRy3&y3=-1/y1=118:S119; [Pixie]
+*!VRy3&y3=-1/y1=120:S121; [Psychic Elemental]
+*!VRy3&y3=-1/y1=130:S131; [Firebird]
+
+!!VRy5:S1;                              [Initialize y5 to 1]
+!!VRy5&y3>=0:S0;                        [Set y5 to 0 if y3>=0]
+!!FU|y5=1:E;                            [Exit if no upgrade]
+
+!!OW:Ri^timerOwner^/6/?v9541;                   [get gold]
+!!HEx1:C0/x16/y1/?v9588;                [get number of creatures]
+!!MA:Cy1/6/?v9589;                      [get cost of creature un-upg]
+!!MA:Cy3/6/?v9590;                      [get cost of creature upg]
+!!VRv9590:Sv9590-v9589;                 [calculate difference in costs]
+!!VRv9590:Sv9590*v9588;                 [multiply by creature number to get the real price]
+!!VRv9590:Sv9590:4;                     [divide by 4 and multiply by 3 to get 75% of the real price]
+!!VRv9590:Sv9590*3;                     [divide by 4 and multiply by 3 to get 75% of the real price]
+
+!!HEx1&v9590<=v9541:C0/x16/y3/d;        [Upgrade creature]
+!!VRv9591&v9590<=v9541:Sv9541-v9590;    [substract 'price' from 'gold']
+!!OW&v9590<=v9541:Ri^timerOwner^/6/v9591;       [set new gold value]
+
+****************************************************************************************************
+*Creature_Specialist Third Upgrade Mod* A Mod for ERA 2.9
+*Author PerryR
+*Sets new description for all creature Specialists and gives them a scaling, script taken from Advanced Classes Mod
+*Disabled WoG Script "39 wog - hero specialization boost"
+
+!?CM2&1000;                             [Show Correct Info for Creature Specialists]
+!!SN:W^Advanced_Classes_Mod_Active^/?y1; !!FU&y1=1:E; [Exit if ACM mod active]
+
+!!CM:F?v3 I?v4 S?v5 T?v6;               [where we click and click subtype]
+!!FU|v4<>118/v6<>512/v5=13:E;           [If not Specialty Icon Clicked Exit]
+
+!!if|v3=512/v3=0;                       [if right or left click]
+  !!HE(CURRENT_HERO):N?y6;                [Get current hero #]
+  !!FU&y6>=144:E;                         [Exit for Extension Heroes]
+  !!HEy6:X?y11/?y12/?y13/?y14/?y15/?y16/?y17; [Check Hero Speciality]
+  !!FU&y11<>1:E;                          [Exit if no Creature_Specialist]
+
+  !!CM:R0;                                [disable standard reaction]
+  !!HEy6:R2/?y70;
+  !!HEy6:B0/?z1;
+  !!HEy6:E?y47/?y48/1;                    [Check hero Level]
+  !!SN&y70=0:T^Third_Upgrade_Mod.his^/?z5;
+  !!SN&y70=1:T^Third_Upgrade_Mod.her^/?z5;
+
+  !!FU(Set_Creature_Upgrades_1):Py12/y6/?y16/?y17;
+
+  !!UN:N3/z3/y12/1;                      [Normal Creature]
+  !!UN:N3/z4/y16/1;                      [First Upgrade]
+  !!UN:N3/z6/y17/1;                      [Second Upgrade]
+
+  !!MA:Ly12/?y14;                         [Get creature level]
+  !!VRy60&y14=0:S16; !!VRy60&y14=1:S15; !!VRy60&y14=2:S13; !!VRy60&y14=3:S12; !!VRy60&y14=4:S10; !!VRy60&y14=5:S7; !!VRy60&y14=6:S5;
+  !!VRy14:+1;
+  !!VRy50:Sy48:7+1;                       [7 Attack and Defense per Level]
+  !!VRy51:Sy48:y60;                       [Damage per Level based on creature level]
+  !!VRy52:Sy48+9;                         [+1% per Health per Level +9%]
+
+  !!SN:T^Third_Upgrade_Mod.Creature_Specialist^/?z7/^level^/y14/^attack^/y50/^damage^/y51/^health^/y52/^Crea1^/z3/^Crea2^/z4/^Crea3^/z6/^Hero^/z1/^sex^/z5;
+
+  !!IF&i^mouse_action^=(MOUSE_LMB_PRESSED):M1/1/^%z7^;
+  !!IF&i^mouse_action^=(MOUSE_RMB_PRESSED):M1/4/^%z7^;
+!!en;
+
+
+!?BF;
+!!SN:W^Advanced_Classes_Mod_Active^/?y1; !!FU&y1=1:E; [Exit if ACM mod active]
+
+!!BH0:N?y1;                             [Attacker]
+!!FU(Third_Upgrade_1)&y1>=0/y1<=155:Py1/1;
+
+!!BH1:N?y1;                             [Defender]
+!!FU(Third_Upgrade_1)&y1>=0/y1<=155:Py1/2;
+
+!?FU(Third_Upgrade_1);
+!!HEx1:X?y11/?y12/?y13/?y14/?y15/?y16/?y17; [Check Hero Speciality]
+!!FU&y11<>1:E;                          [Exit if no Creature Specialist]
+
+!!HEx1:E?y47/?y48/1;                    [Check hero Level]
+!!MA:Ly12/?y14;
+!!VRy60&y14=0:S16; !!VRy60&y14=1:S15; !!VRy60&y14=2:S13; !!VRy60&y14=3:S12; !!VRy60&y14=4:S10; !!VRy60&y14=5:S7; !!VRy60&y14=6:S5;
+
+!!FU(Set_Creature_Upgrades_1):Py12/x1/?y13/?y14;
+
+!!VRy50:Sy48:7+1;                       [Attack and Defense per 7 Level]
+!!VRy51:Sy48:y60;                       [Damage per Level]
+!!VRy52:Sy48+9 +100;                    [+1% per Health per Level +9%]
+!!DO(Third_Upgrade_0)/0/20/1&x2=1:Py12/y13/y50/y52/y51/y14; [Pass Creature, Upgraded Creature, Att/Def, Health and Damage]
+!!DO(Third_Upgrade_0)/21/41/1&x2=2:Py12/y13/y50/y52/y51/y14; [Pass Creature, Upgraded Creature, Att/Def, Health and Damage]
+
+
+!?FU(Third_Upgrade_0);
+
+!!BMx16:T?y1;
+
+!!if|y1=x1/y1=x2/y1=x6;                 [If Special Creature or Upgraded Creature is found increase stats]
+  !!BMx16&y1<>(MON_FIRST_AID_TENT)/y1<>(MON_AMMO_CART):Adx3; [Attack]
+  !!BMx16:Ddx3;                         [Defense]
+  !!BMx16:H?y2; !!VRy2:*x4:100;         [Get Health]
+  !!BMx16:Hy2;
+  !!BMx16:U1/dx5 U2/dx5;                [Min+Max Damage]
+!!en;
+
+
+!?FU(Set_Creature_Upgrades_1);
+x1=Creature, x2=Hero Number, x3 Returns first upgrade, x4 Returns second upgrade
+
+!!VRx3:Sx1+1;                           [Normal Upgraded Version]
+
+*--Table for Third Upgrade Mod
+Need to expand and edit here for every faction
+!!VRx4&x1=0:S197;                       [Pikemen to Templar] *Castle*]
+!!VRx4&x1=2:S198;                       [Archer to Templar] *Castle*]
+!!VRx4&x1=4:S199;                       [Griffin to Templar] *Castle*]
+!!VRx4&x1=6:S200;                       [Swordsman to Templar] *Castle*]
+!!VRx4&x1=8:S201;                       [Monk to Templar] *Castle*]
+!!VRx4&x1=10:S202;                      [Cavalier to Templar] *Castle*]
+
+!!VRx4&x1=14:S203;                      [*Rampart*]
+!!VRx4&x1=16:S204;                      [*Rampart*]
+!!VRx4&x1=18:S205;                      [*Rampart*]
+!!VRx4&x1=20:S206;                      [*Rampart*]
+!!VRx4&x1=22:S207;                      [*Rampart*]
+!!VRx4&x1=24:S208;                      [*Rampart*]
+
+!!VRx4&x1=28:S209;                      [*Tower*]
+!!VRx4&x1=30:S210;                      [*Tower*]
+!!VRx4&x1=32:S211;                      [*Tower*]
+!!VRx4&x1=34:S212;                      [*Tower*]
+!!VRx4&x1=36:S213;                      [*Tower*]
+!!VRx4&x1=38:S214;                      [*Tower*]
+
+!!VRx4&x1=42:S215;                      [*Inferno*]
+!!VRx4&x1=44:S216;                      [*Inferno*]
+!!VRx4&x1=46:S217;                      [*Inferno*]
+!!VRx4&x1=48:S218;                      [*Inferno*]
+!!VRx4&x1=50:S219;                      [*Inferno*]
+!!VRx4&x1=52:S220;                      [*Inferno*]
+
+!!VRx4&x1=56:S221;                      [*Nekro*]
+!!VRx4&x1=58:S222;                      [*Nekro*]
+!!VRx4&x1=60:S223;                      [*Nekro*]
+!!VRx4&x1=62:S224;                      [*Nekro*]
+!!VRx4&x1=64:S225;                      [*Nekro*]
+!!VRx4&x1=66:S226;                      [*Nekro*]
+
+!!VRx4&x1=70:S227;                      [*Dungeon*]
+!!VRx4&x1=72:S228;                      [*Dungeon*]
+!!VRx4&x1=74:S229;                      [*Dungeon*]
+!!VRx4&x1=76:S230;                      [*Dungeon*]
+!!VRx4&x1=78:S231;                      [*Dungeon*]
+!!VRx4&x1=80:S232;                      [*Dungeon*]
+
+!!VRx4&x1=84:S233;                      [*Stronghold*]
+!!VRx4&x1=86:S234;                      [*Stronghold*]
+!!VRx4&x1=88:S235;                      [*Stronghold*]
+!!VRx4&x1=90:S236;                      [*Stronghold*]
+!!VRx4&x1=92:S237;                      [*Stronghold*]
+!!VRx4&x1=94:S238;                      [*Stronghold*]
+
+!!VRx4&x1=98:S239;                      [*Fortres*]
+!!VRx4&x1=100:S240;                     [*Fortres*]
+!!VRx4&x1=104:S241;                     [*Fortres*]
+!!VRx4&x1=106:S242;                     [*Fortres*]
+!!VRx4&x1=102:S244;                     [*Fortres*]
+!!VRx4&x1=108:S243;                     [*Fortres*]
+
+!!VRx4&x1=118:S245;                     [*Conflux*]
+!!VRx4&x1=112:S246;                     [*Conflux*]
+!!VRx4&x1=115:S247;                     [*Conflux*]
+!!VRx4&x1=114:S248;                     [*Conflux*]
+!!VRx4&x1=113:S249;                     [*Conflux*]
+!!VRx4&x1=120:S250;                     [*Conflux*]
+
+!!VRx4&x1=(MON_BALLISTA):S(MON_AMMO_CART); [*Neutral*]
+
+*--Fix for Confluxers
+!!VRx3|x2=133/x2=129:S125;              [Erdamon or Thunar Magma Element]
+!!VRx3|x2=134/x2=130:S129;              [Fiur or Ignissa]
+!!VRx3|x2=135/x2=131:S123;              [Kalt or Lacus]
+!!VRx3|x2=128/x2=132:S121;              [Pasis or Monere]
+!!VRx3|x2=141/x2=129:S127;  Aenian
+
+!!VRx4|x2=133/x2=129:S249;              [Erdamon  Mineral Element]
+!!VRx4|x2=134/x2=130:S248;              [Fiur]
+!!VRx4|x2=135/x2=131:S247;              [Kalt]
+!!VRx4|x2=128/x2=132:S250;              [Pasis or Monere]
+!!VRx4|x2=141/x2=129:S246;  Aenian
+*--
+
+
+!?FU(Third_Upgrade_2);
+132 Monere    !!HE132:X1/120;
+133 Erdamon   !!HE133:X1/113;
+134 Fiur      !!HE134:X1/114;
+135 Kalt      !!HE135:X1/115;
+
+128 Pasis     !!HE128:X1/120;
+129 Thunar    !!HE129:X1/113;
+131 Lacus     !!HE131:X1/115;
+130 Ignissa   !!HE130:X1/114;
+
+!#SN:W^Advanced_Classes_Mod_Active^/?y1;
+!#FU(Third_Upgrade_2)&y1=0:P;           [Set Conflux Heroes to normal Creature_Specialist]
+
+****************************************************************************************************************
+Necromancy script by PerryR
+
+!?FU(OnBeforeBattleUniversal);
+Sets creature to raise from Necromancy
+Raises Skeleton Warriors or Skeleton Knights if needed
+
+*Cloak of the Undead King raises TUM creatures
+!!UN:C5127967/4/222; Ghoul
+!!UN:C5127978/4/261; Spectre
+!!UN:C5127987/4/329; Liches
+
+!!SN:W^Advanced_Classes_Mod_Active^/?y1; !!FU&y1=1:E; [Exit if ACM is enabled]
+!!BA:H0/?y1;                            [Attacker]
+!!HEy1:O?y2;                            [Check hero owner]
+!!OW:C?y3;                              [Check current player]
+!!FU&y2<>y3:E;                          [Abort if not the same]
+
+!!UN:C5127994/4/56;                     [Always set to skeletons before every fight]
+!!HEy1:C0/0/?y21/?y32;                  [Check Heros army slot 1]
+!!HEy1:C0/1/?y31/?y33;
+!!HEy1:C0/2/?y41/?y34;
+!!HEy1:C0/3/?y51/?y35;
+!!HEy1:C0/4/?y61/?y36;
+!!HEy1:C0/5/?y71/?y37;
+!!HEy1:C0/6/?y81/?y38;
+
+!!UN|y21=57/y31=57/y41=57/y51=57/y61=57/y71=57/y81=57:C5127994/4/57; [Set to Skeleton Warriors if Hero has them in the Army]
+!!UN|y21=220/y31=220/y41=220/y51=220/y61=220/y71=220/y81=220:C5127994/4/220; [Set to Skeleton Knights if Hero has them in the Army]
+
+****************************************************************************************************************
+
+; Ghoul - Flesheaters
+; Script by Archer30
+!?FU(OnMonsterPhysicalDamage);
+!#VA(atkStack:x);
+; Exit if the attacking stack ID is out-of-limit (Would be screwed if missing and damaged by Fire Shield)
+!!FU|(atkStack)<(BATTLE_STACK_FIRST)/(atkStack)>(BATTLE_STACK_LAST):E;
+
+; Check if the defedning monster (must be a living one) would be be killed by the Zombie attacker
+!!MF:N?(defStack:x) F?(dmg:y);
+
+!!BM(atkStack):T?(type:y);
+!!BM(defStack):F?(monFlags:y) N?(num:y) H?(hp:y) L?(lostHp:y);
+!!VR(isAlive:y):S(monFlags) &(MON_FLAG_ALIVE);'
+!!VR(defCurrTotalHp:y):S(num) *(hp) -(lostHp);
+
+; Store the hp of the def stack if it would be killed, set up flags for the victim to disappear 
+!!if&(isAlive)/(dmg)>=(defCurrTotalHp);
+
+  !!if&(type)=(MON_GHOUL);
+    !!VRi^tum_ghoul_regenHp^:S(defCurrTotalHp);
+    !!BM(defStack):Fd|813694976 E0 K1;    [добавляем цели флаги жертвы/клона/неизменяемости цвета]
+  !!en;
+!!en;
+
+!?FU(ES_OnAfterMelee)&i^tum_ghoul_regenHp^;
+!#VA(zombieStack:x) (defStack:x);
+
+; Calculate the new HP and number of the flesheater
+!!VR(noHpLost:y):S(FALSE);
+!!BM(zombieStack):N?(num:y) H?(hp:y) L?(lostHp:y) B?(startNum:y);
+
+!!VR(totalStartHp:y):S(startNum) *(hp);
+!!VR(totalHp:y):S(num) *(hp) -(lostHp);
+!!VR(noHpLost)&(totalStartHp)=(totalHp):S(TRUE);
+
+!!VR(newTotalHp:y):S(totalHp) +i^tum_ghoul_regenHp^ F(totalHp)/(totalStartHp);
+!!VR(newCurrHp:y):S(newTotalHp) %(hp);
+!!VR(newNum:y):S(newTotalHp) :(hp) +1;
+
+!!if&(newCurrHp)=0;
+  !!VR(newCurrHp):S(hp);
+  !!VR(newNum):-1;
+!!en;
+
+!!VR(newLostHp:y):S(hp) -(newCurrHp);
+
+; Show battle log and play animation/sound
+!!if&i^battle_isVisible^/(noHpLost)<>(TRUE);
+  !!BM(zombieStack):T?(type:y);
+
+  !!if&(num)=1;
+    !!SN:H^monname^/(type)/0/?(flesheaterName:z);
+  !!el;
+    !!SN:H^monname^/(type)/1/?(flesheaterName);
+  !!en;
+
+  !!SN:T^Third_Upgrade_Mod.ghoul^?(battleLog:z)/^flesheater^/(flesheaterName);
+  !!MM:S(battleLog);
+
+  ; Play sound and animation
+  !!SN:P^ANIMDEAD^;
+  !!BM(zombieStack):V74;
+!!en;
+
+; Set up new number and hp for the Zombises
+!!BM(zombieStack):N(newNum) L(newLostHp);
+; Restore the global variable
+!!VRi^tum_ghoul_regenHp^:S0;
+
+---------------------------------------------------------------------------------------------
+!?FU(OnGameEnter);
+!!UN:T0/0/2/197; (Castle)
+!!UN:T0/1/2/198;
+!!UN:T0/2/2/199;
+!!UN:T0/3/2/200;
+!!UN:T0/4/2/201;
+!!UN:T0/5/2/202;
+!!UN:T0/6/2/150;
+
+!!UN:T1/0/2/203; (Rampart)
+!!UN:T1/1/2/204;
+!!UN:T1/2/2/205;
+!!UN:T1/3/2/206;
+!!UN:T1/4/2/207;
+!!UN:T1/5/2/208;
+!!UN:T1/6/2/151;
+
+!!UN:T2/0/2/209; (Tower)
+!!UN:T2/1/2/210;
+!!UN:T2/2/2/211;
+!!UN:T2/3/2/212;
+!!UN:T2/4/2/213;
+!!UN:T2/5/2/214;
+!!UN:T2/6/2/152;
+
+!!UN:T3/0/2/215; (Inferno)
+!!UN:T3/1/2/216;
+!!UN:T3/2/2/217;
+!!UN:T3/3/2/218;
+!!UN:T3/4/2/219;
+!!UN:T3/5/2/220;
+!!UN:T3/6/2/153;
+
+!!UN:T4/0/2/221; (Necropolis)
+!!UN:T4/1/2/222;
+!!UN:T4/2/2/223;
+!!UN:T4/3/2/224;
+!!UN:T4/4/2/225;
+!!UN:T4/5/2/226;
+!!UN:T4/6/2/154;
+
+!!UN:T5/0/2/227; (Dungeon)
+!!UN:T5/1/2/228;
+!!UN:T5/2/2/229;
+!!UN:T5/3/2/230;
+!!UN:T5/4/2/231;
+!!UN:T5/5/2/232;
+!!UN:T5/6/2/155;
+
+!!UN:T6/0/2/233; (Stronghold)
+!!UN:T6/1/2/234;
+!!UN:T6/2/2/235;
+!!UN:T6/3/2/236;
+!!UN:T6/4/2/237;
+!!UN:T6/5/2/238;
+!!UN:T6/6/2/156;
+
+!!UN:T7/0/2/239; (Fortress)
+!!UN:T7/1/2/240;
+!!UN:T7/2/2/241;
+!!UN:T7/3/2/242;
+!!UN:T7/4/2/243;
+!!UN:T7/5/2/244;
+!!UN:T7/6/2/157;
+
+!!UN:T8/0/2/245; (Conflux)
+!!UN:T8/1/2/246;
+!!UN:T8/2/2/247;
+!!UN:T8/3/2/248;
+!!UN:T8/4/2/249;
+!!UN:T8/5/2/250;
+!!UN:T8/6/2/158;

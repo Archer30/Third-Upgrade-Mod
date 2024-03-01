@@ -1,0 +1,2 @@
+BALANCE
+- Diamond Dragon Hero Spell point regeneration ability removed

@@ -1,2 +1,5 @@
 BALANCE
 - Diamond Dragon Hero Spell point regeneration ability removed
+
+KNOWN ISSUES
+- Neutral town strong defense script will pop-up a message if there are no empty slots to add a creature

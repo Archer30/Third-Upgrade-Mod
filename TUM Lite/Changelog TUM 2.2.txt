@@ -1,26 +1,26 @@
-- Fixed Difficulty Mod / Creature Banks not working if wog option "Neutral Town and Creature Growth" is disabled
+- Fixed Difficulty Mod option "Creature Banks" not working if wog option "Neutral Town and Creature Growth" is disabled
 - Fixed Hero Creature Specialist bonus not given to upgraded and TUM Upgraded creatures
-
+- Fixed crash on left click on Pikemen small portrait 
+- Fixed Refugee Camps offering creatures while showing Pikemen image and crash afterwards 
+- Fixed horrible bug which under certain circumstances allowed AI to build both upgraded and TUM upgraded creatures while leaving the number of hiring creatures in town untouched 
 
 KNOWN ISSUES
-- Crash on Left click on Pikemen small portrait
-  - Probably related to the above: Refugee camps sometimes shows Pikemen portraits, Peasants name. I have savegame. If you load it and hit Space on Refugee camp, it crashes. When happened first time it shows Pikemen with Peasants name.
 
 - TUM Build Dependency not implemented: e.g.: Orc TUM Upgrade could be built without Freelancer’s guild.
  
 - Universal Creature Upgrades wog option -> script will not allow Universal TUM Upgrades.
 
 - Sometimes you can build without having enough resources. If you do that, you will have a negative amount, which will causes many errors.
-You know when you can buy with not enough resource because of this:
+         You know when you can buy with not enough resource because of this:
 
-Scenario:
-Not enough resources for build X building
+         Scenario:
+         Not enough resources for build X building
 
--> Building name background is red AND there is a icon showing barred coins in the lower right of the building image
-In this scenario you cannot build
+         -> Building name background is red AND there is a icon showing barred coins in the lower right of the building image
+         In this scenario you cannot build
 
-But sometimes this is shown: 
--> Building name background is red BUT there is no icon showing barred coins
-In this case you can build with not enough resources 
-I think it's related to the fact that Diozia changed most of standard building costs
+         But sometimes this is shown: 
+         -> Building name background is red BUT there is no icon showing barred coins
+         In this case you can build with not enough resources 
+         I think it's related to the fact that Diozia changed most of standard building costs
 

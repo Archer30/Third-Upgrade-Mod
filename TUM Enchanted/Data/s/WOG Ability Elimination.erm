@@ -7,9 +7,6 @@ ZVSE2
 
 
 !?FU(OnGameEnter);
-// Disable Blind for Diamond Dragons
-!!FU(abil_SetUpMonsterSpecialAbility2):P(MON_DIAMOND_DRAGON)/9;
-
 // Disable extra retaliations for Ghost Behemoths
 !!UN:C7735001/1/1000;
 !!UN:C7727216/1/1000;
@@ -22,30 +19,3 @@ ZVSE2
 !!VRx2:S(FALSE);
 
 
-// Enable/Disable special ability with Aamethyst, by Archer
-!?FU(abil_SetUpMonsterSpecialAbility2);
-!#VA(mon:x) (ability:x);
-; 0 Bind - Dedroid Soildiers
-; 1 20% Blind - Unicorns
-; 2 205 Disease - Zombies
-; 3 25% Curse - Black Knights
-; 4 20% Age - Ghost Dragons
-; 5 20% Stone - Basilisks
-; 6 20% Paralyse - Scorpions
-; 7 30% Poison - Monarch Wyvern
-; 8 Acid Breath (-def) - Rust Dragons
-; 9 No Ability
-!!SN:L^amethyst2_4.dll^/?(amethyst:y);
-
-!!if&(amethyst)<>0;
-  !!SN:A(amethyst)/^ChangeCreatureTable^/?(address:y) E(address)/1/(mon)/^Spell effect=%(ability)^;
-!!el;
-  !!if&(mon)<(MON_DENDROID_GUARD);
-    !!IF:M^Sorry, but you can't set special ability 1 of monsters prior than #22 by this way.^;
-  !!el&(ability)<0/(ability)>9;
-    !!IF:M^Sorry, but the special ability 2  you set is beyond the limit (0~9).^;
-  !!el;
-    !!VR(address:y):S7994592 -(MON_DENDROID_GUARD) +(mon);
-    !!UN:C(address)/(UNC_INT8)/(ability);
-  !!en;
-!!en;

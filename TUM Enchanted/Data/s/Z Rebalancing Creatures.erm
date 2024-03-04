@@ -152,9 +152,6 @@ SORCERESS: 6 -> 5
 ALL SHARPSHOOTERS: 4 -> 3
 
 !?PI;
-
-!!MA:U(MON_GOLD_GOLEM)/(NO_MON);       [Disable Gold -> Diamond upgrade from TUM Lite]
-
 ***************************************************************************************************
 ***********************************************CASTLE**********************************************
 ***************************************************************************************************
@@ -1289,7 +1286,7 @@ FORCED
 !!MA:X152/d(MON_FLAG_ATTACKS_TWICE);                           Add Double Shoot
 !!MA:L152/6;                                                   Is Level 7
 !!MA:O152/2;                                                   Is a Tower Unit
-!!SN:H^monname^/152/2/^Mind Spells Immunity. {~f536bc}20% Lightning Strike.{~} Ranged. No Meele Penalty. Double Shoot. Fearless. Air and Water Affinity.^;
+!!SN:H^monname^/152/2/^Mind Spells Immunity. {~f536bc}20% Powerful Lightning Strike.{~} Ranged. No Meele Penalty. Double Shoot. Fearless. Air and Water Affinity.^;
 
 ***************************************************************************************************
 *******************************************INFERNO*************************************************
@@ -1347,7 +1344,7 @@ FORCED
 !!MA:O215/3;                                                   Is a Inferno Unit
 !!SN:H^monname^/215/0/^Imp^;
 !!SN:H^monname^/215/1/^Imps^;
-!!SN:H^monname^/215/2/^{~99CCFF}Cast 1 Improved Misfortune.{~} Magic Channel. Fly.^;
+!!SN:H^monname^/215/2/^{~99CCFF}Cast 1 Expert Misfortune.{~} Magic Channel. Fly.^;
 
 ****************************GOG*******************************
 !!MA:A44/9;                                                   Att 
@@ -3837,7 +3834,7 @@ FORCED
 !!MA:I141/430;                                              IA value 
 !!MA:C141/6/230;                                            Cost 
 !!MA:L141/2;                                                Is Level 3
-!!SN:H^monname^/141/2/^Undead. 25% Cursed Attack. {~99CCFF}Cast 1 Curse.{~}^;
+!!SN:H^monname^/141/2/^Undead. 100% Cursed Attack. {~99CCFF}Cast 1 Curse.{~}^;
 
 ****************************GHOST***************************
 !!MA:A159/5;                                                Att 

@@ -49,6 +49,10 @@ AGONY SHOOT: Petrification + Poison.
 ELEMENTAL PROTECTION: Air Prot + Fire Prot + Earth Prot + Water Prot.
 AIR ENCHANTMENT: Air Shield + Counterstrike.
 
+****************************FORTRESS*****************************
+
+STRONG HEALTH: Immune to Poison Effect.
+
 *****************************CONFLUX*****************************
 
 ENCHANTMENT OF THE SPRITE: Each turn one of Bless, Stone Skin, Mirth or Fortune.

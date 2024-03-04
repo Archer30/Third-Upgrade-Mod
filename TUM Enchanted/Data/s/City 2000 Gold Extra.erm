@@ -24,7 +24,7 @@ ZVSE2
 ***BLACKSMITH +300 GOLD***
 !!CA0/(townId):O?(townOwner:y) B3/16;
 !!if&(TRUE)/(townOwner)<>(NO_OWNER);
-  !!VRx2:+300;
+  !!VR(income):+300;
 !!en;
 
 ***MARKETPLACE +500 GOLD***

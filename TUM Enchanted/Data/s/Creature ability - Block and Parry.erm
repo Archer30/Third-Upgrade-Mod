@@ -43,7 +43,7 @@ ZVSE2
 ; ========================== TESTING ==========================
 !!VR(result)&(mon)=197:S10; Imperial Soldier
 !!VR(result)&(mon)=(MON_SWORDSMAN):S10;
-!!VR(result)&(mon)=213:S20; Battlemage of the City of Ice and Steel
+!!VR(result)&(mon)=213:S30; Battlemage of the City of Ice and Steel
 !!VR(result)&(mon)=(MON_NAGA):S10;
 !!VR(result)&(mon)=(MON_NAGA_QUEEN):S15;
 !!VR(result)&(mon)=214:S30; Master of the Six Blades

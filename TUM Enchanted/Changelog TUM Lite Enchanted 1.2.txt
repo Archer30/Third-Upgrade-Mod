@@ -1,0 +1,66 @@
+**********CHANGELOG TUM LITE ENCHANTED EDITION 1.2**********
+
+BUG FIXES:
+*DIAMOND DRAGON Hero spell point regeneration ability removed (Dling Dlong Sound) thanks to SadnessPower.
+*Ogre Magi can now cast Haste correctly.
+*Might of the Catoblepas Bonus is now show correclty (+4 def).
+*Mummy description show 100% cursed attack.
+
+BALANCE:
+*GENERAL: All active buff/debuff caster units now are more useful with a basic +3 Spell Power, then if you decide to invest 1 creature turn to cast, your buff/debuff duration is at least 4 turns.
+
+*PREATORIANS "Wall of Shield Formation" bonus now grants -1 Atk +6 Def instead of -1 Atk +4 Def.
+*GOLD DRAGON "Dragon Defence" bonus now grants +4 Def instead of -1 Atk +4 Def, but chance are lowered to 20% instead of 30.
+*DIAMOND DRAGON "Ultimate Defence" bonus now grants +8 Def
+instead of +6 Def, but chance are lowered to 30% instead of 40%.
+*BATTLEMAGE OF THE CITY OF ICE AND STEEL "Parry" chance is increased to 30% instead of 20% and have +1 Defence skill.
+*ASSASSIN OF THE GOLDEN CITY defence skill is increased to 16 instead of 15.
+*MASTER OF THE SIX BLADES defence skill is increased to 18 instead of 16.
+*IMP now can actively cast Expert Misfortune instead of Misfortune.
+*HELL BARON "Strong Diabolic Fury" chance are lowered to 30% instead of 40%.
+*BLOOD DRAGON damage is lowered to 30-60 instead of 35-65. Attack and Defence skills are now -1.
+*LORD OF THE SWAMP defence skill is lowered to 22 instead of 24. Price is lowered by -100 gold.
+*SACRED PHOENIX defence and attack skill is lowered by -2 either.
+
+
+KNOWN ISSUES
+*Neutral town strong defense script will pop-up a message if there are no empty slots to add a creature
+
+
+**********CHANGELOG TUM LITE ENCHANTED EDITION 1.1**********
+
+BUG FIXES:
+*Small bug with Tavern calculation income is now fixed.
+*Fixed Town Building seldom allowing to build more than 1 building per turn.
+
+BALANCE:
+*Preator have +3 atk and def. 
+*Hell Hound now have 4-5 damage instead of 4-6.
+*Mage, Archmage and Supreme Archmage have +5 hp but damage is slightly lower.
+*Supreme Archmage now can autocast Clone with 10% chance.
+*Ogre Battle Shaman now have 6-12 damage instead of 5-12.
+*Sacred Phoenix AI and Fight Value are increased from 11000 to 11500
+*Gold Golem Upgrade in Diamond Golem is no longer possible, they are 2 separate creatures 
+*Neutral towns guard accumulation: Reduced growth on Pikemem and Centaur.
+*Cripling Attack and Shoot are same effect of ACM Ballista Perk (-4 atk and def -1 Speed)
+
+IMPROVEMENTS:
+*Added animation and sound for abilities which apply an effect on an enemy after attacking him (like Destroy Armor).
+
+MISCELLANEOUS:
+*Added force disabling for conflicting wog options. 
+*Neutral towns guard accumulation: added an Excel file to show growth progression.
+*Creatures Cost: added an Excel file to show cost progression.
+*Now Crippling Attack and Shooting have same ACM animation and sound
+
+
+**********CHANGELOG TUM LITE ENCHANTED EDITION 1.0**********
+
+BUG FIXES:
+*Fixed Commander Crash when try to cast
+
+BALANCE:
+*War Zealot now have +10hp for compensate the loss of casting ability (which had cause crash)
+*Mage, Archmage and Supreme Archmage do slightly more basic damage
+*Lord of Thunder now can cast Lighting Bolt instead of Chain Lightning
+*Berseker Dwarf have 30 hp now instead of 25. 

@@ -33,7 +33,7 @@ MAGICAL SHIELDS: Shield + Fire Shield.
 
 ****************************NECROPOLIS***************************
 
-FLESHEATER: After kills a living creature stack, it eats it's body and drains life like a vampire.
+FLESHEATER: After killing a living creature, the creature eats the enemy body and drains life like a vampire.
 
 *****************************DUNGEON*****************************
 
@@ -57,10 +57,9 @@ STRONG HEALTH: Immune to Poison Effect.
 
 ENCHANTMENT OF THE SPRITE: Each turn one of Bless, Stone Skin, Mirth or Fortune.
 ENCHANTMENT OF THE FAIRY: Each turn one of Bless, Stone Skin, Mirth, Fortune, Air Shield, Magic Mirror or Prayer.
+FIRE POWER: Bloodlust + Slayer.
 KILLER INSTINCT: Bless + Bloodlust + Slayer + Frenzy.
 ENCHANTER PROTECTION: Air Shield + Fire Shield + Stone Skin + Magic Mirror.
-MAGICAL ATTACK: 10% Ice Bolt or 9% Lightning Bolt or 1% Implosion.
-FIRE POWER: Bloodlust + Slayer.
 
 ***********************MORE FACTION OR NEUTRAL*******************
 
@@ -93,11 +92,11 @@ RAGE/THIRST: Activates when attack or retaliate. Bonus are not cumulative.
 MIGHT: Activates only when be attacked. Bonus are cumulative.
 WRATH/FORMATION/DEFENCE: Activates only when be attacked. Bonus are not cumulative.
 
-DEFENSIVE FORMATION: -1 Attack Skill, +2 Defence Skill.
-WALL OF SHIELDS FORMATION: -1 Attack Skill, +3 Defence Skill.
+DEFENSIVE FORMATION: -1 Attack Skill, +3 Defence Skill.
+WALL OF SHIELDS FORMATION: -1 Attack Skill, +6 Defence Skill.
 
-DRAGON DEFENCE: -1 Attack Skill, +4 Defence Skill.
-ULTIMATE DEFENCE: +6 Defence Skill.
+DRAGON DEFENCE: +4 Defence Skill.
+ULTIMATE DEFENCE: +8 Defence Skill.
 
 MIGHT OF THE NATURE: +2 Attack Skill, -1 Defence Skill, +1 Damage, +1 Speed, for each time be attacked.
 

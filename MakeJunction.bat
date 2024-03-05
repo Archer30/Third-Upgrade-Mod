@@ -1,2 +1,3 @@
-mklink /j "D:\Heroes of Might And Magic 3 ERA\Mods\TUM Enchanted" "D:\Heroes of Might And Magic 3 ERA\Repository\TUM Enchanted"
-mklink /j "D:\Heroes of Might And Magic 3 ERA\Mods\TUM Lite" "D:\Heroes of Might And Magic 3 ERA\Repository\TUM Lite"
+mklink /j "C:\Games\Heroes 3 ERA 3\Mods\TUM Enchanted" "C:\Games\Heroes 3 ERA 3\Repository\TUM Enchanted"
+mklink /j "C:\Games\Heroes 3 ERA 3\Mods\TUM Lite" "C:\Games\Heroes 3 ERA 3\Repository\TUM Lite"
+

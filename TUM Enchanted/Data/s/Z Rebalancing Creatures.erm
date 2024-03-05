@@ -33,7 +33,7 @@ PROTECTION OF THE MASTER: Air Shield + Stone Skin + Magic Mirror.
 MAGICAL SHIELDS: Shield + Fire Shield.
 
 ********************************************NECROPOLIS**********************************************
-FLESHEATER: After kills a living creature, it eats its body and drains life like a vampire.
+FLESHEATER: After killing a living creature, the creature eats the enemy body and drains life like a vampire.
 
 *********************************************DUNGEON************************************************
 FUNGAL WAR POTION: Bloodlust + Stone Skin + Haste.
@@ -47,13 +47,15 @@ AGONY SHOOT: Petrification + Poison.
 ELEMENTAL PROTECTION: Air Prot + Fire Prot + Earth Prot + Water Prot.
 AIR ENCHANTMENT: Air Shield + Counterstrike.
 
+****************************FORTRESS*****************************
+STRONG HEALTH: Immune to Poison Effect.
+
 ********************************************CONFLUX*************************************************
 ENCHANTMENT OF THE SPRITE: Each turn one of Bless, Stone Skin, Mirth or Fortune.
 ENCHANTMENT OF THE FAIRY: Each turn one of Bless, Stone Skin, Mirth, Fortune, Air Shield, Magic Mirror or Prayer.
+FIRE POWER: Bloodlust + Slayer.
 KILLER INSTINCT: Bless + Bloodlust + Slayer + Frenzy.
 ENCHANTER PROTECTION: Air Shield + Fire Shield + Stone Skin + Magic Mirror.
-MAGICAL ATTACK: 10% Ice Bolt or 9% Lightning Bolt or 1% Implosion.
-FIRE POWER: Bloodlust + Slayer.
 
 **************************************MORE FACTION OR NEUTRAL***************************************
 CRIPPLING ATTACK/SHOOT: -1 Speed.
@@ -77,17 +79,17 @@ ETHEREAL: 15% to 30% of Physical damage is avoided.
 PARRY: -50% Physical Damage.
 SCHIELD BLOCK: -100% Physical Damage and block Poison.
 
-************************************FURY, RAGE, WARTH AND MIGHT*************************************
+************************************FURY, RAGE, WRATH AND MIGHT*************************************
 FURY: Activates only when attack or retaliate. Bonus are cumulative.
 RAGE/THIRST: Activates when attack or retaliate. Bonus are not cumulative.
 MIGHT: Activates only when be attacked. Bonus are cumulative.
 WRATH/FORMATION/DEFENCE: Activates only when be attacked. Bonus are not cumulative.
 
-DEFENSIVE FORMATION: -1 Attack Skill, +2 Defence Skill.
-WALL OF SHIELDS FORMATION: -1 Attack Skill, +3 Defence Skill.
+DEFENSIVE FORMATION: -1 Attack Skill, +3 Defence Skill.
+WALL OF SHIELDS FORMATION: -1 Attack Skill, +6 Defence Skill.
 
-DRAGON DEFENCE: -1 Attack Skill, +4 Defence Skill.
-ULTIMATE DEFENCE: +6 Defence Skill.
+DRAGON DEFENCE: +4 Defence Skill.
+ULTIMATE DEFENCE: +8 Defence Skill.
 
 MIGHT OF THE NATURE: +2 Attack Skill, -1 Defence Skill, +1 Damage, +1 Speed, for each time be attacked.
 
@@ -510,7 +512,7 @@ ALL SHARPSHOOTERS: 4 -> 3
 !!MA:X150/d~(MON_FLAG_NO_RETALIATION);                          Remove No Enemy Retaliation
 !!MA:L150/6;                                                    Is Level 7
 !!MA:O150/0;                                                    Is a Castle Unit
-!!SN:H^monname^/150/2/^Fly. +2 Morale. Strongly All Hates Devils. {~99CCFF}Cast 2 Resurrection.{~} {10% Shield Block.} Preventive Retaliation. Berserker Immunity. Fearless. {~33CCCC}20% Prayer.{~}^;
+!!SN:H^monname^/150/2/^Fly. +2 Morale to Army. Strongly All Hates Devils. {~99CCFF}Cast 2 Resurrection.{~} {10% Shield Block.} Preventive Retaliation. Berserker Immunity. Fearless. {~33CCCC}20% Prayer.{~}^;
 
 ***************************************************************************************************
 *********************************************RAMPART***********************************************
@@ -877,7 +879,7 @@ FORCED
 !!MA:X27/d(MON_FLAG_WIDE_ATTACK);                              Add Breath Attack
 !!MA:L27/6;                                                    Is Level 7
 !!MA:O27/1;                                                    Is a Rampart Unit
-!!SN:H^monname^/27/2/^Dragon. Fly. {40% Magic Resistence.} +100 Gold/day. {~3faa11}20% Petrifying Breath.{~} {~ffeb3b}30% Dragon Defence.{~} {~33CCCC}20% Stone Skin.{~}^;
+!!SN:H^monname^/27/2/^Dragon. Fly. {40% Magic Resistence.} +100 Gold/day. {~3faa11}20% Petrifying Breath.{~} {~ffeb3b}20% Dragon Defence.{~} {~33CCCC}20% Stone Skin.{~}^;
 
 *************************DIAMOND DRAGON*************************
 **FORCED**
@@ -901,7 +903,7 @@ FORCED
 !!MA:X151/d(MON_FLAG_WIDE_ATTACK);                               Add Breath Attack
 !!MA:L151/6;                                                     Is Level 7
 !!MA:O151/1;                                                     Is a Rampart Unit
-!!SN:H^monname^/151/2/^Dragon. Fly. {60% Magic Resistence.} +200 Gold/day. Hero's Combat Spell Cost -2. {~9746e3}20% Blinding Breath.{~} {~ffeb3b}40% Ultimate Defence.{~} {~33CCCC}20% Expert Stone Skin.{~} {~9746e3}20% Stunning Breath.{~} Fearless. Implosion Immunity.^;
+!!SN:H^monname^/151/2/^Dragon. Fly. {60% Magic Resistence.} +200 Gold/day. Hero's Combat Spell Cost -2. {~9746e3}20% Blinding Breath.{~} {~ffeb3b}30% Ultimate Defence.{~} {~33CCCC}20% Expert Stone Skin.{~} {~9746e3}20% Stunning Breath.{~} Fearless. Implosion Immunity.^;
 
 ***************************************************************************************************
 ********************************************** TOWER **********************************************
@@ -1155,7 +1157,7 @@ FORCED
 
 ************BATTLEMAGE OF THE CITY OF ICE AND STEEL*************
 !!MA:A213/18;                                                   Zealot Att 12 to 12
-!!MA:D213/15;                                                   Zealot Def 7 to 12
+!!MA:D213/16;                                                   Zealot Def 7 to 12
 !!MA:M213/12;                                                   Zealot Min Dam 10 to 10
 !!MA:E213/16;                                                   Zealot Max Dam 12 to 13
 !!MA:P213/55;                                                  Zealot Hp 30 to 60
@@ -1173,7 +1175,7 @@ FORCED
 !!MA:O213/2;                                                    Is a Tower Unit
 !!SN:H^monname^/213/0/^Battlemage of the City of Ice and Steel^;
 !!SN:H^monname^/213/1/^Battlemages of the City of Ice and Steel^;
-!!SN:H^monname^/213/2/^Fly. Strongly Hates Efreeti. {~99CCFF}Cast 3 Random Buff Spells.{~} Double Attack. {20% Parry.} {~33CCCC}Random Buff on itself.{~}^;
+!!SN:H^monname^/213/2/^Fly. Strongly Hates Efreeti. {~99CCFF}Cast 3 Random Buff Spells.{~} Double Attack. {30% Parry.} {~33CCCC}Random Buff on itself.{~}^;
 
 ***************************NAGA*********************************
 !!MA:A38/16;                                                   Zealot Att 12 to 12
@@ -1192,7 +1194,7 @@ FORCED
 
 *******************ASSASSIN OF THE GOLDEN CITY****************
 !!MA:A39/18;                                                   Zealot Att 12 to 12
-!!MA:D39/14;                                                   Zealot Def 7 to 12
+!!MA:D39/16;                                                   Zealot Def 7 to 12
 !!MA:M39/15;                                                   Zealot Min Dam 10 to 10
 !!MA:E39/35;                                                   Zealot Max Dam 12 to 13
 !!MA:P39/110;                                                  Zealot Hp 30 to 60
@@ -1210,7 +1212,7 @@ FORCED
 
 **********************MASTER OF THE SIX BLADES*****************
 !!MA:A214/20;                                                   Att 
-!!MA:D214/16;                                                   Def 
+!!MA:D214/18;                                                   Def 
 !!MA:M214/20;                                                   Min Dam 
 !!MA:E214/40;                                                   Max Dam 
 !!MA:P214/130;                                                  Hp 
@@ -1647,7 +1649,7 @@ FORCED
 !!MA:C55/1/2;                                                Cost Mercury
 !!MA:L55/6;                                                  Is Level 7
 !!MA:O55/3;                                                  Is a Inferno Unit
-!!SN:H^monname^/55/2/^-2 Enemy Luck. No Enemy Retaliation. Teleport. {~ff1100}40% Diabolic Fury.{~} Strongly All Hates Angels. {10% Parry.}^; Sacrifice da sistemare
+!!SN:H^monname^/55/2/^-2 Enemy Luck. No Enemy Retaliation. Teleport. {~ff1100}20% Diabolic Fury.{~} Strongly All Hates Angels. {10% Parry.}^; Sacrifice da sistemare
 
 ***************************HELL BARON*************************
 *FORCED*
@@ -1668,7 +1670,7 @@ FORCED
 !!MA:X153/d(MON_FLAG_KING_2);                                 Add King
 !!MA:L153/6;                                                  Is Level 7
 !!MA:O153/3;                                                  Is a Inferno Unit
-!!SN:H^monname^/153/2/^-2 Enemy Luck. No Enemy Retaliation. Teleport. {~ff1100}60% Strong Diabolic Fury.{~} Strongly Hates Angels. {20% Parry.} {~3faa11}Fear.{~} Blind Immunity. {~939393}Raise Pit Masters 1.{~} {~9746e3}20% Berserker Attack.{~}^;
+!!SN:H^monname^/153/2/^-2 Enemy Luck. No Enemy Retaliation. Teleport. {~ff1100}30% Strong Diabolic Fury.{~} Strongly Hates Angels. {20% Parry.} {~3faa11}Fear.{~} Blind Immunity. {~939393}Raise Pit Masters 1.{~} {~9746e3}20% Berserker Attack.{~}^;
 
 ***************************************************************************************************
 ******************************************NECROPOLIS***********************************************
@@ -2051,10 +2053,10 @@ FORCED
 !!SN:H^monname^/69/2/^Dragon. Undead. Fly. {~9746e3}-1 Enemy Morale. 50% Sorrow Attack.{~} {Ethereal.} {~3faa11}20% Age Attack.{~}^;
 
 **************************BLOOD DRAGON**********************
-!!MA:A154/25;                                               Att 
-!!MA:D154/23;                                               Def 
-!!MA:M154/35;                                               Min Dam 
-!!MA:E154/65;                                               Max Dam
+!!MA:A154/24;                                               Att 
+!!MA:D154/22;                                               Def 
+!!MA:M154/30;                                               Min Dam 
+!!MA:E154/60;                                               Max Dam
 !!MA:P154/300;                                              Hp 
 !!MA:S154/14;                                               Speed
 !!MA:G154/1;                                                Growth
@@ -2855,7 +2857,7 @@ FORCED
 !!MA:O156/6;                                                Is a Stronghold Unit
 !!SN:H^monname^/156/0/^Fury of the Wildlands^;
 !!SN:H^monname^/156/1/^Furies of the Wildlands^;
-!!SN:H^monname^/156/2/^Ignore Enemy Defence Skill. {~ff1100}40% Monstrous Rage.{~} Meteor Shower and Implosion Immunity. Always Positive Morale. +2 Luck. Fearless. {~939393}Kill Frenzy.{~}^;
+!!SN:H^monname^/156/2/^Ignore Enemy Defence Skill. {~ff1100}40% Monstrous Rage.{~} Meteor Shower and Implosion Immunity. Always Positive Morale. +2 Luck to Army. Fearless. {~939393}Kill Frenzy.{~}^;
 
 ***************************************************************************************************
 ********************************************FORTRESS***********************************************
@@ -3211,7 +3213,7 @@ FORCED
 
 ***********************LORD OF THE SWAMP********************
 !!MA:A157/22;                                               Att 
-!!MA:D157/24;                                               Def 
+!!MA:D157/22;                                               Def 
 !!MA:M157/25;                                               Min Dam 
 !!MA:E157/65;                                               Max Dam
 !!MA:P157/500;                                              Hp 
@@ -3219,7 +3221,7 @@ FORCED
 !!MA:G157/1;                                                Growth
 !!MA:F157/13700;                                            Fight value 
 !!MA:I157/13700;                                            IA value 
-!!MA:C157/6/8200;                                           Cost 
+!!MA:C157/6/8100;                                           Cost 
 !!MA:C157/3/3;                                              Cost Sulfur
 !!MA:X157/d(MON_FLAG_WIDE);                                 Add Wide
 !!MA:X157/d(MON_FLAG_ALIVE);                                Add Living
@@ -3610,8 +3612,8 @@ FORCED
 !!SN:H^monname^/131/2/^Fly. Fire Affinity. Breath Attack. Fire Shield. Rebirth. {~33CCCC}20% Fire Power.{~}^;
 
 ***********************SACRED PHOENIX***********************
-!!MA:A158/26;                                               Att 
-!!MA:D158/24;                                               Def 
+!!MA:A158/24;                                               Att 
+!!MA:D158/22;                                               Def 
 !!MA:M158/35;                                               Min Dam 
 !!MA:E158/65;                                               Max Dam
 !!MA:P158/300;                                              Hp 

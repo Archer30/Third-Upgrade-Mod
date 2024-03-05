@@ -1546,6 +1546,9 @@ C(ebp)/16/4/d-i^tum_MonPlusLuckPower^ C(ebp)/20/4/di^tum_MonPlusLuckPower^;
   !!VR(mustChangeTarget:y):S(FALSE);
   !!BG:E?(targetStack:y);
 
+  ; Exit if spell target is a dead stack
+  !!FU|(targetStack)<0/(targetStack)>41:E;
+
   ; If the spell is a spell gives a buff
   !!if&(spell)<>(SPELL_CURE);
     !!BM(targetStack):G(spell)/?(duration:y)/?(level:y);

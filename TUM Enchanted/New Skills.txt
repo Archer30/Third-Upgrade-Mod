@@ -84,9 +84,9 @@ STUNNED: No movement and no Retaliation for 1 turn. It's work's only on non-Mind
 ETHEREAL: 15% to 30% of Physical damage is avoided.
 
 PARRY: -50% Physical Damage.
-SCHIELD BLOCK: -100% Physical Damage and block Poison.
+SHIELD BLOCK: -100% Physical Damage and block Poison.
 
-*******************FURY, RAGE, WARTH AND MIGHT*******************
+*******************FURY, RAGE, WRATH AND MIGHT*******************
 
 FURY: Activates only when attack or retaliate. Bonus are cumulative.
 RAGE/THIRST: Activates when attack or retaliate. Bonus are not cumulative.

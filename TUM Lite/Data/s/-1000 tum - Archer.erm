@@ -496,7 +496,7 @@ H3Vector<H3CombatCreature*> dendroidBinds;
 !!VR(discount)&(equipped)>0:+3;
 
 // Night Scouting (Assassins)
-!?FU(ES_795_GetAssassinMonType);
+!?FU(ES_795_GetAssassinMonType)&i^tum_lite_on^<>(TRUE);
 !#VA(monType:x);
 
 !!VR(monType):S(MON_ASSASSIN);
@@ -508,7 +508,7 @@ H3Vector<H3CombatCreature*> dendroidBinds;
 !!VR(result)&(mon)=(MON_SPECTRE):S(TRUE);
 
 // Skeleton Artifact
-!?FU(ES_882_GetSkeletonMonType);
+!?FU(ES_882_GetSkeletonMonType)&i^tum_lite_on^<>(TRUE);
 !#VA(artLevel:x) (monType:x);
 
 !!VR(monType)&(artLevel)=2:S(MON_SKELETON_KNIGHT);

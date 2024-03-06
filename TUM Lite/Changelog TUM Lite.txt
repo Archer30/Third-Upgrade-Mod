@@ -6,6 +6,7 @@ BUG FIXES
 - Fixed Refugee Camps offering creatures while showing Pikemen image and crash afterwards 
 - Fixed Hero Creature Specialist bonus not given to upgraded and TUM Upgraded creatures
 - Fixed check for building resource requirement which sometimes allowed to build without having enough resources
+- Fixed being able to quick upgrade a creature (by pressing 'A' in towns) to TUM without having the corresponding TUM Upgrade Building
 - Fixed Difficulty Mod option "Creature Banks" not working if wog option "Neutral Town and Creature Growth" is disabled
 - Fixed ERM error occurring when an AI creature resurrects a dead stack
 
@@ -15,6 +16,8 @@ KNOWN ISSUES
 - Universal Creature Upgrades is not compatible with TUM: it will not allow Universal TUM Upgrades.
 
 - Mage Guild built at maximum level is incorrectly reported as Mage Guild 1.
+
+- Gold barred icon indicating you can't afford a building is not shown (occurs very rarely).
 
 ********************CHANGELOG TUM LITE 2.1*****************
 

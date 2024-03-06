@@ -11,7 +11,7 @@ BUG FIXES
 - Fixed ERM error occurring when an AI creature resurrects a dead stack
 
 KNOWN ISSUES
-- TUM Build Dependency not implemented: e.g.: Orc TUM Upgrade could be built without Freelancer’s guild.
+- TUM Build Dependency not implemented: e.g.: Orc TUM Upgrade could be built without Freelancerï¿½s guild.
  
 - Universal Creature Upgrades is not compatible with TUM: it will not allow Universal TUM Upgrades.
 

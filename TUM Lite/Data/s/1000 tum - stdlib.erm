@@ -119,7 +119,7 @@ ZVSE2
   !!VRi^tum_emerald_on^:S(TRUE);
 !!en;
 
-!!SN:L^newtown.era^/?(newTowns:y);
+!!SN:L^new_towns.era^/?(newTowns:y);
 !!VRi^tum_newTowns_on^&(newTowns):S(TRUE);
 
 !!SN:L^wogcn.dll^/?(wogcn:y);

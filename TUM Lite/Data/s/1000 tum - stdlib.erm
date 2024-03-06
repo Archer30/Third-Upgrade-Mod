@@ -67,7 +67,8 @@ ZVSE2
 ****************************************************
 **** Set Up Global Variables (Erm Instructions) ****
 ****************************************************
-// Warning: This function must be placed here in order to be executed by erm instruction commands
+// Warning: These functions must be placed here in order to be executed by erm instruction commands
+// Function to check if the map is a random map
 !?FU(tum_CheckRandMap);
 !#VA(result:x);
 
@@ -75,13 +76,35 @@ ZVSE2
 !!UN:C(GAME_MANAGER)/4/?(gameMgr:y) C(gameMgr)/128980/1/?(value:y);
 !!VR(result)&(value)=114:S(TRUE);
 
+// Funciton to get the last monster Id
+; For Amethyst 2 by Majaczek only
+!?FU(GetMaxMonsterId);
+!#VA(result:x);
+
+!!SN:L^amethyst2_4.dll^/?(amet:y);
+
+!!if&(amet)<>0;
+  !!UN:C5509220/(UNC_INT)/?(result);
+  !!VR(result):-1;
+!!en;
+
+****************************************************
+
 !?FU(tum_SetUpGlobalVars);
+// TUM signature variable
 !!VRi^Typhon_Third_Upgrade_Mod_Active^:S(TRUE); [Global var for TUM Enabled]
+
+// TUM Lite
+!!FU(GetMaxMonsterId):P?(lastMon:y);
+!!VRi^tum_lite_on^&(lastMon)<347:S(TRUE);
+
+// Others
 !!FU(tum_CheckRandMap):P?i^tum_isRandMap^;
 !!UN:P195/?i^tum_replaceObj_on^;
 
 !#FU(tum_SetUpGlobalVars):P;
 
+// Plugins
 !?FU(OnAfterLoadGame);
 !!FU(tum_CheckPlugins):P;
 
@@ -693,20 +716,6 @@ ZVSE2
 *******************************************************************
 **** Functions * Functions * Functions * Functions * Functions ****
 *******************************************************************
-
-*******************************************************
-**** Function to get the latest creature ID of TUM ****
-*******************************************************
-; For Amethyst 2 by Majaczek only
-!?FU(GetMaxMonsterId);
-!#VA(result:x);
-
-!!SN:L^amethyst2_4.dll^/?(amet:y);
-
-!!if&(amet)<>0;
-  !!UN:C5509220/(UNC_INT)/?(result);
-  !!VR(result):-1;
-!!en;
 
 *******************************************************
 **** Function to get the latest artifact ID of TUM ****

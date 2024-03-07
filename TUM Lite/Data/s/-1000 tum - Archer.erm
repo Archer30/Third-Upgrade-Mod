@@ -496,7 +496,7 @@ H3Vector<H3CombatCreature*> dendroidBinds;
 !!VR(discount)&(equipped)>0:+3;
 
 // Night Scouting (Assassins)
-!?FU(ES_795_GetAssassinMonType);
+!?FU(ES_795_GetAssassinMonType)&i^tum_lite_on^<>(TRUE);
 !#VA(monType:x);
 
 !!VR(monType):S(MON_ASSASSIN);
@@ -508,7 +508,7 @@ H3Vector<H3CombatCreature*> dendroidBinds;
 !!VR(result)&(mon)=(MON_SPECTRE):S(TRUE);
 
 // Skeleton Artifact
-!?FU(ES_882_GetSkeletonMonType);
+!?FU(ES_882_GetSkeletonMonType)&i^tum_lite_on^<>(TRUE);
 !#VA(artLevel:x) (monType:x);
 
 !!VR(monType)&(artLevel)=2:S(MON_SKELETON_KNIGHT);
@@ -1074,8 +1074,7 @@ C(ebp)/16/4/d-i^tum_MonPlusLuckPower^ C(ebp)/20/4/di^tum_MonPlusLuckPower^;
 ************************************************************************************************
 **** Bad fix: Fix Strike And Return cannot be switched with igrik's action switching plugin ****
 ************************************************************************************************
-; Strike and Return by Archer30
-
+; Note that this is only a fix for the plugin compatibility. It still relies on Amethyst for the real Strike and Return ability
 ; Failed implementation: This also does not work with Switching actions
 *?FU(tum_CreateERMHook);
 *!SN:Ex1/1/7725162/(arch_OnStackStrikeAndReturn);
@@ -1341,10 +1340,9 @@ C(ebp)/16/4/d-i^tum_MonPlusLuckPower^ C(ebp)/20/4/di^tum_MonPlusLuckPower^;
 **** Bad Fix: Fix first stack turn on the battlefield ****
 **********************************************************
 ; For some reason the first stack of the battlefield is frequently wrong. This script fixes it.
-
-; First and Second implementation 
-*?FU(OnSetupBattlefield);
-*!VRi^tum_firstStackFixed^:S(FALSE);
+; Warning: Checking i^tum_firstStackFixed is always needed as there is a chance the first unit is fear, and process of looking for the first stack is executed more than once!
+!?FU(OnSetupBattlefield);
+!!VRi^tum_firstStackFixed^:S(FALSE);
 
 ; First implementation
 ; Can't recall why it was not good. Because of the first 77007 after tactics phase ended is still at tactics phase?
@@ -1357,7 +1355,7 @@ C(ebp)/16/4/d-i^tum_MonPlusLuckPower^ C(ebp)/20/4/di^tum_MonPlusLuckPower^;
 *!FU(BattleStack_MakeActive):P(firstStack);
 
 ; Third implementation
-!?FU(tum_OnFindNextStackTurn);
+!?FU(tum_OnFindNextStackTurn)&i^tum_firstStackFixed^<>(TRUE);
 !#VA(hook:x);
 
 !!UN:C(hook)/(STRUCT_HOOK_CONTEXT_EBP)/4/?(ebp:y);
@@ -1445,7 +1443,7 @@ C(ebp)/16/4/d-i^tum_MonPlusLuckPower^ C(ebp)/20/4/di^tum_MonPlusLuckPower^;
 
 ; Mark the procedure as done
 ; For the first and second implementation only
-*!VRi^tum_firstStackFixed^:S(TRUE);
+!!VRi^tum_firstStackFixed^:S(TRUE);
 
 !?FU(tum_GetMaxSpeedStack);
 !#VA(startStack:x) (endStack:x) (result:x);
@@ -1475,7 +1473,7 @@ C(ebp)/16/4/d-i^tum_MonPlusLuckPower^ C(ebp)/20/4/di^tum_MonPlusLuckPower^;
 ************************************************************************
 ; Monsters wih casting ability have high priority in casting, which doesn't make sense at all
 ; This script blocks casting with a chance
-; This script currently works for TUM Reborn only (maybe it can be extend later)
+; This script currently works for TUM Reborn only (maybe it can be extended later)
 
 ; Warning: it turns out the script doesn't work well as Amethyst spell casting happens before FU(OnBeforeBattleStackTurn), but it still has some effects for some reason.
 
@@ -1497,7 +1495,7 @@ C(ebp)/16/4/d-i^tum_MonPlusLuckPower^ C(ebp)/20/4/di^tum_MonPlusLuckPower^;
   !!en;
 !!en;
 
-!?FU(OnBattleStackObtainsTurn)&i^tum_tacticsIsEnded^;
+!?FU(OnBattleStackObtainsTurn)&i^tum_tacticsIsEnded^/i^tum_reborn_on^;
 !!BG:Q?(side:y);
 
 !!if&i^battle_ai_%(side)^;
@@ -1519,7 +1517,7 @@ C(ebp)/16/4/d-i^tum_MonPlusLuckPower^ C(ebp)/20/4/di^tum_MonPlusLuckPower^;
   !!en;
 !!en;
 
-!?FU(OnBeforeBattleAction)&i^tum_tacticsIsEnded^;
+!?FU(OnBeforeBattleAction)&i^tum_tacticsIsEnded^/i^tum_reborn_on^;
 !!BG:Q?(castingSide:y);
 !!FU&i^battle_ai_%(castingSide)^<>(TRUE):E;
 
@@ -1539,15 +1537,14 @@ C(ebp)/16/4/d-i^tum_MonPlusLuckPower^ C(ebp)/20/4/di^tum_MonPlusLuckPower^;
 !!BG:A?(action:y);
 !!FU&(action)<>(BATTLE_ACTION_MONSTER_CAST):E;
 
+!!BG:E?(targetStack:y);
+!!FU|(targetStack)<(BATTLE_STACK_FIRST)/(targetStack)>(BATTLE_STACK_LAST):E;
+
 !!BMi^battle_current_stack^:T?(type:y);
 !!FU(tum_GetMonLessUsefulSpell):P(type)/?(spell:y);
 
 !!if&(spell);
   !!VR(mustChangeTarget:y):S(FALSE);
-  !!BG:E?(targetStack:y);
-
-  ; Exit if spell target is a dead stack
-  !!FU|(targetStack)<0/(targetStack)>41:E;
 
   ; If the spell is a spell gives a buff
   !!if&(spell)<>(SPELL_CURE);

@@ -23,30 +23,29 @@ ZVSE2
 !!en;
 
 ; Check if there are two human players in different teams
-; This script is no longer needed as TUM Reborn works in MP
-*!if&(isNetworkGame);
-  *!FU(NewIntArray):P?(humanTeams:y);
+!!if&(isNetworkGame);
+  !!FU(NewIntArray):P?(humanTeams:y);
 
   ; Loop through all the players and see how many human teams in total
-  *!re i/(PLAYER_FIRST)/(PLAYER_LAST);
-    *!OW:Ii/?(isAi:y)/?(hasLost:y);
+  !!re i/(PLAYER_FIRST)/(PLAYER_LAST);
+    !!OW:Ii/?(isAi:y)/?(hasLost:y);
 
-    *!if&(isAi)<>(TRUE)/(hasLost)<>(TRUE);
-      *!OW:Ti/?(team:y);
-      *!FU(Array_Push):P(humanTeams)/(team);
-    *!en;
-  *!en;
+    !!if&(isAi)<>(TRUE)/(hasLost)<>(TRUE);
+      !!OW:Ti/?(team:y);
+      !!FU(Array_Push):P(humanTeams)/(team);
+    !!en;
+  !!en;
 
-  *!FU(Array_SortedUnique):P(humanTeams);
-  *!SN:M(humanTeams)/?(size:y);
+  !!FU(Array_SortedUnique):P(humanTeams);
+  !!SN:M(humanTeams)/?(size:y);
 
   ; Show msg if there are at least two teams of human players
-  *!if&(size)>1;
-    *!SN:H^art^/(ART_BOOTS_OF_POLARITY)/0/?(artName:z) H^art^/(ART_BOOTS_OF_POLARITY)/0/^^;
-    *!IF:Q1/(PIC_TYPE_ART)/(ART_BOOTS_OF_POLARITY)/(PIC_TYPE_ART)/(ART_BOOTS_OF_POLARITY)/(PIC_TYPE_ART)/(ART_BOOTS_OF_POLARITY)/(MSG_TYPE_MES)/^%T(Third_Upgrade_Mod.brokenMpSupport)^;
-    *!SN:H^art^/(ART_BOOTS_OF_POLARITY)/0/(artName);
-  *!en;
-*!en;
+  !!if&(size)>1;
+    !!SN:H^art^/(ART_BOOTS_OF_POLARITY)/0/?(artName:z) H^art^/(ART_BOOTS_OF_POLARITY)/0/^^;
+    !!IF:Q1/(PIC_TYPE_ART)/(ART_BOOTS_OF_POLARITY)/(PIC_TYPE_ART)/(ART_BOOTS_OF_POLARITY)/(PIC_TYPE_ART)/(ART_BOOTS_OF_POLARITY)/(MSG_TYPE_MES)/^%T(Third_Upgrade_Mod.brokenMpSupport)^;
+    !!SN:H^art^/(ART_BOOTS_OF_POLARITY)/0/(artName);
+  !!en;
+!!en;
 
 ; Check if 8th creatures' memory hacks are not restored
 !!UN:P301/?(eighthMon:y);
@@ -68,7 +67,8 @@ ZVSE2
 ****************************************************
 **** Set Up Global Variables (Erm Instructions) ****
 ****************************************************
-// Warning: This function must be placed here in order to be executed by erm instruction commands
+// Warning: These functions must be placed here in order to be executed by erm instruction commands
+// Function to check if the map is a random map
 !?FU(tum_CheckRandMap);
 !#VA(result:x);
 
@@ -76,13 +76,35 @@ ZVSE2
 !!UN:C(GAME_MANAGER)/4/?(gameMgr:y) C(gameMgr)/128980/1/?(value:y);
 !!VR(result)&(value)=114:S(TRUE);
 
+// Funciton to get the last monster Id
+; For Amethyst 2 by Majaczek only
+!?FU(GetMaxMonsterId);
+!#VA(result:x);
+
+!!SN:L^amethyst2_4.dll^/?(amet:y);
+
+!!if&(amet)<>0;
+  !!UN:C5509220/(UNC_INT)/?(result);
+  !!VR(result):-1;
+!!en;
+
+****************************************************
+
 !?FU(tum_SetUpGlobalVars);
+// TUM signature variable
 !!VRi^Typhon_Third_Upgrade_Mod_Active^:S(TRUE); [Global var for TUM Enabled]
+
+// TUM Lite
+!!FU(GetMaxMonsterId):P?(lastMon:y);
+!!VRi^tum_lite_on^&(lastMon)<347:S(TRUE);
+
+// Others
 !!FU(tum_CheckRandMap):P?i^tum_isRandMap^;
 !!UN:P195/?i^tum_replaceObj_on^;
 
 !#FU(tum_SetUpGlobalVars):P;
 
+// Plugins
 !?FU(OnAfterLoadGame);
 !!FU(tum_CheckPlugins):P;
 
@@ -97,7 +119,7 @@ ZVSE2
   !!VRi^tum_emerald_on^:S(TRUE);
 !!en;
 
-!!SN:L^newtown.era^/?(newTowns:y);
+!!SN:L^new_towns.era^/?(newTowns:y);
 !!VRi^tum_newTowns_on^&(newTowns):S(TRUE);
 
 !!SN:L^wogcn.dll^/?(wogcn:y);
@@ -343,7 +365,7 @@ ZVSE2
 !!VR(finalDmg):S(finalDmgConst);
 
 *****************************************************
-**** Set Up Global Variables and Arrays (battle) ****
+**** Set Up Global Variables and Arrays (Battle) ****
 *****************************************************
 
 // Set up town screen variable (to prevent triggering several events)
@@ -376,6 +398,9 @@ ZVSE2
 !?FU(OnAfterTacticsPhase);
 !!VRi^tum_tacticsIsEnded^:S(TRUE);
 
+!?FU(OnBeforeBattleReplay);
+!!VRi^tum_tacticsIsEnded^:S(FALSE);
+
 !?FU(OnAfterBattleUniversal);
 !!VRi^tum_tacticsIsEnded^:S(FALSE);
 
@@ -388,12 +413,10 @@ ZVSE2
 
 // Set up special ability counter
 ; Reset special ability counter to 0 at the start of battle
-; i^tum_abilityCounter3_%i^ is not currently used
 !?FU(OnBeforeBattleUniversal);
 !!re i/(BATTLE_STACK_FIRST)/(BATTLE_STACK_LAST);
   !!VRi^tum_abilityCounter_%i^:S0;
   !!VRi^tum_abilityCounter2_%i^:S0;
-  !!VRi^tum_abilityCounter3_%i^:S0;
 !!en;
 
 !?FU(tum_BattleStack_InitParams);
@@ -401,48 +424,19 @@ ZVSE2
 
 !!VRi^tum_abilityCounter_%(stackId)^:S0;
 !!VRi^tum_abilityCounter2_%(stackId)^:S0;
-!!VRi^tum_abilityCounter3_%(stackId)^:S0;
 
 ; Reduce i^tum_abilityCounter_%i^ by 1 every round
 ; i^tum_abilityCounter2_%i^ would only be reset for each battle
-; Reset i^tum_abilityCounter3_%i^ to 0 at the end of start of every round
 !?FU(OnBattleRound_Quit)&i^battle_round^>=1;
 !!re i/(BATTLE_STACK_FIRST)/(BATTLE_STACK_LAST);
   !!VRi^tum_abilityCounter_%i^:-1 F0/(INT_MAX);
-
-  !!VRi^tum_abilityCounter3_%i^:S0;
 !!en;
 
 !?FU(OnAfterBattleUniversal);
 !!re i/(BATTLE_STACK_FIRST)/(BATTLE_STACK_LAST);
   !!VRi^tum_abilityCounter_%i^:S0;
   !!VRi^tum_abilityCounter2_%i^:S0;
-  !!VRi^tum_abilityCounter3_%i^:S0;
 !!en;
-
-// Create ability array at the start of battle
-*?FU(OnBeforeBattleUniversal);
-*!re i/(BATTLE_STACK_FIRST)/(BATTLE_STACK_LAST);
-  *!SN:Mi^tum_abilityArray_%i^;
-  *!FU(NewIntArray):P?i^tum_abilityArray_%i^/(M_TEMP);
-*!en;
-
-; Reset array every stack turn
-*?FU(OnBattleStackObtainsTurn)&i^battle_round^>=0;
-*!SN:Mi^tum_abilityArray_%i(battle_current_stack)^/0;
-
-; Release array at the end of battle or load game
-*?FU(OnAfterBattleUniversal);
-*!FU(tum_ReleaseBattleArrays):P;
-
-*?FU(OnAfterLoadGame);
-*!FU(tum_ReleaseBattleArrays):P;
-
-*?FU(tum_ReleaseBattleArrays);
-*!re i/(BATTLE_STACK_FIRST)/(BATTLE_STACK_LAST);
-  *!SN:Mi^tum_abilityArray_%i^;
-  *!VRi^tum_abilityArray_%i^:S0;
-*!en;
 
 // Set up target stack
 ; This is crucial for OnBattleActionEnd as the BG:E OnBattleActionEnd would become -1 when the target is killed
@@ -473,6 +467,26 @@ ZVSE2
     !!VRi^tum_%(ART_CAPE_OF_SILENCE)_equipped^&(equipped):S(TRUE);
   !!en;
 !!en;
+
+// Get the string pointer to be used in battle
+!?FU(OnSetupBattlefield)&i^battle_isVisible^;
+; Recreate battle strings persistent storage
+!!SN:Mi^tum_battleStrings^;
+!!FU(NewStrArray):P?i^tum_battleStrings^/(M_TEMP);
+
+!?FU(OnAfterBattleUniversal)&i^tum_battleStrings^;
+; Free battle strings persistent storage
+!!SN:Mi^tum_battleStrings^;
+!!VRi^tum_battleStrings^:S0;
+
+!?FU(tum_AllocBattleStr);
+; Stores string in a battle persistent memory and returns its raw address in memory
+!#VA(textPtr:x); string contents to get persistent address for
+!#VA(result:x);  result raw string address
+
+!!SN:Mi^tum_battleStrings^/?(strIndex:y);
+!!FU(Array_Push):Pi^tum_battleStrings^/z(textPtr);
+!!SN:Mi^tum_battleStrings^/?(result)/(strIndex);
 
 *****************************
 **** Replace map objects ****
@@ -702,20 +716,6 @@ ZVSE2
 *******************************************************************
 **** Functions * Functions * Functions * Functions * Functions ****
 *******************************************************************
-
-*******************************************************
-**** Function to get the latest creature ID of TUM ****
-*******************************************************
-; For Amethyst 2 by Majaczek only
-!?FU(GetMaxMonsterId);
-!#VA(result:x);
-
-!!SN:L^amethyst2_4.dll^/?(amet:y);
-
-!!if&(amet)<>0;
-  !!UN:C5509220/(UNC_INT)/?(result);
-  !!VR(result):-1;
-!!en;
 
 *******************************************************
 **** Function to get the latest artifact ID of TUM ****
@@ -1868,7 +1868,7 @@ Death Ripple? 005A106A (5902442)
 ****************************************
 **** Get the actual side of a stack ****
 ****************************************
-; The stack size would be reverted if the stack is hypnotized
+; The stack side would be reverted if the stack is hypnotized
 !?FU(tum_GetActualStackSide);
 !#VA(stack:x) (side:x);
 
@@ -1997,22 +1997,22 @@ Death Ripple? 005A106A (5902442)
 ***********************************************
 ; Currently works for Fire Wall only
 !?FU(tum_PlaceMagicObstacle);
-!#VA(spell:x) (pos:x) (level:x) (power:x);
+!#VA(spell:x) (pos:x) (level:x) (power:x) (disableLog:x);
 
 ; Set up values
 !!if&(spell)=(SPELL_FIRE_WALL);
-  !!UN:C5901158/4/440;              [Hawaiing's hack]
-  !!UN:C5901162/2/36864;
-  !!UN:C5901449/1/159;
+  !!UN:C5901158/4/440;                  [5A0B66]
+  !!UN:C5901162/2/36864;                [5A0B6A]
+  !!UN&(disableLog):C5901449/1/159;     [5A0C89 - disable the log]
 !!en;
 ; Cast the spell
 !!UN:C(COMBAT_MANAGER)/(UNC_INT)/?(combatManager:y);
-!!SN:E5898560/(CALLCONV_THISCALL)/(combatManager)/(spell)/(pos)/1/-1/(level)/(power);[spell/pos/monster spell/(-1 valid/0 not valid)/level/power]
+!!SN:E5898560/(CALLCONV_THISCALL)/(combatManager)/(spell)/(pos)/1/-1/(level)/(power);[spell/pos/monster spell/(-1 valid/0 not valid)/level/power] 5A0140
 ; Restore values
 !!if&(spell)=(SPELL_FIRE_WALL);
   !!UN:C5901158/4/2210438415;
   !!UN:C5901162/2/704;
-  !!UN:C5901449/1/142;
+  !!UN&(disableLog):C5901449/1/142;
 !!en;
 
 *****************************************************

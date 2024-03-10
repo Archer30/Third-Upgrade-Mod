@@ -1,0 +1,1 @@
+mklink /j "D:\Heroes of Might And Magic 3 ERA\_h3era_plugins_\new_towns\new_towns\Release" "TUM Lite\EraPlugins\

@@ -24,6 +24,7 @@ visit www.heroescommunity.com for updates and news
 !?FU(tum_GetMonstersInTown);
 !#VA(townType:x) (level:x) (basicMon:x) (upgMon:x) (thirdUpgMon:x);
 
+!*IF|(level)<0/(level)>6:M^level = %(level), townType = %(townType), basicMon = %(basicMon)^;  ; maybe need to test (level), when used with other mods could lead to level <0 || >6
 ; Get non-upgrade
 !!UN:T(townType)/(level)/0/?(basicMon);
 

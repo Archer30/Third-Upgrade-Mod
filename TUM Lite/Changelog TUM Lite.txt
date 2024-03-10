@@ -1,6 +1,39 @@
+********************CHANGELOG TUM LITE 2.3*****************
+IMPROVEMENTS
+- Strike and Return creatures: you can now switch between Attack and Attack and Return mode.
+
+BUG FIX
+- Mage Guild built at maximum level now correctly reports guild level.
+
+
+TO DO 
+- Check: Gold barred icon indicating you can't afford a building is not shown (occurs very rarely).
+- Correggi la gold barred icon
+- Mostra la spunta agli upgrade level 1
+- Aggiungere TUM Upg? or Upg. to 
+
+- Script Dwelling: disable if town are day 1 is defended (test with 30 towns)
+
+BuildingDeps0036="1 2 -1"
+
+
+KNOWN ISSUES
+- TUM Build Dependency not implemented: e.g.: Orc TUM Upgrade could be built without Freelancer?s guild.
+ 
+- Gold barred icon indicating you can't afford a building is not shown (occurs very rarely).
+
+
+********************CHANGELOG TUM LITE 2.2b****************
+BUG FIX
+- Fixed bug which sometimes doesn't allow to buy buildings (regression from 2.2)
+
+COMPATIBILITY
+- Universal Creature Upgrades wog option is now compatible with TUM Lite. 
+
+
 ********************CHANGELOG TUM LITE 2.2*****************
 
-BUG FIXES
+BUG FIX
 - Fixed crash on left click on Pikemen small portrait 
 - Fixed horrible bug which under certain circumstances allowed AI to build both upgraded and TUM upgraded creatures while leaving the number of hiring creatures in town untouched 
 - Fixed Refugee Camps offering creatures while showing Pikemen image and crash afterwards 
@@ -10,18 +43,9 @@ BUG FIXES
 - Fixed Difficulty Mod option "Creature Banks" not working if wog option "Neutral Town and Creature Growth" is disabled
 - Fixed ERM error occurring when an AI creature resurrects a dead stack
 
-KNOWN ISSUES
-- TUM Build Dependency not implemented: e.g.: Orc TUM Upgrade could be built without Freelancer�s guild.
- 
-- Universal Creature Upgrades is not compatible with TUM: it will not allow Universal TUM Upgrades.
-
-- Mage Guild built at maximum level is incorrectly reported as Mage Guild 1.
-
-- Gold barred icon indicating you can't afford a building is not shown (occurs very rarely).
-
 ********************CHANGELOG TUM LITE 2.1*****************
 
-BUGFIX:
+BUG FIX
 - Fixed "Building twice a turn" wog option for TUM Upgrades.
 - Fixed Flesheater for Ghoul, now triggers only one time instead of two.
 - Fixed creature icons on the left in towns not properly showing sometimes.
@@ -29,7 +53,7 @@ BUGFIX:
 - Fixed clicking on creature icons on the left in towns sometimes didn't work.
 - Fixed horrible bug which caused sometimes an AI stack to trasform into another owned stack (like 20 marksmen becoming 20 Supreme Archangel)
 
-IMPROVEMENTS:
+IMPROVEMENTS
 - Tweaks to AI Building Priority: 
 
      Fixed AI often not building Citadel/Castle until month 2, by introducing these rules:

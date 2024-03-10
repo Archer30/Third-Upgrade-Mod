@@ -1,3 +1,11 @@
+**********CHANGELOG TUM LITE ENCHANTED EDITION 1.3**********
+IMPROVEMENTS:
+*Neutral town strong defense script improvements:
+ - Now disabled for campaign games.
+ - When there are more than 1 slot having same dwelling level creatures with same or different level of upgrades, the units will be merged into a single stack with the higher upgrade.
+ - Removed pop-up message on the end of the week when there are no empty slots to add a creature
+
+
 **********CHANGELOG TUM LITE ENCHANTED EDITION 1.2**********
 
 BUG FIXES:
@@ -25,7 +33,6 @@ instead of +6 Def, but chance are lowered to 30% instead of 40%.
 
 KNOWN ISSUES
 *Neutral town strong defense script will pop-up a message if there are no empty slots to add a creature
-
 
 **********CHANGELOG TUM LITE ENCHANTED EDITION 1.1**********
 

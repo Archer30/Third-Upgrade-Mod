@@ -1,5 +1,3 @@
-new_towns.ipdb
-new_towns.lib
-new_towns.pdb
-new_towns.iobj
-new_towns.exp
+*.tlog
+new_towns.tlog\
+*.obj

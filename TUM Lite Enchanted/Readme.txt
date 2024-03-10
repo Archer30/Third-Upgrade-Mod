@@ -1,4 +1,4 @@
-        Third Upgrade Mod Lite Enchanted Edition 1.2 STABLE VERSION
+        Third Upgrade Mod Lite Enchanted Edition 1.3
 -----------------------------------------------------------------------------------------------------------------------
 
 Credits:

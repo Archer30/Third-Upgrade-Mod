@@ -11,8 +11,12 @@ ZVSE2
 !?FU(OnGameEnter);
 !#VRi^wog_235_increaseTownGuards_enabled^:S(FALSE);
 
+
 !?FU(OnEveryDay)&i^timerWeekDay^=1/i^timerOnce^=1;
 !#VA(x:y) (y:y) (z:y) (townEnabled:y);
+
+!!SN:F^IsCampaign^;                     [result returned in v1]
+!!FU&v1:E;                              [disable script for campaign mode]
 
 !!IF&i^logNTGA^=(TRUE):M^timerDay = %i(timerDay), timerWeekDay = %i(timerWeekDay), timerOnce = %i(timerOnce), lastDay = %i(lastDay)^;
 
@@ -162,8 +166,10 @@ ZVSE2
 
 !!IF&i^logNTGA^=(TRUE):M^singleStack_Growth: Calling tum_GetMonstersInTown: townType = %(townType), monsterLevel = %(monsterLevel)^;
 
-!!FU(tum_GetMonstersInTown):P(townType)/(monsterLevel)/?(mon:y)/?(upgMon:y)/?(tumMon:y);      [get unupgraded, upgraded, and tum monster ids]
+!!FU(MergeSameDwelling):P(x)/(y)/(z);       [if there are unupgraded and upgraded or TUM upgraded monsters of same dwellings]
+;                                           [merge them in a single stack with the most grade]
 
+!!FU(tum_GetMonstersInTown):P(townType)/(monsterLevel)/?(mon:y)/?(upgMon:y)/?(tumMon:y);      [get unupgraded, upgraded, and tum monster ids]
 
 !!re i/0/6;                          [check if monster is already in town]
    !!CA(x)/(y)/(z):M2/i/?(monsterType:y)/?(creatureQuantity:y);
@@ -182,7 +188,7 @@ ZVSE2
 
 !!if&(firstEmptySlot)=-1;
    !!VR(monsterLevel):+1;
-   !!IF:M^No empty slot found on castle %(x)/%(y)/%(z) - skipping add level %(monsterLevel) monster^;
+   !!IF|i^logNTGA^=(TRUE)/i^SadnessPowerDebug^=(TRUE):M^No empty slot found on castle %(x)/%(y)/%(z) - skipping add level %(monsterLevel) monster^;
    !!FU:E;
 !!en;
 
@@ -277,3 +283,56 @@ ZVSE2
 !!en;
 
 !!VR(result):S-1;
+
+!?FU(MergeSameDwelling);
+!#VA(x:x) (y:x) (z:x);
+
+!!CA(x)/(y)/(z):T?(townType:y);
+
+!!re i/0/6;                          [check if monster is already in town]
+   !!CA(x)/(y)/(z):M2/i/?(monsterType1:y)/?(creatureQuantity1:y);
+
+   !!if&(creatureQuantity1)>0;
+
+      !!MA:L(monsterType1)/?(monsterLevel:y);
+   
+      !!FU(tum_GetMonstersInTown):P(townType)/(monsterLevel)/?(mon1:y)/?(upgMon1:y)/?(tumMon1:y);      [get unupgraded, upgraded, and tum monster ids]
+
+      !!VR(grade:y):S0;
+      !!VR(grade)&(monsterType1)=(mon1):S1;
+      !!VR(grade)&(monsterType1)=(upgMon1):S2;
+      !!VR(grade)&(monsterType1)=(tumMon1):S3;
+
+      !!re j/0/6;                          [check if monster is already in town]
+    
+         !!if&i<>j;
+
+            !!CA(x)/(y)/(z):M2/j/?(monsterType2:y)/?(creatureQuantity2:y);
+
+            !!if&(creatureQuantity2)>0;
+
+               !!if|(monsterType2)=(mon1)/(monsterType2)=(upgMon1)/(monsterType2)=(tumMon1);
+                     
+                  !!IF&i^logNTGA^=(TRUE):M^monsterType1 = %(monsterType1), monsterType2 = %(monsterType2), mon1 = %(mon1), upgMon1 = %(upgMon1), tumMon1 = %(tumMon1)^;
+
+                  !!MA:L(monsterType2)/?(monsterLevel:y);
+   
+                  !!FU(tum_GetMonstersInTown):P(townType)/(monsterLevel)/?(mon2:y)/?(upgMon2:y)/?(tumMon2:y);      [get unupgraded, upgraded, and tum monster ids]
+
+                  !!VR(grade)&(monsterType2)=(upgMon2)/(grade)<2:S2;
+                  !!VR(grade)&(monsterType2)=(tumMon2):S3;  
+                  
+                  !!VR(creatureQuantity1):+(creatureQuantity2);           [monster quantity sum]
+
+                  !!CA(x)/(y)/(z)&(grade)=1:M2/i/(mon1)/(creatureQuantity1);     [allocating merged monster with new quantity]
+                  !!CA(x)/(y)/(z)&(grade)=2:M2/i/(upgMon1)/(creatureQuantity1);     
+                  !!CA(x)/(y)/(z)&(grade)=3:M2/i/(tumMon1)/(creatureQuantity1);     
+
+                  !!CA(x)/(y)/(z):M2/j/(NO_MON)/0;                        [remove old monster]
+
+               !!en;
+            !!en;
+         !!en;
+      !!en;
+   !!en;
+!!en;

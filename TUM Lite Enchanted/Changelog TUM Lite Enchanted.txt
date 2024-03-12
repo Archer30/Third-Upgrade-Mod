@@ -5,6 +5,29 @@ IMPROVEMENTS:
  - When there are more than 1 slot having same dwelling level creatures with same or different level of upgrades, the units will be merged into a single stack with the higher upgrade.
  - Removed pop-up message on the end of the week when there are no empty slots to add a creature
 
+BALANCE:
+- GRIFFIN Basic Growth is 5 instead of 6.
+- GHOST DRAGON now have 12 speed instead of 13
+- BLOOD DRAGON now have 19 atk and 17 def instead of 24 and 22 respectly. Speed is reduced to 13 instead of 14. Hp is now 250 instead of 300.
+- BARBARIANS OF THE WILDLANDS now cost 85 gold instead of 90.
+- MEN HUNTER now cost 85 gold instead of 90.
+- ORC BERSEKER now cost 310 gold instead of 320.
+- OGRE MAGI now cost 310 gold instead of 330.
+- OGRE BATTLE SHAMAN now cost 520 gold instead of 550. Attack skill is now 16 instead of 14.
+- GIANT EAGLE now cost 470 gold instead of 480.
+- THUNDERBIRDS now cost 555 gold instead of 560.
+- CYCLOPS BLOOD EYE now cost 2000 gold instead of 2200. Damage is now 18-26 instead of 16-20.
+- FURY OF THE WILDLANDS attack and defence skill are now 24 and 21 respectly, instead of 21. Damage is now 50-80 instead of 40-70. Cost of gold are lowered, now is 7400 gold instead of 7600.
+- GNOLL MARAUDER now cost 70 gold instead of 90.
+- GNOLL BATTLE SHAMAN now cost 110 gold instead of 130.
+- LORD OF THE SWAMP attack skill are now 20 instead of 22. Cost of gold are lowered, now is 8000 gold instead of 8100.
+- MAGIC ELEMENTAL speed now is 8 insted of 9.
+- LORD OF THE ELEMENTALS speed now is 9 insted of 10.
+- PHOENIX speed now is 18 insted of 19.
+- SACRED PHOENIX attack and defence skill are now 21 and 18 respectly, instead of 24 and 22. Speed is reduced to 19 instead of 21. Damage is now 30-40 instead of 40-60. Hp is now 250 instead of 300.
+- BLOODY VAULT cost is now 20000 instead of 25000 gold.
+- SPIRIT PYRE cost is now 23000 instead of 21000 gold.
+
 
 **********CHANGELOG TUM LITE ENCHANTED EDITION 1.2**********
 

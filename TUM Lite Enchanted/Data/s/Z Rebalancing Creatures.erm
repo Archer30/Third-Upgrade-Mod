@@ -264,7 +264,7 @@ ALL SHARPSHOOTERS: 4 -> 3
 !!MA:E4/6;                                                    Max Dam 
 !!MA:P4/25;                                                   Hp 
 !!MA:S4/6;                                                    Speed 
-!!MA:G4/6;                                                    Growth
+!!MA:G4/5;                                                    Growth
 !!MA:F4/360;                                                  Fight value 
 !!MA:I4/360;                                                  IA value 
 !!MA:C4/6/200;                                                Cost gold
@@ -279,7 +279,7 @@ ALL SHARPSHOOTERS: 4 -> 3
 !!MA:E5/6;                                                    Max Dam 
 !!MA:P5/25;                                                   Hp
 !!MA:S5/8;                                                    Speed 
-!!MA:G5/6;                                                    Growth 
+!!MA:G5/5;                                                    Growth 
 !!MA:F5/520;                                                  Fight value 
 !!MA:I5/520;                                                  IA value 
 !!MA:C5/6/230;                                                Cost gold
@@ -294,7 +294,7 @@ ALL SHARPSHOOTERS: 4 -> 3
 !!MA:E199/6;                                                  Max Dam 
 !!MA:P199/45;                                                 Hp 
 !!MA:S199/9;                                                  Speed 
-!!MA:G199/6;                                                  Growth 
+!!MA:G199/5;                                                  Growth 
 !!MA:F199/670;                                                Fight value 
 !!MA:I199/670;                                                IA value 
 !!MA:C199/6/290;                                              Cost gold
@@ -2042,7 +2042,7 @@ FORCED
 !!MA:M69/25;                                                Min Dam 
 !!MA:E69/50;                                                Max Dam
 !!MA:P69/200;                                               Hp 
-!!MA:S69/13;                                                Speed
+!!MA:S69/11;                                                Speed
 !!MA:G69/1;                                                 Growth
 !!MA:F69/8420;                                              Fight value 
 !!MA:I69/8420;                                              IA value 
@@ -2053,12 +2053,12 @@ FORCED
 !!SN:H^monname^/69/2/^Dragon. Undead. Fly. {~9746e3}-1 Enemy Morale. 50% Sorrow Attack.{~} {Ethereal.} {~3faa11}20% Age Attack.{~}^;
 
 **************************BLOOD DRAGON**********************
-!!MA:A154/24;                                               Att 
-!!MA:D154/22;                                               Def 
-!!MA:M154/30;                                               Min Dam 
-!!MA:E154/60;                                               Max Dam
-!!MA:P154/300;                                              Hp 
-!!MA:S154/14;                                               Speed
+!!MA:A154/19;                                               Att 
+!!MA:D154/17;                                               Def 
+!!MA:M154/25;                                               Min Dam 
+!!MA:E154/50;                                               Max Dam
+!!MA:P154/250;                                              Hp 
+!!MA:S154/13;                                               Speed
 !!MA:G154/1;                                                Growth
 !!MA:F154/13150;                                            Fight value 
 !!MA:I154/13150;                                            IA value 
@@ -2524,7 +2524,7 @@ FORCED
 !!MA:G233/15;                                               Growth
 !!MA:F233/125;                                              Fight value 
 !!MA:I233/125;                                              IA value 
-!!MA:C233/6/90;                                             Cost 
+!!MA:C233/6/85;                                             Cost 
 !!MA:X233/d(MON_FLAG_ALIVE);                                Add Alive
 !!MA:X233/d(MON_FLAG_ATTACKS_TWICE);                        Add Double Attack
 !!MA:L233/0;                                                Is Level 1
@@ -2573,7 +2573,7 @@ FORCED
 !!MA:G234/11;                                               Growth
 !!MA:F234/365;                                              Fight value 
 !!MA:I234/365;                                              IA value 
-!!MA:C234/6/220;                                            Cost 
+!!MA:C234/6/200;                                            Cost 
 !!MA:X234/d(MON_FLAG_ALIVE);                                Add Alive
 !!MA:X234/d(MON_FLAG_WIDE);                                 Add Wide
 !!MA:X234/d(MON_FLAG_ATTACKS_TWICE);                        Add Double Attack
@@ -2629,7 +2629,7 @@ FORCED
 !!MA:G235/9;                                                Growth
 !!MA:F235/500;                                              Fight value 
 !!MA:I235/500;                                              IA value 
-!!MA:C235/6/320;                                            Cost 
+!!MA:C235/6/310;                                            Cost 
 !!MA:X235/d(MON_FLAG_ALIVE);                                Add Alive
 !!MA:X235/d(MON_FLAG_SHOOTER);                              Add Shooter
 !!MA:X235/d(MON_FLAG_NO_MELEE_PENALTY);                     Add No Melee Penalty
@@ -2667,14 +2667,14 @@ FORCED
 !!MA:G91/4;                                                 Growth
 !!MA:F91/650;                                               Fight value 
 !!MA:I91/650;                                               IA value 
-!!MA:C91/6/330;                                             Cost 
+!!MA:C91/6/310;                                             Cost 
 !!MA:X91/d(MON_FLAG_ALIVE);                                 Add Alive
 !!MA:L91/3;                                                 Is Level 4
 !!MA:O91/6;                                                 Is a Stronghold Unit 
 !!SN:H^monname^/91/2/^{~ffeb3b}20% Wrath of Vengeance.{~} {~99CCFF}Cast 1 Haste.{~}^;
 
 ***********************OGRE BATTLE SHAMAN*******************
-!!MA:A236/14;                                               Att 
+!!MA:A236/16;                                               Att 
 !!MA:D236/8;                                                Def 
 !!MA:M236/6;                                                Min Dam 
 !!MA:E236/12;                                               Max Dam
@@ -2684,7 +2684,7 @@ FORCED
 !!MA:G236/4;                                                Growth
 !!MA:F236/770;                                              Fight value 
 !!MA:I236/770;                                              IA value 
-!!MA:C236/6/550;                                            Cost 
+!!MA:C236/6/520;                                            Cost 
 !!MA:X236/d(MON_FLAG_ALIVE);                                Add Alive
 !!MA:L236/3;                                                Is Level 4
 !!MA:O236/6;                                                Is a Stronghold Unit
@@ -2702,7 +2702,7 @@ FORCED
 !!MA:G92/3;                                                 Growth
 !!MA:F92/1060;                                              Fight value 
 !!MA:I92/1060;                                              IA value 
-!!MA:C92/6/480;                                             Cost 
+!!MA:C92/6/470;                                             Cost 
 !!MA:L92/4;                                                 Is Level 5
 !!MA:O92/6;                                                 Is a Stronghold Unit
 !!SN:H^monname^/92/0/^Giant Eagle^;
@@ -2741,7 +2741,7 @@ FORCED
 !!MA:B237/1;                                                Spell Points
 !!MA:F237/1320;                                             Fight value 
 !!MA:I237/1320;                                             IA value 
-!!MA:C237/6/765;                                            Cost 
+!!MA:C237/6/755;                                            Cost 
 !!MA:X237/d(MON_FLAG_ALIVE);                                Add Alive
 !!MA:X237/d(MON_FLAG_FLYER);                                Add Fly
 !!MA:X237/d(MON_FLAG_WIDE);                                 Add Wide
@@ -2788,15 +2788,15 @@ FORCED
 **********************CYCLOPS BLOOD EYE*********************
 !!MA:A238/18;                                               Att 
 !!MA:D238/18;                                               Def 
-!!MA:M238/16;                                               Min Dam 
-!!MA:E238/20;                                               Max Dam
+!!MA:M238/18;                                               Min Dam 
+!!MA:E238/24;                                               Max Dam
 !!MA:P238/110;                                              Hp 
 !!MA:S238/10;                                               Speed
 !!MA:N238/20;                                               Shoot
 !!MA:G238/2;                                                Growth
 !!MA:F238/3230;                                             Fight value 
 !!MA:I238/3230;                                             IA value 
-!!MA:C238/6/2200;                                           Cost 
+!!MA:C238/6/2000;                                           Cost 
 !!MA:C238/0/0;                                              Cost Wood
 !!MA:X238/d(MON_FLAG_ALIVE);                                Add Alive
 !!MA:X238/d(MON_FLAG_SHOOTER);                              Add Shooter
@@ -2841,16 +2841,16 @@ FORCED
 !!SN:H^monname^/97/2/^Ignore 80% of Enemy Defence Skill. {~ff1100}30% Behemoth Rage.{~} Meteor Shower Immunity.^;
 
 ********************FURY OF THE WILDLANDS*******************
-!!MA:A156/21;                                               Att 
+!!MA:A156/24;                                               Att 
 !!MA:D156/21;                                               Def 
-!!MA:M156/45;                                               Min Dam 
-!!MA:E156/75;                                               Max Dam
+!!MA:M156/50;                                               Min Dam 
+!!MA:E156/80;                                               Max Dam
 !!MA:P156/400;                                              Hp 
 !!MA:S156/8;                                                Speed
 !!MA:G156/1;                                                Growth
 !!MA:F156/13900;                                            Fight value 
 !!MA:I156/13900;                                            IA value 
-!!MA:C156/6/7600;                                           Cost 
+!!MA:C156/6/7400;                                           Cost 
 !!MA:C156/4/3;                                              Cost Crystal
 !!MA:X156/d~(MON_FLAG_FLYER);                               Remove Fly
 !!MA:L156/6;                                                Is Level 7
@@ -2888,7 +2888,7 @@ FORCED
 !!MA:G99/10;                                                Growth
 !!MA:F99/125;                                               Fight value 
 !!MA:I99/125;                                               IA value 
-!!MA:C99/6/90;                                              Cost 
+!!MA:C99/6/70;                                              Cost 
 !!MA:L99/0;                                                 Is Level 1
 !!MA:O99/7;                                                 Is a Fortress Unit
 !!SN:H^monname^/99/2/^{~9746e3}20% Stunning Attack.{~} {~ffeb3b}20% Wrath of Gnolls.{~}^;
@@ -2904,7 +2904,7 @@ FORCED
 !!MA:G239/10;                                               Growth
 !!MA:F239/270;                                              Fight value 
 !!MA:I239/270;                                              IA value 
-!!MA:C239/6/130;                                            Cost 
+!!MA:C239/6/110;                                            Cost 
 !!MA:X239/d(MON_FLAG_ALIVE);                                Add Alive
 !!MA:L239/0;                                                Is Level 1
 !!MA:O239/7;                                                Is a Fortress Unit
@@ -3212,7 +3212,7 @@ FORCED
 !!SN:H^monname^/111/2/^Strong Health. Attack all Around. No Enemy Retaliation. Regeneration 60.^;
 
 ***********************LORD OF THE SWAMP********************
-!!MA:A157/22;                                               Att 
+!!MA:A157/20;                                               Att 
 !!MA:D157/22;                                               Def 
 !!MA:M157/25;                                               Min Dam 
 !!MA:E157/65;                                               Max Dam
@@ -3221,7 +3221,7 @@ FORCED
 !!MA:G157/1;                                                Growth
 !!MA:F157/13700;                                            Fight value 
 !!MA:I157/13700;                                            IA value 
-!!MA:C157/6/8100;                                           Cost 
+!!MA:C157/6/8000;                                           Cost 
 !!MA:C157/3/3;                                              Cost Sulfur
 !!MA:X157/d(MON_FLAG_WIDE);                                 Add Wide
 !!MA:X157/d(MON_FLAG_ALIVE);                                Add Living
@@ -3548,7 +3548,7 @@ FORCED
 !!MA:M121/15;                                               Min Dam 
 !!MA:E121/25;                                               Max Dam
 !!MA:P121/80;                                               Hp 
-!!MA:S121/9;                                                Speed
+!!MA:S121/8;                                                Speed
 !!MA:G121/2;                                                Growth
 !!MA:F121/2190;                                             Fight value 
 !!MA:I121/2190;                                             IA value 
@@ -3563,7 +3563,7 @@ FORCED
 !!MA:M250/15;                                               Min Dam 
 !!MA:E250/25;                                               Max Dam
 !!MA:P250/100;                                              Hp 
-!!MA:S250/10;                                               Speed
+!!MA:S250/9;                                                Speed
 !!MA:B250/2;                                                Spell Points
 !!MA:G250/2;                                                Growth
 !!MA:F250/3200;                                             Fight value 
@@ -3601,7 +3601,7 @@ FORCED
 !!MA:M131/30;                                               Min Dam 
 !!MA:E131/40;                                               Max Dam
 !!MA:P131/200;                                              Hp 
-!!MA:S131/19;                                               Speed
+!!MA:S131/18;                                               Speed
 !!MA:G131/1;                                                Growth
 !!MA:F131/7000;                                             Fight value 
 !!MA:I131/7000;                                             IA value 
@@ -3612,12 +3612,12 @@ FORCED
 !!SN:H^monname^/131/2/^Fly. Fire Affinity. Breath Attack. Fire Shield. Rebirth. {~33CCCC}20% Fire Power.{~}^;
 
 ***********************SACRED PHOENIX***********************
-!!MA:A158/24;                                               Att 
-!!MA:D158/22;                                               Def 
-!!MA:M158/35;                                               Min Dam 
-!!MA:E158/65;                                               Max Dam
-!!MA:P158/300;                                              Hp 
-!!MA:S158/20;                                               Speed
+!!MA:A158/21;                                               Att 
+!!MA:D158/18;                                               Def 
+!!MA:M158/30;                                               Min Dam 
+!!MA:E158/40;                                               Max Dam
+!!MA:P158/250;                                              Hp 
+!!MA:S158/19;                                               Speed
 !!MA:G158/1;                                                Growth
 !!MA:B158/2;                                                Spell Points
 !!MA:F158/11500;                                            Fight value 

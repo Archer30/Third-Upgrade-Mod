@@ -38,7 +38,7 @@ ZVSE2
  !!FU(SpellCast)&(monsterType)=212:P(SPELL_CLONE)/(monsterPosition)/3/3/^AutocastC^; Supreme Archmage Expert Clone
 !!en;
 
- !!if&(randomRoll1)<20; 20% Autocast
+ !!if&(randomRoll1)<100; 20% Autocast
     !!FU(SpellCast)&(monsterType)=198:P(SPELL_BLESS)/(monsterPosition)/2/3/^AutocastA^; Crossbowman Advanced Bless 
     !!FU(SpellCast)&(monsterType)=198:P(SPELL_PRECISION)/(monsterPosition)/2/3/^^; Crossbowman Advanced Precision 
     !!FU(SpellCast)&(monsterType)=199:P(SPELL_MIRTH)/(monsterPosition)/3/3/^AutocastA^; Imperial Griffin Expert Mirth
@@ -107,7 +107,7 @@ ZVSE2
  !!if&(randomRoll2)<30; 30% Autocast
     !!FU(SpellCast)&(monsterType)=212:P(SPELL_SHIELD)/(monsterPosition)/2/3/^AutocastB^; Supreme Archmage Advanced Shield
     !!FU(SpellCast)&(monsterType)=212:P(SPELL_FIRE_SHIELD)/(monsterPosition)/3/3/^^; Enchanter Expert Fire Shield
-
+ !!en;
 ******************************************RANDOM BUFF GENIE*****************************************
 
 !!if&(randomRoll1)<5; 5% Autocast
@@ -210,15 +210,15 @@ ZVSE2
  !!el&(randomRoll2)>=40/(randomRoll2)<60; 20% Autocast
     !!FU(SpellCast)&(monsterType)=245:P(SPELL_SHIELD)/(monsterPosition)/2/3/^^; Fairy
 
-!!el&(randomRoll2)>=60/(randomRoll2)<80; 20% Autocast
+ !!el&(randomRoll2)>=60/(randomRoll2)<80; 20% Autocast
     !!FU(SpellCast)&(monsterType)=245:P(SPELL_BLOODLUST)/(monsterPosition)/2/3/^^; Fairy
 
-!!el&(randomRoll2)>=80/(randomRoll2)<90; 10% Autocast
+ !!el&(randomRoll2)>=80/(randomRoll2)<90; 10% Autocast
     !!FU(SpellCast)&(monsterType)=245:P(SPELL_PRAYER)/(monsterPosition)/2/3/^^; Fairy
 
-!!el&(randomRoll2)>=90/(randomRoll2)<100; 10% Autocast
+ !!el&(randomRoll2)>=90/(randomRoll2)<100; 10% Autocast
     !!FU(SpellCast)&(monsterType)=245:P(SPELL_ANTI_MAGIC)/(monsterPosition)/3/3/^^; Fairy
-!!en;
+ !!en;
 
 ** function to cast spell    x1=spell x2=position x3=rank x4=power 
 

@@ -1,4 +1,9 @@
 **********CHANGELOG TUM LITE ENCHANTED EDITION 1.4**********
+BUG FIXES:
+- Fixed Lords of Elements Clone autocasting on himself and resisting the spell.
+- Now cloned creatures cannot cast clone of themselves.
+- Fixed ability with 20% trigger chance mistakenly triggering every time.
+
 IMPROVEMENTS:
 - BUILDING DEPENDENCIES ON TUM BUILDINGS has been implemented! (thanks to Yuji Sakai).
   Additionally, original building dependences will have the following changes:
@@ -15,12 +20,14 @@ IMPROVEMENTS:
   
 - Removed forced disabling of "Skeletons with Artifacts" wog option (thanks to TheInvisible1966).
 
-BUG FIXES:
-- Fixed Lords of Elements Clone autocasting on himself and resisting the spell.
-- Now cloned creatures cannot cast clone of themselves.
-- Fixed ability with 20% trigger chance mistakenly triggering every time.
-
-
+BALANCE:
+- BANSHEE Scream doesn't inflict paralyze anymore. Enemies can retaliate after the scream.
+- NOSFERATU loses the ability to poison his enemy with Bite of the Nosferatu
+- BLACK KNIGHT now have 20% change to curse his enemies, down from 25%.
+- DREAD KNIGHT now have 30% change to curse his enemies, down from 25%.
+- DEATH KNIGHT cost is increased to 2600, up from 2500.
+- BONE DRAGON, GHOST DRAGON AND BLOOD DRAGON chance to Sorrow his enemies are lowered to 30% instead of 50%.
+- BLOOD DRAGON Bite of the Death doesn't inflict Slow anymore.
 
 **********CHANGELOG TUM LITE ENCHANTED EDITION 1.3**********
 

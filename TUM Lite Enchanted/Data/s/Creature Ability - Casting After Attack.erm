@@ -51,22 +51,22 @@ ZVSE2
 
 **********************************************RAMPART***********************************************
 !!if|(type)=(MON_UNICORN);             
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(TRUE)/20/(SPELL_BLIND);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(TRUE)/20/(TRUE)/(SPELL_BLIND);
     
 !!el|(type)=(MON_WAR_UNICORN);             
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(TRUE)/20/(SPELL_BLIND);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(TRUE)/20/(TRUE)/(SPELL_BLIND);
 
 !!el|(type)=208; Celestial Unicorn
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(TRUE)/20/(SPELL_BLIND);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(TRUE)/20/(TRUE)/(SPELL_BLIND);
 
 !!el|(type)=(MON_GREEN_DRAGON);
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/20/71/80; Poison + Acid
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/20/(TRUE)/71/80; Poison + Acid
 
 !!el|(type)=(MON_GOLD_DRAGON);    
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/70; Petrification
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/(TRUE)/70; Petrification
 
 !!el|(type)=151; Diamond Dragon   
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(TRUE)/20/(SPELL_BLIND);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(TRUE)/20/(TRUE)/(SPELL_BLIND);
 
 ***********************************************TOWER************************************************
 !!el|(type)=(MON_GIANT);
@@ -75,13 +75,13 @@ ZVSE2
 
 **********************************************INFERNO***********************************************
 !!el|(type)=(MON_DEMON);                        
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(FALSE)/20/73; Disease
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(FALSE)/20/(TRUE)/73; Disease
 
 !!el|(type)=(MON_HORNED_DEMON);                        
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(FALSE)/20/73/(SPELL_DISRUPTING_RAY); Disease
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(FALSE)/20/(TRUE)/73/(SPELL_DISRUPTING_RAY); Disease
 
 !!el|(type)=218; Infernal Slayer                  
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(FALSE)/20/73/(SPELL_DISRUPTING_RAY); Disease
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(FALSE)/20/(TRUE)/73/(SPELL_DISRUPTING_RAY); Disease
 
 !!el|(type)=(MON_EFREET_SULTAN);  
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/(SPELL_FIRE_WALL)/20/?(result:y);
@@ -94,56 +94,53 @@ ZVSE2
   !!FU(casts_CancelRetaliation)&(result):P(atkStack)/(defStack);
 
 !!el|(type)=(MON_HELL_BARON);                       
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/99/^^/(TRUE)/20/(SPELL_BERSERK);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/99/^^/(TRUE)/20/(TRUE)/(SPELL_BERSERK);
 
 *********************************************NECROPOLIS*********************************************
 !!el|(type)=(MON_ZOMBIE);               
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(FALSE)/20/73; Disease
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(FALSE)/20/(TRUE)/73; Disease
 
 !!el|(type)=222; Plague Zombie                  
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(FALSE)/20/73/(SPELL_WEAKNESS)/(SPELL_CURSE)/(SPELL_SLOW); Disease
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(FALSE)/20/(TRUE)/73/(SPELL_WEAKNESS)/(SPELL_CURSE)/(SPELL_SLOW); Disease
 
 !!el|(type)=(MON_WRAITH);                       
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(FALSE)/20/(SPELL_SORROW);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(FALSE)/20/(TRUE)/(SPELL_SORROW);
 
 !!el|(type)=223; Banshee
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^a^/(TRUE)/20/(SPELL_SORROW)/(SPELL_FORGETFULNESS)/74/75; Paralyze + Age                
-  
-!!el|(type)=224; Nosferatu               
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/20/71/(SPELL_MISFORTUNE)/(SPELL_WEAKNESS)/(SPELL_SORROW); Poison
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^a^/(FALSE)/20/(TRUE)/(SPELL_SORROW)/(SPELL_FORGETFULNESS)/75; Age                
 
 !!el|(type)=(MON_BLACK_KNIGHT); 
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(FALSE)/25/(SPELL_CURSE);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(FALSE)/20/(TRUE)/(SPELL_CURSE);
 
 !!el|(type)=(MON_DREAD_KNIGHT); 
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(FALSE)/25/(SPELL_CURSE);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(FALSE)/30/(TRUE)/(SPELL_CURSE);
 
 !!el|(type)=226; Death Knight
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(FALSE)/25/73/(SPELL_CURSE)/(SPELL_SLOW); Disease
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(FALSE)/30/(TRUE)/73/(SPELL_CURSE)/(SPELL_SLOW); Disease
 
 !!el|(type)=(MON_BONE_DRAGON);      
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(FALSE)/50/(SPELL_SORROW);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(FALSE)/30/(TRUE)/(SPELL_SORROW);
 
 !!el|(type)=(MON_GHOST_DRAGON);      
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(FALSE)/50/(SPELL_SORROW);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(FALSE)/30/(TRUE)/(SPELL_SORROW);
 
 !!el|(type)=(MON_BLOOD_DRAGON);      
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(FALSE)/50/(SPELL_SORROW);
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(TRUE)/20/74/75/(SPELL_SLOW)/(SPELL_WEAKNESS); Paralyze + Age
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(FALSE)/30/(TRUE)/(SPELL_SORROW);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(TRUE)/20/(TRUE)/74/75/(SPELL_WEAKNESS); Paralyze + Age
 
 ***********************************************DUNGEON**********************************************
 !!el|(type)=(MON_TROGLODYTE);      
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/20/71; Poison
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/20/(TRUE)/71; Poison
 
 !!el|(type)=(MON_INFERNAL_TROGLODYTE);      
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/20/71/(SPELL_WEAKNESS); Poison
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/20/(TRUE)/71/(SPELL_WEAKNESS); Poison
 
 !!el|(type)=227; Mushroom Shaman 
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/20/71/(SPELL_WEAKNESS)/(SPELL_CURSE); Poison
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(TRUE)/10/74; Paralyze
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/20/(TRUE)/71/(SPELL_WEAKNESS)/(SPELL_CURSE); Poison
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(TRUE)/10/(TRUE)/74; Paralyze
 
 !!el|(type)=228; Wings of Madness
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^a^/(TRUE)/100/(SPELL_FORGETFULNESS)/(SPELL_MISFORTUNE);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^a^/(TRUE)/100/(TRUE)/(SPELL_FORGETFULNESS)/(SPELL_MISFORTUNE);
 
 !!el|(type)=(MON_BEHOLDER);                      
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/(SPELL_MISFORTUNE)/3/?(result:y);
@@ -155,25 +152,25 @@ ZVSE2
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/(SPELL_MISFORTUNE)/3/?(result:y);
 
 !!el|(type)=(MON_MEDUSA);
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/70; Petrification
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/(TRUE)/70; Petrification
 
 !!el|(type)=(MON_MEDUSA_QUEEN); 
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/70; Petrification
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/(TRUE)/70; Petrification
 
 !!el|(type)=230; Witch of the Underworld
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/70; Petrification
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/(TRUE)/70; Petrification
 
 !!el|(type)=(MON_MANTICORE);
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/20/71; Poison
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(TRUE)/20/74; Paralyze
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/20/(TRUE)/71; Poison
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(TRUE)/20/(TRUE)/74; Paralyze
 
 !!el|(type)=(MON_SCORPICORE);
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/71; Poison
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(TRUE)/30/74/80/78; Paralyze + Acid + Dispel
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/(TRUE)/71; Poison
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(TRUE)/30/(TRUE)/74/80/78; Paralyze + Acid + Dispel
 
 !!el|(type)=232; Chimera
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/71; Poison
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(TRUE)/30/74/80/78(SPELL_SLOW)/(SPELL_CURSE); Paralyze + Acid + Dispel
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/(TRUE)/71; Poison
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(TRUE)/30/(TRUE)/74/80/78(SPELL_SLOW)/(SPELL_CURSE); Paralyze + Acid + Dispel
 
 !!el|(type)=(MON_RED_DRAGON);             
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/(SPELL_FIRE_WALL)/20/?(result:y);                   
@@ -181,7 +178,7 @@ ZVSE2
   !!FU(casts_CancelRetaliation)&(result):P(atkStack)/(defStack);
  
 !!el|(type)=(MON_BLACK_DRAGON);  
-  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/80/30/?(result:y); Acid                         
+  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/80/30/?(result:y); Acid                      
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/20/(SPELL_METEOR_SHOWER)/30/?(result:y);
   !!FU(casts_CancelRetaliation)&(result):P(atkStack)/(defStack);
 
@@ -208,40 +205,40 @@ ZVSE2
 
 ***********************************************FORTRESS*********************************************
 !!el|(type)=239; Gnoll Battle Shaman               
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(FALSE)/20/(SPELL_CURSE);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(FALSE)/20/(TRUE)/(SPELL_CURSE);
 
 !!el|(type)=(MON_SERPENT_FLY);
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(FALSE)/20/73; Disease
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/78; Dispel
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(FALSE)/20/(TRUE)/73; Disease
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/(TRUE)/78; Dispel
   
 !!el|(type)=(MON_DRAGON_FLY);
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(FALSE)/100/73/78/(SPELL_WEAKNESS); Dispel + Disease
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(FALSE)/100/(TRUE)/73/78/(SPELL_WEAKNESS); Dispel + Disease
 
 !!el|(type)=241; Serpent of Chaos
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(FALSE)/100/73/78/(SPELL_WEAKNESS); Dispel + Disease
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^b^/(FALSE)/20/71/(SPELL_CURSE); Poison
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(TRUE)/5/74; Paralyze
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^c^/(TRUE)/5/(SPELL_BERSERK)/(SPELL_FORGETFULNESS);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(FALSE)/100/(TRUE)/73/78/(SPELL_WEAKNESS); Dispel + Disease
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^b^/(FALSE)/20/(TRUE)/71/(SPELL_CURSE); Poison
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(TRUE)/5/(TRUE)/74; Paralyze
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^c^/(TRUE)/5/(TRUE)/(SPELL_BERSERK)/(SPELL_FORGETFULNESS);
 
 !!el|(type)=(MON_BASILISK);  
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/70; Petrification
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/(TRUE)/70; Petrification
 
 !!el|(type)=(MON_GREATER_BASILISK);  
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/70; Petrification
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/(TRUE)/70; Petrification
   
 !!el|(type)=242; Plague Basilisk
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/70; Petrification
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(FALSE)/20/73/(SPELL_WEAKNESS)/(SPELL_CURSE)/80; Petrification + Acid
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/(TRUE)/70; Petrification
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(FALSE)/20/(TRUE)/73/(SPELL_WEAKNESS)/(SPELL_CURSE)/80; Petrification + Acid
   
 !!el|(type)=(MON_WYVERN);        
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/30/71/(SPELL_WEAKNESS); Poison
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/30/(TRUE)/71/(SPELL_WEAKNESS); Poison
 
 !!el|(type)=(MON_WYVERN_MONARCH);        
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/30/71/(SPELL_WEAKNESS)/(SPELL_CURSE); Poison
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/30/(TRUE)/71/(SPELL_WEAKNESS)/(SPELL_CURSE); Poison
 
 !!el|(type)=243; Acid Wyvern               
-  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/80/3/?(result:y); Acid
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/30/71/73/(SPELL_WEAKNESS)/(SPELL_CURSE); Poison + Disease
+  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/80/30/?(result:y); Acid
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/30/(FALSE)/71/73/(SPELL_WEAKNESS)/(SPELL_CURSE); Poison + Disease
    
 ************************************************CONFLUX*********************************************               
 !!el|(type)=248; Plasma Elemental              
@@ -249,14 +246,14 @@ ZVSE2
   !!FU(casts_CancelRetaliation)&(result):P(atkStack)/(defStack);  
 
 !!el|(type)=(MON_EARTH_ELEMENTAL);                        
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/70; Petrification
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/(TRUE)/70; Petrification
 
 !!el|(type)=(MON_MAGMA_ELEMENTAL);                        
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/70; Petrification  
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/(TRUE)/70; Petrification  
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/(SPELL_FIRE_WALL)/5/?(result:y);
 
 !!el|(type)=249; Meteor Elemental
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/70; Petrification 
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/(TRUE)/70; Petrification 
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/(SPELL_FIRE_WALL)/5/?(result:y);
 
 ***********************************************NEUTRAL**********************************************   
@@ -264,16 +261,16 @@ ZVSE2
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/(SPELL_FIRE_WALL)/20/?(result:y);
   
 !!el|(type)=(MON_MUMMY);         
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(FALSE)/100/(SPELL_CURSE);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(FALSE)/100/(TRUE)/(SPELL_CURSE);
 
 !!el|(type)=(MON_ROGUE);   
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/20/71;
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/20/(TRUE)/71;
 
 !!el|(type)=(MON_RUST_DRAGON);   
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(TRUE)/20/74;
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(TRUE)/20/(TRUE)/74;
 
 !!el|(type)=(MON_DRACOLICH);      
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(FALSE)/50/(SPELL_SORROW);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(FALSE)/50/(TRUE)/(SPELL_SORROW);
 
 !!el|(type)=(MON_AZURE_DRAGON);                              
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/20/(SPELL_ICE_BOLT)/40/?(result:y);
@@ -341,25 +338,25 @@ ZVSE2
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/5/(SPELL_FIREBALL)/10/?(result1:y);
 
 !!el|(type)=(MON_MEDUSA_QUEEN);
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(TRUE)/20/71/70; Poison + Petrification
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(TRUE)/20/(TRUE)/71/70; Poison + Petrification
 
 !!el|(type)=230; Witch of the Underworld
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(TRUE)/20/71/70; Poison + Petrification
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(TRUE)/20/(TRUE)/71/70; Poison + Petrification
 
 !!el|(type)=238; Cyclops Blood Eye
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/(SPELL_MISFORTUNE)/10/?(result1:y);
 
 !!el|(type)=(MON_LIZARDMAN);         
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/20/71; Poison
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/20/(TRUE)/71; Poison
 
 !!el|(type)=(MON_LIZARD_WARRIOR);  
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/50/71; Poison      
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/20/71/(SPELL_WEAKNESS); Poison
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/50/(TRUE)/71; Poison      
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/20/(TRUE)/71/(SPELL_WEAKNESS); Poison
 
 !!el|(type)=240; Shadow of the Marshes
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/71; Poison
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/(TRUE)/71; Poison
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/30/80/10/?(result1:y); Acid
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(TRUE)/20/71/(SPELL_WEAKNESS)/74; Poison + Paralyze
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(TRUE)/20/(FALSE)/(SPELL_WEAKNESS)/74; Weakness + Paralyze
 
 !!el|(type)=(MON_ENCHANTER);
   !!FU(casts_CastPowerfulMagicalShoot):P(atkStack)/(defStack)/(FALSE)/(FALSE)/(FALSE);
@@ -383,16 +380,16 @@ ZVSE2
 !!BM(atkStack):T?(type:y);
 
 !!if|(type)=(MON_LICH);                        
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/78; Dispel
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/(TRUE)/78; Dispel
 
 !!el|(type)=(MON_POWER_LICH);                        
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/100/71/78; Poison + Dispel
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/100/(TRUE)/71/78; Poison + Dispel
 
 !!el|(type)=225; Lich King now call Lich               
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/100/71/78/(SPELL_SORROW)/(SPELL_DISRUPTING_RAY); Poison + Dispel
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/100/(TRUE)/71/78/(SPELL_SORROW)/(SPELL_DISRUPTING_RAY); Poison + Dispel
 
 !!el|(type)=(MON_DRACOLICH);                       
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/100/71/(SPELL_SORROW)/(SPELL_DISRUPTING_RAY)/(SPELL_SLOW)/(SPELL_CURSE)/78; Poison + Dispel
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/100/(TRUE)/71/(SPELL_SORROW)/(SPELL_DISRUPTING_RAY)/(SPELL_SLOW)/(SPELL_CURSE)/78; Poison + Dispel
 !!en;
     
 ****************************************************************************************************
@@ -740,14 +737,15 @@ ZVSE2
 !#VA(battleTag:x);                      [Battle tag argument]
 !#VA(noRetaliation:x);                  [Whether prevent the victim to retaliate]
 !#VA(chance:x);                         [Chance to cast each spell]
-!#VA(seventhItem:x);                    [Spell 1/Spell 2/...]
+!#VA(disableDwarfResistence:x);         [Disable 'shield animation' resistance based on chance]
+!#VA(spellList:x);                      [Spell 1/Spell 2/...]
 
 !!FU&i^shieldBlockTriggered^=(TRUE):E;  ; Exit if Shield Block triggered
 
 !!FU:A?(numArgs:y);
 
 !!if&(numArgs)<6;
-  !!SN:F^ShowErmError^/^Invalid number of parameters. Expected at least 7.^;
+  !!SN:F^ShowErmError^/^Invalid number of parameters. Expected at least 8.^;
   !!FU:E;
 !!en;
 
@@ -769,7 +767,7 @@ ZVSE2
 
 !!VR(alreadySetBattleTag:y):S(FALSE);
 
-!!re i/(@seventhItem)/(numArgs);
+!!re i/(@spellList)/(numArgs);
   !!VR(spell:y):Sxi;
 
   ; Exit if the targeted stack cannot receive the spell
@@ -801,11 +799,17 @@ ZVSE2
     !!UN:C5903270/1/?(patch2:y) C5903270/1/(OPCODE_NOP_1);
   !!en;
       
+  ; Disable DwarfResistence if applicable
+  !!FU(SetCheckResistenceForCreatureCast)&(disableDwarfResistence)=(TRUE):P(FALSE);
+
   ; Cast the spell
   !!BM(defStack):P?(defPos:y);
   *!BM(atkStack):C(spell)/(defPos)/(SKILL_NOT_LEARNED)/(duration)/(TRUE);
   !!UN:C(COMBAT_MANAGER)/4/?(cmbMgr:y);
   !!SN:E5898560/(CALLCONV_THISCALL)/(cmbMgr)/(spell)/(defPos)/1/-1/(SKILL_NOT_LEARNED)/(duration);
+
+  ; Re-enable DwarfResistence if applicable
+  !!FU(SetCheckResistenceForCreatureCast)&(disableDwarfResistence)=(TRUE):P(TRUE);
 
   ; restore vanilla battle log
   !!if&i^battle_isVisible^/z(battleTag)<>^^;

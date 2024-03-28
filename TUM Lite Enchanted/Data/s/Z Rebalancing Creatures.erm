@@ -3,156 +3,6 @@ ZVSE2
 ; Engine:   ERM 2.0+
 ; Requires: ERA 3.3+, Third Upgrade Mod Lite
 
-****************************************************************************************************
-*******************************************RENAMED SKILL********************************************
-****************************************************************************************************
-ATTACK: Melee Attack.
-SHOOT: Attack from Ranged Units.
-STRIKE: Generic Attack, Ranged or Melee.
-BLOW: Strike with Special Ability.
-NON-LIVING: No Morale. Mind Spells Immunity. Death Stare Immunity. Fearless.
-HATES: +25% damage.
-STRONGLY HATES: +50% damage.
-RAISE: Summon X creatures from a fallen ally stack such as Pit Lord.
-
-****************************************************************************************************
-*********************************************NEW SKILLS*********************************************
-****************************************************************************************************
-
-***********************************************CASTLE***********************************************
-BLESSED SHOOTER: Precision + Bless
-SHIELD OF THE EMPIRE: Counterstrike + Shield.
-BLESS OF FAITH: Prayer + Bless.
-GLORY OF THE KNIGHT: Shield + Bless + Mirth.
-
-***********************************************TOWER************************************************
-MAGICAL SHOOT: 20% Magic Arrow or 10% Ice Bolt.
-POWERFUL MAGICAL SHOOT: 15% Magic Arrow or 8% Ice Bolt or 7% Lightning Bolt.
-SUPREME MAGICAL SHOOT: 12% Magic Arrow or 6% Ice Bolt or 5% Lightning Bolt or 5% Fireball or 3% Meteor Shower.
-PROTECTION OF THE MASTER: Air Shield + Stone Skin + Magic Mirror.
-MAGICAL SHIELDS: Shield + Fire Shield.
-
-********************************************NECROPOLIS**********************************************
-FLESHEATER: After killing a living creature, the creature eats the enemy body and drains life like a vampire.
-
-*********************************************DUNGEON************************************************
-FUNGAL WAR POTION: Bloodlust + Stone Skin + Haste.
-MADNESS OF THE HARPY: Forgetfullness + Misfortune.
-HEX SHOOT: 40% Misfortune and 30% Weakness and 30% Dispel Helpful Spells.
-POWERFUL HEX SHOOT: 40% Misfortune and 30% Weakness and 30% Dispel Helpful Spells and 30% Disrupting Ray and 20% Curse and 10% Slow.
-BEHOLDER SHOOT: 40% Misfortune and 30% Weakness and 30% Dispel Helpful Spells and 30% Disrupting Ray and 20% Curse and 10% Slow and 10% Forgetfullness and 10% Poison and 5% Stone Gaze and 5% Fireball, and many more.
-AGONY SHOOT: Petrification + Poison.
-
-*******************************************STRONGHOLD***********************************************
-ELEMENTAL PROTECTION: Air Prot + Fire Prot + Earth Prot + Water Prot.
-AIR ENCHANTMENT: Air Shield + Counterstrike.
-
-****************************FORTRESS*****************************
-STRONG HEALTH: Immune to Poison Effect.
-
-********************************************CONFLUX*************************************************
-ENCHANTMENT OF THE SPRITE: Each turn one of Bless, Stone Skin, Mirth or Fortune.
-ENCHANTMENT OF THE FAIRY: Each turn one of Bless, Stone Skin, Mirth, Fortune, Air Shield, Magic Mirror or Prayer.
-FIRE POWER: Bloodlust + Slayer.
-KILLER INSTINCT: Bless + Bloodlust + Slayer + Frenzy.
-ENCHANTER PROTECTION: Air Shield + Fire Shield + Stone Skin + Magic Mirror.
-
-**************************************MORE FACTION OR NEUTRAL***************************************
-CRIPPLING ATTACK/SHOOT: -1 Speed.
-INCAPACITATING ATTACK/SHOOT: -2 Speed, -1 Attack Skill, -1 Defence Skill.
-STUNNING ATTACK: Skip 1 turn and no Retaliation. Work's only on living creatures.
-KILL FRENZY: After kills a living creature, play another turn.
-BLESSING OF THE TRUE BELIEVER: Expert Cure + Expert Stone Skin.
-SORCERESS SHOOT: Cast Random Debuff base on creatures quantity.
-CURSE OF THE SORCERESS: Expert Weakness + Expert Curse.
-SPEAR OF MAGIC: Magic Arrow + Dispel Beneficial Spells.
-
-****************************************************************************************************
-*******************************************NEW CONDITION********************************************
-****************************************************************************************************
-
-STUNNED: No movement and no Retaliation for 1 turn. It's work's only on non-Mind Immunity Creatures.
-
-***************************************DAMAGE REDUCTION SKILL***************************************
-ETHEREAL: 15% to 30% of Physical damage is avoided.
-
-PARRY: -50% Physical Damage.
-SCHIELD BLOCK: -100% Physical Damage and block Poison.
-
-************************************FURY, RAGE, WRATH AND MIGHT*************************************
-FURY: Activates only when attack or retaliate. Bonus are cumulative.
-RAGE/THIRST: Activates when attack or retaliate. Bonus are not cumulative.
-MIGHT: Activates only when be attacked. Bonus are cumulative.
-WRATH/FORMATION/DEFENCE: Activates only when be attacked. Bonus are not cumulative.
-
-DEFENSIVE FORMATION: -1 Attack Skill, +3 Defence Skill.
-WALL OF SHIELDS FORMATION: -1 Attack Skill, +6 Defence Skill.
-
-DRAGON DEFENCE: +4 Defence Skill.
-ULTIMATE DEFENCE: +8 Defence Skill.
-
-MIGHT OF THE NATURE: +2 Attack Skill, -1 Defence Skill, +1 Damage, +1 Speed, for each time be attacked.
-
-INFERNAL FURY: +2 Attack Skill, -1 Defence Skill, for each attack.
-DIABOLIC FURY: +3 Attack Skill for each attack.
-STRONG DIABOLIC FURY: +5 Attack Skill for each attack.
-
-THIRST FOR BLOOD: +3 Attack Skill, -2 Defence Skill, +3 Speed.
-
-WRATH OF THE UNDERWORLD: +4 Attack Skill, -1 Defence Skill, +2 Speed.
-
-BARBARIAN RAGE: +2 Attack Skill, -1 Defence Skill, +1 Damage, +1 Hit Point, +1 Speed.
-STRONG BARBARIAN RAGE: +3 Attack Skill, -1 Defence Skill, +1 Damage, +2 Hit Points, +1 Speed.
-BERSERKER RAGE: +4 Attack Skill, -2 Defence Skill, +1 Damage, +5 Hit Points, +3 Speed.
-
-WRATH OF VENGEANCE: +2 Attack Skill, -1 Defence Skill, +10 Hit Points.
-WRATH OF CYCLOPS: +3 Attack Skill, -1 Defence Skill, +20 Hit Points.
-
-BEHEMOTH RAGE: +5 Attack Skill, -2 Defence Skill, +5 Damage, +20 Hit Points, +1 Speed.
-MONSTROUS RAGE: +5 Attack Skill, -2 Defence Skill, +5 Damage, +40 Hit Points, +2 Speed.
-
-MIGHT OF THE CATOBLEPAS: +4 Defence Skill for each time be attacked.
-
-**************************************NEW POISON/DISEASE********************************************
-INFERNAL FEVER: Disease + Disrupting Ray.
-
-BLACK PLAGUE: Disease + Weakness + Curse + Slow.
-SCREAM OF THE BANSHEE: Sorrow + Forgetfulness + Age + Paralyze.
-BITE OF THE NOSFERATU: Poison + Misfortune + Weakness + Sorrow.
-MALEFICENT SHOOT: Poison + Dispel.
-LICH SHOOT: Poison + Dispel + Sorrow + Disrupting Ray.
-UNDEAD FEVER: Disease + Curse + Slow.
-
-ENFEEBLING POISON: Poison + Weakness.
-POWERFUL ENFEEBLING POISON: Poison + Weakness + Curse.
-MANTICORE POISON: Poison + Paralyze + Acid.
-CHAOTIC POISON: Poison + Paralyze + Acid + Slow + Dispel.
-
-YELLOW FEVER POISON: Dispel + Weakness.
-HUNTER'S VENOM: Poison + Weakness + Paralyze.
-SWAMP FEVER: Disease + Curse.
-POISON OF THE MARSHES: Poison + Curse.
-VENOM OF THE CHAOS: Berserker + Forgetfulness.
-PLAGUE OF THE BLACK MARSHES: Disease + Weakness + Acid + Curse.
-POISON OF THE WYVERN: Poison + Weakness.
-POISON OF THE WYVERN MONARCH: Poison + Weakness + Curse.
-BLACK SWAMP PLAGUE: Poison + Disease + Weakness + Curse.
-
-UTTER END: Poison + Sorrow + Disrupting Ray + Slow + Curse + Dispel.
-
-***************************************TYPE OF DRAGON BREATH****************************************
-GREEN DRAGON: Poison + Acid.                             RED DRAGON: Firewall.
-GOLD DRAGON: Petrifying.                                 BLACK DRAGON: Acid.
-DIAMOND DRAGON: Stunnning and/or Blinding.               DRAGON OF THE ABYSS: Acid and Death Stare.
-                                
-AZURE DRAGON: Ice (Ice Bolt + Frost Ring).
-RUST DRAGON: Powerful Acid.
-
-***************************************CREATURES LEVEL CHANGE**************************************
-
-SORCERESS: 6 -> 5
-ALL SHARPSHOOTERS: 4 -> 3
-
 !?PI;
 ***************************************************************************************************
 ***********************************************CASTLE**********************************************
@@ -1896,7 +1746,7 @@ FORCED
 !!MA:X224/d(MON_FLAG_NO_RETALIATION);                       Add No Enemy Retaliation
 !!MA:L224/3;                                                Is Level 4
 !!MA:O224/4;                                                Is a Necropolis Unit
-!!SN:H^monname^/224/2/^Undead. Fly. {~3faa11}Drain Life Attack.{~} No Enemy Retaliation. {~3faa11}20% Bite of the Nosferatu.{~} {~ff1100}20% Thirst for Blood.{~}^;
+!!SN:H^monname^/224/2/^Undead. Fly. {~3faa11}Drain Life Attack.{~} No Enemy Retaliation. {~ff1100}20% Thirst for Blood.{~}^;
 
 ***********************UNDEAD SORCERER**********************
 !!MA:A64/13;                                                Att 
@@ -1978,7 +1828,7 @@ FORCED
 !!MA:X66/d(MON_FLAG_WIDE);                                  Add Wide
 !!MA:L66/5;                                                 Is Level 6
 !!MA:O66/4;                                                 Is a Necropolis Unit
-!!SN:H^monname^/66/2/^Undead. {~3faa11}25% Cursed Attack.{~}^;
+!!SN:H^monname^/66/2/^Undead. {~3faa11}20% Cursed Attack.{~}^;
 
 ***************************DREAD KNIGHT*********************
 FORCED
@@ -1999,7 +1849,7 @@ FORCED
 !!MA:X67/d(MON_FLAG_WIDE);                                  Add Wide
 !!MA:L67/5;                                                 Is Level 6
 !!MA:O67/4;                                                 Is a Necropolis Unit
-!!SN:H^monname^/67/2/^Undead. {~3faa11}25% Cursed Attack.{~} 20% Death Blow. {5% Shield Block.}^;
+!!SN:H^monname^/67/2/^Undead. {~3faa11}30% Cursed Attack.{~} 20% Death Blow. {5% Shield Block.}^;
 
 **************************DEATH KNIGHT**********************
 !!MA:A226/20;                                               Att 
@@ -2011,7 +1861,7 @@ FORCED
 !!MA:G226/2;                                                Growth
 !!MA:F226/4870;                                             Fight value 
 !!MA:I226/4870;                                             IA value 
-!!MA:C226/6/2500;                                           Cost 
+!!MA:C226/6/2600;                                           Cost 
 !!MA:C226/2/2;                                              Cost Iron ore
 !!MA:X226/d(MON_FLAG_UNDEAD);                               Add Undead
 !!MA:X226/d(MON_FLAG_NO_MORALE);                            Add No Morale
@@ -2019,7 +1869,7 @@ FORCED
 !!MA:X226/d(MON_FLAG_WIDE);                                 Add Wide
 !!MA:L226/5;                                                Is Level 6
 !!MA:O226/4;                                                Is a Necropolis Unit
-!!SN:H^monname^/226/2/^Undead. {~3faa11}25% Undead Fever Attack.{~} 30% Death Blow. {5% Shield Block.} {~3faa11}Fear.{~} {~939393}Kill Frenzy.{~}^;
+!!SN:H^monname^/226/2/^Undead. {~3faa11}30% Undead Fever Attack.{~} 30% Death Blow. {5% Shield Block.} {~3faa11}Fear.{~} {~939393}Kill Frenzy.{~}^;
 
 **************************BONE DRAGON***********************
 !!MA:A68/17;                                                Att 
@@ -2034,7 +1884,7 @@ FORCED
 !!MA:C68/6/1500;                                            Cost 
 !!MA:L68/6;                                                 Is Level 7
 !!MA:O68/4;                                                 Is a Necropolis Unit
-!!SN:H^monname^/68/2/^Dragon. Undead. Fly. {~9746e3}-1 Enemy Morale. 50% Sorrow Attack.{~}^;
+!!SN:H^monname^/68/2/^Dragon. Undead. Fly. {~9746e3}-1 Enemy Morale. 30% Sorrow Attack.{~}^;
 
 **************************GHOST DRAGON**********************
 !!MA:A69/19;                                                Att 
@@ -2050,7 +1900,7 @@ FORCED
 !!MA:C69/1/1;                                               Cost Mercury
 !!MA:L69/6;                                                 Is Level 7
 !!MA:O69/4;                                                 Is a Necropolis Unit
-!!SN:H^monname^/69/2/^Dragon. Undead. Fly. {~9746e3}-1 Enemy Morale. 50% Sorrow Attack.{~} {Ethereal.} {~3faa11}20% Age Attack.{~}^;
+!!SN:H^monname^/69/2/^Dragon. Undead. Fly. {~9746e3}-1 Enemy Morale. 30% Sorrow Attack.{~} {Ethereal.} {~3faa11}20% Age Attack.{~}^;
 
 **************************BLOOD DRAGON**********************
 !!MA:A154/19;                                               Att 
@@ -2073,7 +1923,7 @@ FORCED
 !!MA:X154/d(MON_FLAG_MIND_IMMUNITY);                        Add Mind Spell Immunity
 !!MA:L154/6;                                                Is Level 7
 !!MA:O154/4;                                                Is a Necropolis Unit
-!!SN:H^monname^/154/2/^Dragon. Undead. Fly. {~9746e3}-2 Enemy Morale. 50% Sorrow Attack.{~} {Ethereal.} {~3faa11}20% Bite of the Death. Fear.{~} {~3faa11}Drain Life Attack.{~} {~939393}Flesheater.{~}^;
+!!SN:H^monname^/154/2/^Dragon. Undead. Fly. {~9746e3}-2 Enemy Morale. 30% Sorrow Attack.{~} {Ethereal.} {~3faa11}20% Bite of the Death. Fear.{~} {~3faa11}Drain Life Attack.{~} {~939393}Flesheater.{~}^;
 
 ***************************************************************************************************
 *********************************************DUNGEON***********************************************

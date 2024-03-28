@@ -740,14 +740,15 @@ ZVSE2
 !#VA(battleTag:x);                      [Battle tag argument]
 !#VA(noRetaliation:x);                  [Whether prevent the victim to retaliate]
 !#VA(chance:x);                         [Chance to cast each spell]
-!#VA(seventhItem:x);                    [Spell 1/Spell 2/...]
+!#VA(disableDwarfResistence:x);         [Disable 'shield animation' resistance based on chance]
+!#VA(spellList:x);                      [Spell 1/Spell 2/...]
 
 !!FU&i^shieldBlockTriggered^=(TRUE):E;  ; Exit if Shield Block triggered
 
 !!FU:A?(numArgs:y);
 
 !!if&(numArgs)<6;
-  !!SN:F^ShowErmError^/^Invalid number of parameters. Expected at least 7.^;
+  !!SN:F^ShowErmError^/^Invalid number of parameters. Expected at least 8.^;
   !!FU:E;
 !!en;
 
@@ -769,7 +770,7 @@ ZVSE2
 
 !!VR(alreadySetBattleTag:y):S(FALSE);
 
-!!re i/(@seventhItem)/(numArgs);
+!!re i/(@spellList)/(numArgs);
   !!VR(spell:y):Sxi;
 
   ; Exit if the targeted stack cannot receive the spell
@@ -801,11 +802,17 @@ ZVSE2
     !!UN:C5903270/1/?(patch2:y) C5903270/1/(OPCODE_NOP_1);
   !!en;
       
+  ; Disable DwarfResistence if applicable
+  !!FU(SetCheckResistenceForCreatureCast)&(disableDwarfResistence)=(TRUE):P(FALSE);
+
   ; Cast the spell
   !!BM(defStack):P?(defPos:y);
   *!BM(atkStack):C(spell)/(defPos)/(SKILL_NOT_LEARNED)/(duration)/(TRUE);
   !!UN:C(COMBAT_MANAGER)/4/?(cmbMgr:y);
   !!SN:E5898560/(CALLCONV_THISCALL)/(cmbMgr)/(spell)/(defPos)/1/-1/(SKILL_NOT_LEARNED)/(duration);
+
+  ; Re-enable DwarfResistence if applicable
+  !!FU(SetCheckResistenceForCreatureCast)&(disableDwarfResistence)=(TRUE):P(TRUE);
 
   ; restore vanilla battle log
   !!if&i^battle_isVisible^/z(battleTag)<>^^;

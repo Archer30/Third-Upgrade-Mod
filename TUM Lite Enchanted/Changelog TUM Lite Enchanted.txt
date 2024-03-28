@@ -1,3 +1,27 @@
+**********CHANGELOG TUM LITE ENCHANTED EDITION 1.4**********
+IMPROVEMENTS:
+- BUILDING DEPENDENCIES ON TUM BUILDINGS has been implemented! (thanks to Yuji Sakai).
+  Additionally, original building dependences will have the following changes:
+  
+  Rampart:
+  Unicorn Glade (lvl 6) now requires only Homestead (lvl 3). Formerly it required also Enchanted Spring (lvl 4) and Dendroid Arches (lvl 5).
+  
+  Tower:
+  Golden Pavillion (lvl 6) now requires Altar of Wishes (lvl 5).
+  
+  Conflux:
+  Air/Water/Fire/Earth Elementals building requirements removed.
+  Altar of Thought (lvl 6) now requires all elementals dwelling buildings.
+  
+- Removed forced disabling of "Skeletons with Artifacts" wog option (thanks to TheInvisible1966).
+
+BUG FIXES:
+- Fixed Lords of Elements Clone autocasting on himself and resisting the spell.
+- Now cloned creatures cannot cast clone of themselves.
+- Fixed ability with 20% trigger chance mistakenly triggering every time.
+
+
+
 **********CHANGELOG TUM LITE ENCHANTED EDITION 1.3**********
 
 BUG FIXES:
@@ -8,8 +32,7 @@ IMPROVEMENTS:
 *Neutral town strong defense script improvements:
  - Now disabled for campaign games.
  - When there are more than 1 slot having same dwelling level creatures with same or different level of upgrades, the units will be merged into a single stack with the higher upgrade.
- - Removed pop-up message on the end of the week when there are no empty slots to add a creature
-- NEW BUILDING TREE FOR ALL FACTION!
+ - Removed pop-up message on the end of the week when there are no empty slots to add a creature.
 
 BALANCE:
 - GRIFFIN Basic Growth is 5 instead of 6.

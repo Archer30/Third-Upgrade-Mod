@@ -1,4 +1,4 @@
-        Third Upgrade Mod Lite Enchanted Edition 1.3
+        Third Upgrade Mod Lite Enchanted Edition 1.4
 -----------------------------------------------------------------------------------------------------------------------
 
 Credits:
@@ -31,7 +31,6 @@ Difficulty Mod
 Human AI
 
 HOW TO INSTALL:
-Download file, extract and put in ERA3/MODS folder. I suggest to use my wog option for more balance games. Advanced Class Mod (ACM), Difficulty Mod and AmerAI are raccomanded. TUM Lite Enchanted need to have higher priority of TUM Lite and ACM.
-
+Download file, extract and put in ERA3/MODS folder. I suggest to use my wog option for more balance games. Advanced Class Mod (ACM), Difficulty Mod and AmerAI are recommended. 
 
 

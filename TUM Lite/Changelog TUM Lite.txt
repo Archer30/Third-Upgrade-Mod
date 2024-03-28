@@ -1,27 +1,23 @@
 ********************CHANGELOG TUM LITE 2.3*****************
 IMPROVEMENTS
-- Strike and Return creatures: you can now switch between Attack and Attack and Return mode.
+- You can now Ctrl+Click on any creature or artifact on the map to show description and attributes.
+- Building dependencies support on TUM buildings has been implemented (thanks to Yuji Sakai).
 
 BUG FIX
+Town Building menu fixes:
 - Mage Guild built at maximum level now correctly reports guild level.
-
-
-TO DO 
-- Check: Gold barred icon indicating you can't afford a building is not shown (occurs very rarely).
-- Correggi la gold barred icon
-- Mostra la spunta agli upgrade level 1
-- Aggiungere TUM Upg? or Upg. to 
-
-- Script Dwelling: disable if town are day 1 is defended (test with 30 towns)
-
-BuildingDeps0036="1 2 -1"
-
+- Fixed Gold barred icon not shown sometimes in Town Building menu when you can't afford a building.
+- Fixed yellow mark incorrectly shown in dwelling buildings when you can build the TUM Upgrade for that building
 
 KNOWN ISSUES
-- TUM Build Dependency not implemented: e.g.: Orc TUM Upgrade could be built without Freelancer?s guild.
- 
-- Gold barred icon indicating you can't afford a building is not shown (occurs very rarely).
+- (wog bug) TUM Upgraded Liches and Vampires cannot be resurrected by Commander.
 
+- Rare bug causing a siege attack having Citadel defense even though Castle was built (need to narrow down the problem, please report savegame if it occurs to you)
+
+- Pikemen growth on Fort is mistakenly reported as 0
+
+OTHER BUGS
+- Se sono il secondo giocatore in una battaglia tra due giocatori non posso switchiare il tipo di attacck della mia creature fra melee, shoot e cast
 
 ********************CHANGELOG TUM LITE 2.2b****************
 BUG FIX

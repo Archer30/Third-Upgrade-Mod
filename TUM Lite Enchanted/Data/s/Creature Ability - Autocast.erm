@@ -72,7 +72,13 @@ ZVSE2
     !!FU(SpellCast)&(monsterType)=247:P(SPELL_BLESS)/(monsterPosition)/2/3/^AutocastA^; Life Elemental Advanced Bless
     !!FU(SpellCast)&(monsterType)=248:P(SPELL_SLAYER)/(monsterPosition)/3/3/^AutocastA^; Plasma Elemental Expert Slayer
     !!FU(SpellCast)&(monsterType)=249:P(SPELL_SHIELD)/(monsterPosition)/2/3/^AutocastA^; Meteor Elemental Advanced Shield
-    !!FU(SpellCast)&(monsterType)=250:P(SPELL_CLONE)/(monsterPosition)/3/3/^AutocastA^; Lord of the Elements Expert Clone
+    
+    !!if&(monsterType)=250;                                                              Lords of the Elements
+      !!FU(SetCheckResistenceForCreatureCast):P(FALSE);
+      !!FU(SpellCast):P(SPELL_CLONE)/(monsterPosition)/3/3/^AutocastA^;  Cast Expert Clone
+      !!FU(SetCheckResistenceForCreatureCast):P(TRUE);
+    !!en;
+
     !!FU(SpellCast)&(monsterType)=(MON_PHOENIX):P(SPELL_BLOODLUST)/(monsterPosition)/2/3/^AutocastA^; Phoenix Advanced Boodlust
     !!FU(SpellCast)&(monsterType)=(MON_PHOENIX):P(SPELL_SLAYER)/(monsterPosition)/3/3/^^; Phoenix Expert Slayer
     !!FU(SpellCast)&(monsterType)=158:P(SPELL_BLOODLUST)/(monsterPosition)/2/3/^AutocastA^; Sacred Phoenix Advanced Bloodlust
@@ -230,6 +236,12 @@ ZVSE2
 !!BG:N?(currentStack:y);                                [get current stack #]
 !!BU:E(pos)/?y2;                             [check for living stack]
 !!IF&y2=-1:V77/1;                         [if dead stack set flag 77 to true]
+
+!!if&(spell)=(SPELL_CLONE);               [avoid casting clone on cloned stack]
+   !!BM(currentStack):F?i;                [read flags] 
+   !!VRi:&8388608;                        [get value of clone bit] 
+   !!FU&i>0:E;                         
+!!en;
 
 ; Check if the spell is a damaging spell
 !!SS(spell):F?(flags:y);

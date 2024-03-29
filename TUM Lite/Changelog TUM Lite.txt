@@ -1,6 +1,6 @@
 ********************CHANGELOG TUM LITE 2.3*****************
 IMPROVEMENTS
-- You can now Ctrl+Click on any creature or artifact on the map to show description and attributes.
+- You can now Ctrl+Click on any creature or artifact on the map to show description and attributes (thanks to Yuji Sakai).
 - Building dependencies support on TUM buildings has been implemented (thanks to Yuji Sakai).
 
 BUG FIX

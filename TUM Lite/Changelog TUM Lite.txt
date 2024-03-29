@@ -10,14 +10,12 @@ Town Building menu fixes:
 - Fixed yellow mark incorrectly shown in dwelling buildings when you can build the TUM Upgrade for that building
 
 KNOWN ISSUES
-- (wog bug) TUM Upgraded Liches and Vampires cannot be resurrected by Commander.
+- (WOG Bug) TUM Upgraded Liches and Vampires cannot be resurrected by Commander.
 
 - Rare bug causing a siege attack having Citadel defense even though Castle was built (need to narrow down the problem, please report savegame if it occurs to you)
 
 - Pikemen growth on Fort is mistakenly reported as 0
 
-OTHER BUGS
-- Se sono il secondo giocatore in una battaglia tra due giocatori non posso switchiare il tipo di attacck della mia creature fra melee, shoot e cast
 
 ********************CHANGELOG TUM LITE 2.2b****************
 BUG FIX

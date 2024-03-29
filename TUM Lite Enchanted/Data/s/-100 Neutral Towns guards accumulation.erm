@@ -11,9 +11,35 @@ ZVSE2
 !?FU(OnGameEnter);
 !#VRi^wog_235_increaseTownGuards_enabled^:S(FALSE);
 
+!?FU(DisabledWiPFunction_OnAfterErmInstructions);
+!#VA(x:y) (y:y) (z:y);
+
+!!VRi^numberOfEmptyNeutralTowns^:S0;
+
+!!re i/0/14;                                 [loop through all towns]
+  !!UN:U(OBJ_TOWN)/(ANY_OBJ)/-1/(x)/(y)/(z);
+
+   !*IF:M^%(x)/%(y)/%(z)^;  
+
+  !!if&(x)>=0;
+
+      !!CA(x)/(y)/(z):O?(owner:y);
+      !!CA(x)/(y)/(z):H0/?(garrisonHero:y) H1/?(visitingHero:y); [check for garrison / visiting hero]  
+  
+      !!if&(owner)=(NO_PLAYER)/(garrisonHero)=(NO_HERO)/(visitingHero)=(NO_HERO);
+         !!FU(GetFirstCreatureTownSlot):P(x)/(y)/(z)/?(result:y);
+         !!VRi^numberOfEmptyNeutralTowns^&(result)=-1:+1;
+         !*IF&(result)=-1:M^%i(numberOfEmptyNeutralTowns)^;  
+      !!en;
+   !!en; 
+!!en;
+
+!!IF:M^Neutral towns with no army: %i(numberOfEmptyNeutralTowns)^;
+
 
 !?FU(OnEveryDay)&i^timerWeekDay^=1/i^timerOnce^=1;
 !#VA(x:y) (y:y) (z:y) (townEnabled:y);
+
 
 !!SN:F^IsCampaign^;                     [result returned in v1]
 !!FU&v1:E;                              [disable script for campaign mode]
@@ -39,7 +65,9 @@ ZVSE2
 !!IF&i^logNTGA^=(TRUE):M^townguards_accumulation: timerDay = %i(timerDay)^;
 
 !!if&i^timerDay^=1;
-   !!FU(execute_randomRollsForGrowth):P(x)/(y)/(z)/2/3;
+   !!VR(fivePercent:y):R0/1/20;
+   !!FU(execute_randomRollsForGrowth)&(fivePercent)<20:P(x)/(y)/(z)/3/3;
+   !!FU(FixedStartingDefense)&(fivePercent)=20:P(x)/(y)/(z);
 !!en;
 
 !!if&i^timerDay^=8;
@@ -47,7 +75,7 @@ ZVSE2
    !!FU(execute_randomRollsForGrowth):P(x)/(y)/(z)/(numRolls)/4;
 
    !!VR(numRolls):R0/0/1;
-   !!FU(execute_randomRollsForUpgrade):P(x)/(y)/(z)/(numRolls)/6;
+   !!FU(execute_randomRollsForUpgrade):P(x)/(y)/(z)/(numRolls)/5;
 !!en;
 
 !!if&i^timerDay^=15;
@@ -112,14 +140,13 @@ ZVSE2
    !!FU(execute_allMonsterUpgradesToLevel):P(x)/(y)/(z)/2/6;
 !!en;
 
-!!if&i^timerDay^=71;
+!!if&i^timerDay^=85;
    !!FU(execute_allMonsterUpgradesToLevel):P(x)/(y)/(z)/2/7;
 !!en;
 
-!!if&i^timerDay^>57;                                      [FIX ME: Lazy accumulation from end of month 3 week 1 onwards: double increase]
-    !!FU(execute_allLevelsGrowth):P(x)/(y)/(z);
-    !!FU(execute_allLevelsGrowth):P(x)/(y)/(z);
-!!en;   
+!!FU(execute_allLevelsGrowth)&i^timerDay^>=57:P(x)/(y)/(z);   ; from month 3 onwards: 1 full monsters growth 
+!!FU(execute_allLevelsGrowth)&i^timerDay^>=85:P(x)/(y)/(z);   ; from month 4 onwards: an additional full monsters growth 
+                                    
 
 
 !?FU(execute_randomRollsForGrowth);                           [execute # random rolls for monster level to increase]
@@ -216,7 +243,6 @@ ZVSE2
      !!VR(randomStackSlot:y):R0/0/6;      
      !!CA(x)/(y)/(z):M2/(randomStackSlot)/?(monsterType:y)/?(creatureQuantity:y);
 
-
      !!if&(creatureQuantity)>0;
         !!MA:L(monsterType)/?(monsterLevel:y);
         !!if&(monsterLevel)<=(maxMonsterLevelToUpgrade);     [found eligible monster. If it's already at TUM upgrade, the upgrade roll is wasted]
@@ -272,11 +298,41 @@ ZVSE2
 
 !#VA(x:x) (y:x) (z:x) (result:x);
 
-!!CA(x)/(y)/(z):T?(townType:y);
-
-!!re i/0/6;                          [check if monster is already in town]
+!!re i/0/6;                          [check for first empty slot]
    !!CA(x)/(y)/(z):M2/i/?(monsterType:y)/?(creatureQuantity:y);
    !!if&(creatureQuantity)=0;
+      !!VR(result):Si;
+      !!FU:E;    
+   !!en;
+!!en;
+
+!!VR(result):S-1;
+
+!?FU(FixedStartingDefense);
+!#VA(x:x) (y:x) (z:x);
+
+!!re i/0/6;                          [check for first empty slot]
+   !!CA(x)/(y)/(z):M2/i/-1/0;
+!!en;
+
+!!CA(x)/(y)/(z):T?(townType:y);
+
+!!FU(tum_GetMonstersInTown):P(townType)/5/?(level6Monster:y)/?(levelU6Monster:y)/?(levelTUM6Monster:y);      [get unupgraded, upgraded, and tum monster ids]
+
+!!VR(thirtyThreePercent:y):R0/1/3;
+
+!!CA(x)/(y)/(z)&(thirtyThreePercent)<3:M2/4/(level6Monster)/3;
+
+!!CA(x)/(y)/(z)&(thirtyThreePercent)=3:M2/3/(levelU6Monster)/1;
+!!CA(x)/(y)/(z)&(thirtyThreePercent)=3:M2/4/(level6Monster)/2;
+
+
+!?FU(GetFirstCreatureTownSlot);
+!#VA(x:x) (y:x) (z:x) (result:x);
+
+!!re i/0/6;                          [check for first creature slot]
+   !!CA(x)/(y)/(z):M2/i/?(monsterType:y)/?(creatureQuantity:y);
+   !!if&(creatureQuantity)>0;
       !!VR(result):Si;
       !!FU:E;    
    !!en;

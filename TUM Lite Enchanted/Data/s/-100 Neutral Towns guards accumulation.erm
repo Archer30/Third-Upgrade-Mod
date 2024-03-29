@@ -11,35 +11,8 @@ ZVSE2
 !?FU(OnGameEnter);
 !#VRi^wog_235_increaseTownGuards_enabled^:S(FALSE);
 
-!?FU(DisabledWiPFunction_OnAfterErmInstructions);
-!#VA(x:y) (y:y) (z:y);
-
-!!VRi^numberOfEmptyNeutralTowns^:S0;
-
-!!re i/0/14;                                 [loop through all towns]
-  !!UN:U(OBJ_TOWN)/(ANY_OBJ)/-1/(x)/(y)/(z);
-
-   !*IF:M^%(x)/%(y)/%(z)^;  
-
-  !!if&(x)>=0;
-
-      !!CA(x)/(y)/(z):O?(owner:y);
-      !!CA(x)/(y)/(z):H0/?(garrisonHero:y) H1/?(visitingHero:y); [check for garrison / visiting hero]  
-  
-      !!if&(owner)=(NO_PLAYER)/(garrisonHero)=(NO_HERO)/(visitingHero)=(NO_HERO);
-         !!FU(GetFirstCreatureTownSlot):P(x)/(y)/(z)/?(result:y);
-         !!VRi^numberOfEmptyNeutralTowns^&(result)=-1:+1;
-         !*IF&(result)=-1:M^%i(numberOfEmptyNeutralTowns)^;  
-      !!en;
-   !!en; 
-!!en;
-
-!!IF:M^Neutral towns with no army: %i(numberOfEmptyNeutralTowns)^;
-
-
 !?FU(OnEveryDay)&i^timerWeekDay^=1/i^timerOnce^=1;
-!#VA(x:y) (y:y) (z:y) (townEnabled:y);
-
+!#VA(x:y) (y:y) (z:y);
 
 !!SN:F^IsCampaign^;                     [result returned in v1]
 !!FU&v1:E;                              [disable script for campaign mode]
@@ -55,8 +28,16 @@ ZVSE2
   !!CA(x)/(y)/(z):O?(owner:y);
   !!CA(x)/(y)/(z):H0/?(garrisonHero:y) H1/?(visitingHero:y); [check for garrison / visiting hero]  
   
-  !!FU(townguards_Accumulation)&(owner)=(NO_PLAYER)/(garrisonHero)=(NO_HERO)/(visitingHero)=(NO_HERO):P(x)/(y)/(z);  
-  
+  !!if&(owner)=(NO_PLAYER)/(garrisonHero)=(NO_HERO)/(visitingHero)=(NO_HERO);  
+     !!if&i^timerDay^=1;                                              [setup phase]
+         !!FU(IsCustomizedDefenseTown):P(x)/(y)/(z)/?(isCustomizedDefenseTown:y);
+         !!PO(x)/(y)/(z):V3/(isCustomizedDefenseTown);                [save isCustomizedDefenseTown status]       
+     !!en;     
+
+     !!PO(x)/(y)/(z):V3/?(isCustomizedDefenseTown);
+     !!IF&i^logNTGA^=(TRUE)/(isCustomizedDefenseTown)=(TRUE):M^Skipping town customized at %(x)/%(y)/%(z)^;
+     !!FU(townguards_Accumulation)&(isCustomizedDefenseTown)=(FALSE):P(x)/(y)/(z);  [grow defense only if town is marked as not Customized
+  !!en;
 !!en;
 
 !?FU(townguards_Accumulation);
@@ -339,6 +320,36 @@ ZVSE2
 !!en;
 
 !!VR(result):S-1;
+
+!?FU(IsCustomizedDefenseTown);
+!#VA(x:x) (y:x) (z:x) (result:x);
+
+!!CA(x)/(y)/(z):T?(townType:y);
+
+!#VA(maxNumber[4]:y);
+!!VR(maxNumber):C25/15/10/5;         [setting max number of creature per level for non-customized town]
+
+!!re i/0/6;                          
+   !!CA(x)/(y)/(z):M2/i/?(monsterType:y)/?(creatureQuantity:y);
+
+   !!if&(creatureQuantity)>0;
+      !!MA:L(monsterType)/?(monsterLevel:y);
+      !!MA:O(monsterType)/?(monsterTown:y);
+     
+      !!if|(monsterLevel)>=4/(creatureQuantity)>(maxNumber[monsterLevel])/(monsterTown)<>(townType);
+         !!IF&i^logNTGA^=(TRUE):M^Town customized at %(x)/%(y)/%(z): slot = %i 
+monsterLevel = %(monsterLevel), creatureQuantity = %(creatureQuantity), maxNumber[monsterLevel] = %(maxNumber[monsterLevel]), monsterTown = %(monsterTown), townType = %(townType)^;
+
+         !!VR(result):S(TRUE);
+         !!FU:E;    
+      !!en;
+
+      !!VR(maxNumber[monsterLevel]):S0; [max one stack per level for customized town]
+   !!en;
+!!en;
+
+!!VR(result):S(FALSE);
+
 
 !?FU(MergeSameDwelling);
 !#VA(x:x) (y:x) (z:x);

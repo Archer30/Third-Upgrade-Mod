@@ -1,9 +1,9 @@
 **********CHANGELOG TUM LITE ENCHANTED EDITION 1.4**********
 BUG FIXES:
-- Fixed Lords of Elements Clone autocasting on himself and resisting the spell.
-- Removed cloned creatures ability to cast clone.
+- Fixed Lords of Elements resisting the spell when autocasting Clone on himself.
+- Removed ability to cast Clone from already cloned monsters.
 - Fixed abilities with 20% trigger chance mistakenly triggering every time.
-- Removed forced disabling of "Skeletons with Artifacts" wog option (thanks to TheInvisible1966).
+- Removed forced disabling of "Skeletons with Artifacts" WOG Option (thanks to TheInvisible1966).
 
 IMPROVEMENTS:
 - BUILDING DEPENDENCIES ON TUM BUILDINGS has been implemented! (thanks to Yuji Sakai).
@@ -20,13 +20,14 @@ IMPROVEMENTS:
   Altar of Thought (lvl 6) now requires all elementals dwelling buildings.
 
 - Removed WOG Imposed Abilities. For a complete list, refer to "Data\s\Creature Ability - WOG Ability Elimination without Amethyst.erm.off".
-- Now the majority of poison attacks cannot be magic resisted on attacked creature.
+- Now the majority of poison attacks cannot be magic resisted by attacked creature.
+- Neutral town defense accumulation script will now recognize customized defense towns and it will skip them, to improve compatibility in custom scenarios.
 
 BALANCE:
--Neutral town defense accumulation changes (colored in green in the respective Excel file)
+- Neutral town defense accumulation changes (colored in green in the respective Excel file):
    - Town defense at game start is slightly increased, and added a small chance for a surprise :)
-   - Dwelling growth at month 3 reduced to 1*week growth from 2*week growth
-   - Level 7 TUM Upgrade delay to month 4 week 1, from month 3 week 3
+   - Dwelling growth at Month 3 reduced to 1*Week growth from 2*Week growth
+   - Level 7 TUM Upgrade delayed to Month 4 Week 1, from Month 3 Week 3
 
 - BANSHEE Scream doesn't inflict paralyze anymore. Enemies can retaliate after the scream.
 - NOSFERATU loses the ability to poison his enemy with Bite of the Nosferatu

@@ -38,7 +38,7 @@ ZVSE2
  !!FU(SpellCast)&(monsterType)=212:P(SPELL_CLONE)/(monsterPosition)/3/3/^AutocastC^; Supreme Archmage Expert Clone
 !!en;
 
- !!if&(randomRoll1)<100; 20% Autocast
+ !!if&(randomRoll1)<20; 20% Autocast
     !!FU(SpellCast)&(monsterType)=198:P(SPELL_BLESS)/(monsterPosition)/2/3/^AutocastA^; Crossbowman Advanced Bless 
     !!FU(SpellCast)&(monsterType)=198:P(SPELL_PRECISION)/(monsterPosition)/2/3/^^; Crossbowman Advanced Precision 
     !!FU(SpellCast)&(monsterType)=199:P(SPELL_MIRTH)/(monsterPosition)/3/3/^AutocastA^; Imperial Griffin Expert Mirth

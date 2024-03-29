@@ -20,6 +20,8 @@ IMPROVEMENTS:
   
 - Removed forced disabling of "Skeletons with Artifacts" wog option (thanks to TheInvisible1966).
 
+- Now the majority of poison attacks cannot be magic resisted on attacked creature.
+
 BALANCE:
 - BANSHEE Scream doesn't inflict paralyze anymore. Enemies can retaliate after the scream.
 - NOSFERATU loses the ability to poison his enemy with Bite of the Nosferatu

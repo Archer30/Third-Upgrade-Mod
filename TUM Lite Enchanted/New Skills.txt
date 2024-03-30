@@ -128,11 +128,11 @@ Mind Disease: Last 5 turns.
 INFERNAL FEVER: Disease + Disrupting Ray.
 
 BLACK PLAGUE: Disease + Weakness + Curse + Slow.
-SCREAM OF THE BANSHEE: Sorrow + Forgetfulness + Age + Paralyze.
-BITE OF THE NOSFERATU: Poison + Misfortune + Weakness + Sorrow.
+SCREAM OF THE BANSHEE: Sorrow + Forgetfulness + Age.
 MALEFICENT SHOOT: Poison + Dispel.
 LICH SHOOT: Poison + Dispel + Sorrow + Disrupting Ray.
 UNDEAD FEVER: Disease + Curse + Slow.
+BITE OF THE DEATH: Age + Paralyze + Weakness.
 
 ENFEEBLING POISON: Poison + Weakness.
 POWERFUL ENFEEBLING POISON: Poison + Weakness + Curse.

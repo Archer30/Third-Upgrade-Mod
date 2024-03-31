@@ -464,17 +464,17 @@ ZVSE2
 !!SN:H^monname^/204/2/^{40% Magic Resistance.} Hates Goblins and Orcs. {~d2bb2d}20% Destroy Armor Attack.{~} Unlimited Retaliations. Always Positive Morale. Fearless. {~ff1100}20% Berserker Rage.{~}^;
 
 ***************************ELF ARCHER******************************
-!!MA:A18/10;                                                   Zealot Att 12 to 12
-!!MA:D18/8;                                                   Zealot Def 7 to 12
-!!MA:M18/3;                                                   Zealot Min Dam 10 to 10
-!!MA:E18/5;                                                   Zealot Max Dam 12 to 13
-!!MA:P18/18;                                                  Zealot Hp 30 to 60
-!!MA:S18/6;                                                    Zealot Speed 7 to 8
-!!MA:N18/12;                                                   Zealot Shoot 24 to 14
-!!MA:G18/6;                                                    Zealot Growth 3 to 4
-!!MA:F18/290;                                                  Zealot Fight value 485 to 300
-!!MA:I18/290;                                                  Zealot IA value 750 to 300
-!!MA:C18/6/170;                                               Zealot cost 400 to 350 gold
+!!MA:A18/10;                                                  Att 
+!!MA:D18/8;                                                   Def 
+!!MA:M18/3;                                                   Min Dam 
+!!MA:E18/5;                                                   Max Dam 
+!!MA:P18/18;                                                  Hp 
+!!MA:S18/6;                                                   Speed
+!!MA:N18/12;                                                  Shoot
+!!MA:G18/6;                                                   Growth
+!!MA:F18/290;                                                 Fight value 
+!!MA:I18/290;                                                 IA value
+!!MA:C18/6/170;                                               Cost gold
 !!MA:L18/2;                                                   Is Level 3
 !!MA:O18/1;                                                   Is a Rampart Unit
 !!SN:H^monname^/18/0/^Elf Archer^;
@@ -631,7 +631,7 @@ FORCED
 !!MA:E24/22;                                                   Zealot Max Dam 12 to 13
 !!MA:P24/70;                                                  Zealot Hp 30 to 60
 !!MA:S24/8;                                                    Zealot Speed 7 to 8
-!!MA:B24/1;                                                    Spell Points
+!!MA:B24/0;                                                    Spell Points
 !!MA:G24/2;                                                    Zealot Growth 3 to 4
 !!MA:F24/1400;                                                  Zealot Fight value 485 to 300
 !!MA:I24/1400;                                                  Zealot IA value 750 to 300
@@ -650,7 +650,7 @@ FORCED
 !!MA:E25/22;                                                   Zealot Max Dam 12 to 13
 !!MA:P25/80;                                                   Zealot Hp 30 to 60
 !!MA:S25/9;                                                    Zealot Speed 7 to 8
-!!MA:B25/1;                                                   Spell Points
+!!MA:B25/0;                                                   Spell Points
 !!MA:G25/2;                                                    Zealot Growth 3 to 4
 !!MA:F25/1900;                                                  Zealot Fight value 485 to 300
 !!MA:I25/1900;                                                  Zealot IA value 750 to 300
@@ -766,7 +766,7 @@ FORCED
 !!MA:E28/2;                                                   Max Dam 
 !!MA:P28/7;                                                   Hp 
 !!MA:S28/4;                                                   Speed 
-!!MA:B28/1;                                                   Spell Points
+!!MA:B28/0;                                                   Spell Points
 !!MA:G28/17;                                                  Growth
 !!MA:F28/60;                                                  Fight value
 !!MA:I28/60;                                                  IA value
@@ -783,7 +783,7 @@ FORCED
 !!MA:P29/7;                                                   Hp
 !!MA:S29/5;                                                   Speed
 !!MA:N29/8;                                                   Shoot
-!!MA:B29/1;                                                   Spell Points
+!!MA:B29/0;                                                   Spell Points
 !!MA:G29/17;                                                  Growth
 !!MA:F29/80;                                                  Fight value
 !!MA:I29/80;                                                  IA value 
@@ -943,7 +943,7 @@ FORCED
 !!MA:S35/7;                                                    Zealot Speed 7 to 8
 !!MA:N35/16;                                                   Shoot
 !!MA:B35/0;                                                    Spell Points
-!!MA:G35/3;                                                    Zealot Growth 3 to 4
+!!MA:G35/0;                                                    Zealot Growth 3 to 4
 !!MA:F35/730;                                                  Zealot Fight value 485 to 300
 !!MA:I35/730;                                                  Zealot IA value 750 to 300
 !!MA:C35/6/350;                                                Cost Gold
@@ -1106,7 +1106,7 @@ FORCED
 !!MA:S41/9;                                                    Speed
 !!MA:N41/20;                                                   Shoot
 !!MA:G41/1;                                                    Growth
-!!MA:B41/1;                                                    Spell Points
+!!MA:B41/0;                                                    Spell Points
 !!MA:F41/9850;                                                 Fight value 
 !!MA:I41/9850;                                                 IA value 
 !!MA:C41/6/5000;                                               Cost 
@@ -1125,7 +1125,7 @@ FORCED
 !!MA:S152/11;                                                  Speed
 !!MA:N152/25;                                                  Shoot
 !!MA:G152/1;                                                   Growth
-!!MA:B152/1;                                                   Spell Points
+!!MA:B152/0;                                                   Spell Points
 !!MA:F152/15000;                                               Fight value 
 !!MA:I152/15000;                                               IA value 
 !!MA:C152/6/10000;                                             Cost Gold
@@ -1534,7 +1534,7 @@ FORCED
 !!MA:P56/6;                                                  Hp 
 !!MA:S56/4;                                                  Speed
 !!MA:G56/18;                                                 Growth
-!!MA:B56/99;                                                 Spell Points
+!!MA:B56/0;                                                  Spell Points
 !!MA:F56/60;                                                 Fight value 
 !!MA:I56/60;                                                 IA value 
 !!MA:C56/6/30;                                               Cost 
@@ -1550,7 +1550,7 @@ FORCED
 !!MA:P57/6;                                                  Hp 
 !!MA:S57/5;                                                  Speed
 !!MA:G57/18;                                                 Growth
-!!MA:B57/1;                                                  Spell Points
+!!MA:B57/0;                                                  Spell Points
 !!MA:F57/70;                                                 Fight value 
 !!MA:I57/70;                                                 IA value 
 !!MA:C57/6/45;                                               Cost 
@@ -1566,7 +1566,7 @@ FORCED
 !!MA:P221/6;                                                 Hp 
 !!MA:S221/5;                                                 Speed
 !!MA:G221/18;                                                Growth
-!!MA:B221/1;                                                 Spell Points
+!!MA:B221/0;                                                 Spell Points
 !!MA:F221/85;                                                Fight value 
 !!MA:I221/85;                                                IA value 
 !!MA:C221/6/65;                                              Cost 
@@ -1587,7 +1587,7 @@ FORCED
 !!MA:P58/17;                                                Hp 
 !!MA:S58/3;                                                 Speed
 !!MA:G58/12;                                                Growth
-!!MA:B58/1;                                                 Spell Points
+!!MA:B58/0;                                                 Spell Points
 !!MA:F58/120;                                               Fight value 
 !!MA:I58/120;                                               IA value 
 !!MA:C58/6/75;                                              Cost 
@@ -1604,7 +1604,7 @@ FORCED
 !!MA:P59/19;                                                Hp 
 !!MA:S59/4;                                                 Speed
 !!MA:G59/12;                                                Growth
-!!MA:B59/1;                                                 Spell Points
+!!MA:B59/0;                                                 Spell Points
 !!MA:F59/150;                                               Fight value 
 !!MA:I59/150;                                               IA value 
 !!MA:C59/6/85;                                              Cost gold
@@ -1623,7 +1623,7 @@ FORCED
 !!MA:P222/23;                                               Hp 
 !!MA:S222/5;                                                Speed
 !!MA:G222/12;                                               Growth
-!!MA:B222/1;                                                Spell Points
+!!MA:B222/0;                                                Spell Points
 !!MA:F222/200;                                              Fight value 
 !!MA:I222/200;                                              IA value 
 !!MA:C222/6/125;                                            Cost gold
@@ -2313,7 +2313,7 @@ FORCED
 !!MA:P155/350;                                              Hp 
 !!MA:S155/14;                                               Speed
 !!MA:G155/1;                                                Growth
-!!MA:B155/1;                                                Spell Points
+!!MA:B155/0;                                                Spell Points
 !!MA:F155/14300;                                            Fight value 
 !!MA:I155/14300;                                            IA value 
 !!MA:C155/6/10000;                                          Cost Gold
@@ -2588,7 +2588,7 @@ FORCED
 !!MA:P237/90;                                               Hp 
 !!MA:S237/13;                                               Speed
 !!MA:G237/3;                                                Growth
-!!MA:B237/1;                                                Spell Points
+!!MA:B237/0;                                                Spell Points
 !!MA:F237/1320;                                             Fight value 
 !!MA:I237/1320;                                             IA value 
 !!MA:C237/6/755;                                            Cost 
@@ -3592,7 +3592,7 @@ FORCED
 !!MA:E169/16;                                               Max Dam
 !!MA:P169/70;                                               Hp 
 !!MA:S169/8;                                                Speed
-!!MA:B169/1;                                                Spell Points
+!!MA:B169/0;                                                Spell Points
 !!MA:N169/24;                                               Shoot
 !!MA:G169/2;                                                Growth
 !!MA:F169/1540;                                             Fight value 
@@ -3752,7 +3752,7 @@ FORCED per togliere le immunità ai livelli 1-3 di magie
 !!MA:E133/75;                                               Max Dam
 !!MA:P133/800;                                              Hp 
 !!MA:S133/16;                                               Speed
-!!MA:B133/1;                                                Spell Points
+!!MA:B133/0;                                                Spell Points
 !!MA:G133/1;                                                Growth
 !!MA:F133/75000;                                            Fight value 
 !!MA:I133/75000;                                            IA value 
@@ -3773,7 +3773,6 @@ FORCED per togliere le immunità ai livelli 1-3 di magie
 !!MA:S134/15;                                               Speed
 !!MA:B134/5;                                                Spell Points
 !!MA:G134/1;                                                Growth
-!!MA:B134/1;                                                Spell Points
 !!MA:F134/25000;                                            Fight value 
 !!MA:I134/25000;                                            IA value 
 !!MA:C134/6/8500;                                           Cost 
@@ -3926,8 +3925,10 @@ FORCED
 !!MA:M173/2;                                                Min Dam 
 !!MA:E173/3;                                                Max Dam
 !!MA:P173/7;                                                Hp 
+!!MA:N173/10;                                               Shoot 
 !!MA:S173/5;                                                Speed
 !!MA:G173/7;                                                Growth
+!!MA:B173/10;                                               Spell Points
 !!MA:F173/700;                                              Fight value 
 !!MA:I173/700;                                              IA value 
 !!MA:C173/6/220;                                            Cost 
@@ -3940,6 +3941,7 @@ FORCED
 !!MA:M192/4;                                                Min Dam 
 !!MA:E192/8;                                                Max Dam
 !!MA:P192/30;                                               Hp 
+!!MA:N192/16;                                               Shoot 
 !!MA:S192/8;                                                Speed
 !!MA:G192/7;                                                Growth
 !!MA:F192/730;                                              Fight value 
@@ -3962,7 +3964,7 @@ FORCED
 !!MA:P195/100;                                              Hp 
 !!MA:S195/11;                                               Speed
 !!MA:G195/2;                                                Growth
-!!MA:B195/1;                                                Spell Points
+!!MA:B195/0;                                                Spell Points
 !!MA:F195/2850;                                             Fight value 
 !!MA:I195/2850;                                             IA value 
 !!MA:C195/6/1000;                                           Cost

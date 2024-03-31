@@ -1,3 +1,10 @@
+**********CHANGELOG TUM LITE ENCHANTED EDITION 1.5**********
+BUG FIXES:
+- Fix Santa Gremlin attack.
+
+IMPROVEMENTS:
+- Spells Points is now set via ERM, some txt files are removed, no longer needed (thx to Yuji Sakai).
+
 **********CHANGELOG TUM LITE ENCHANTED EDITION 1.4**********
 BUG FIXES:
 - Fixed Lords of Elements resisting the spell when autocasting Clone on himself.

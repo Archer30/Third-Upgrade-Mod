@@ -25,7 +25,7 @@ ZVSE2
 ; x4 - chance to trigger
 ; x5 ~ x16 - Spell to cast. Can be defined with max of 12 spells. 
 
-// Hooks
+; Hooks
 !?FU(OnStartOrLoad);
 !!SN:L^erm_hooker.era^/?(hooker:y);
 !!FU&(hooker)=0:E;
@@ -476,11 +476,6 @@ ZVSE2
 !?FU(casts_Battle_CanStackReceiveSpell);
 !#VA(stackId:x) (spellID:x) (castingSide:x) (result:x);
 
-!!if&(spellID)=80;   [Acid Breath must pass all immunity]
-   !!VR(result):S(TRUE);
-   !!FU:E;
-!!en;       
-
 !!BM(stackId):Z?(stack:y); I?(side:y);
 !!UN:C(COMBAT_MANAGER)/(UNC_INT)/?(cmbMgr:y);
 !!SN:E5914512/(CALLCONV_THISCALL)/(cmbMgr)/(spellID)/(castingSide)/(stack)/1/1; [can stack apply buff/debuff]
@@ -772,16 +767,18 @@ ZVSE2
 !!re i/(@spellList)/(numArgs);
   !!VR(spell:y):Sxi;
 
-  ; Exit if not Alive, except if it's Acid Breath
-  !!BM(defStack):F?(flags:y);
-  !!VR(isAlive:y):S(flags) &(MON_FLAG_ALIVE);
-  !!co&(isAlive)=(FALSE)/(spell)<>80;
+  !!if&(spell)<>80/(spell)<>(SPELL_FIRE_WALL);           [Skip alive and immunity check for Acid Breath and Firewall]
+    ; Exit if not Alive, except if it's Acid Breath or Fire Wall
+    !!BM(defStack):F?(flags:y);
+    !!VR(isAlive:y):S(flags) &(MON_FLAG_ALIVE);
+    !!co&(isAlive)=(FALSE)/(spell)<>80/(spell)<>(SPELL_FIRE_WALL);
 
-  ; Exit if the targeted stack cannot receive the spell
-  !!if&(atkStack)<>(defStack);
-    !!BM(atkStack):I?(atkSide:y);
-    !!FU(casts_Battle_CanStackReceiveSpell):P(defStack)/(spell)/(atkSide)/?(canReceive:y);
-    !!co&(canReceive)=(FALSE);
+    ; Exit if the targeted stack cannot receive the spell
+    !!if&(atkStack)<>(defStack);
+      !!BM(atkStack):I?(atkSide:y);
+      !!FU(casts_Battle_CanStackReceiveSpell):P(defStack)/(spell)/(atkSide)/?(canReceive:y);
+      !!co&(canReceive)=(FALSE);
+    !!en;
   !!en;
 
   ; Exit if the defending stack has been buffed with the same spell

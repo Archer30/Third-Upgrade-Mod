@@ -1,6 +1,7 @@
 **********CHANGELOG TUM LITE ENCHANTED EDITION 1.5**********
 BUG FIXES:
 - Removed magic resistance chance to trigger on Supreme Archangel when autocasting Clone on himself.
+- Fixed Santa Gremlin's attack.
 
 IMPROVEMENTS:
 - Landmine spell buff by doing these changes:

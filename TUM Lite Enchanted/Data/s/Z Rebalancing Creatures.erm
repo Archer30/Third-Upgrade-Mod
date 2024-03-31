@@ -2014,8 +2014,8 @@ FORCED
 !!SN:H^monname^/73/2/^Fly. Strike and Return. No Retaliation.^;
 
 ***********************WING OF MADNESS**********************
-!!MA:A228/11;                                               Att 
-!!MA:D228/7;                                                Def 
+!!MA:A228/13;                                               Att 
+!!MA:D228/9;                                                Def 
 !!MA:M228/2;                                                Min Dam 
 !!MA:E228/4;                                                Max Dam
 !!MA:P228/17;                                               Hp 
@@ -2070,8 +2070,8 @@ FORCED
 !!SN:H^monname^/75/2/^Ranged. No Melee Penalty. {~f536bc}Misfortune Attack. Powerful Hex Shoot.{~} Blind Immunity.^;
 
 **************************BEHOLDER**************************
-!!MA:A229/11;                                               Att 
-!!MA:D229/9;                                                Def 
+!!MA:A229/13;                                               Att 
+!!MA:D229/10;                                               Def 
 !!MA:M229/2;                                                Min Dam 
 !!MA:E229/4;                                                Max Dam
 !!MA:P229/27;                                               Hp 
@@ -2085,7 +2085,7 @@ FORCED
 !!MA:X229/d(MON_FLAG_SHOOTER);                              Add Shooter
 !!MA:X229/d(MON_FLAG_NO_MELEE_PENALTY);                     Add No Melee Penalty
 !!MA:X229/d(MON_FLAG_RAY_SHOOT);                            Add Ray Shoot
-!!MA:X229/d(MON_FLAG_MIND_IMMUNITY);                        Add Ray Shoot
+!!MA:X229/d(MON_FLAG_MIND_IMMUNITY);                        Add Mind Immunity
 !!MA:L229/2;                                                Is Level 3
 !!MA:O229/5;                                                Is a Dungeon Unit
 !!SN:H^monname^/229/0/^Beholder^;
@@ -3469,14 +3469,20 @@ FORCED
 !!MA:P158/250;                                              Hp 
 !!MA:S158/19;                                               Speed
 !!MA:G158/1;                                                Growth
-!!MA:B158/2;                                                Spell Points
+!!MA:B158/1;                                                Spell Points
 !!MA:F158/11500;                                            Fight value 
 !!MA:I158/11500;                                            IA value 
 !!MA:C158/6/5000;                                           Cost 
 !!MA:C158/1/3;                                              Cost Mercury
+!!MA:X158/d(MON_FLAG_ALIVE);                                Add Alive
+!!MA:X158/d(MON_FLAG_WIDE);                                 Add Wide
+!!MA:X158/d(MON_FLAG_FLYER);                                Add Fly
+!!MA:X158/d(MON_FLAG_KING_1);                               Add King 1
+!!MA:X158/d(MON_FLAG_FIRE_IMMUNITY);                        Add Fire Immunity
+!!MA:X158/d(MON_FLAG_WIDE_ATTACK);                          Add Breath Attack
 !!MA:L158/6;                                                Is Level 7
 !!MA:O158/8;                                                Is a Conflux Unit  
-!!SN:H^monname^/158/2/^Fly. Fire Affinity. Breath Attack. Fire Shield. Rebirth Twice. Fearless. Slayer. {~33CCCC}20% Killer Instinct.{~}^;
+!!SN:H^monname^/158/2/^Fly. Fire Affinity. Breath Attack. Powerful Fire Shield. Powerful Rebirth. Fearless. {~33CCCC}20% Killer Instinct.{~}^;
 
 
 ***************************************************************************************************
@@ -3939,9 +3945,14 @@ FORCED
 !!MA:F192/730;                                              Fight value 
 !!MA:I192/730;                                              IA value 
 !!MA:C192/6/180;                                            Cost 
+!!MA:X192/d(MON_FLAG_ALIVE);                                Add Alive
+!!MA:X192/d(MON_FLAG_WIDE);                                 Add Wide
+!!MA:X192/d(MON_FLAG_SHOOTER);                              Add Shooter
+!!MA:X192/d(MON_FLAG_NO_MELEE_PENALTY);                     Add No Melee Penalty
+!!MA:X192/d(MON_FLAG_ATTACKS_TWICE);                        Add Double Attack
 !!MA:L192/2;                                                Is Level 3
 !!MA:O192/1;                                                Is a Rampart Unit
-!!SN:H^monname^/192/2/^Ranged. Mirth. Double Shoot. No Melee Penalty.^;
+!!SN:H^monname^/192/2/^Ranged. Double Shoot. No Melee Penalty.^;
 
 ***************************HELL STEED***********************
 !!MA:A195/15;                                               Att 

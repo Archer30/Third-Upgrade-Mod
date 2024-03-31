@@ -36,6 +36,9 @@ BALANCE:
 - DEATH KNIGHT cost is increased to 2600, up from 2500.
 - BONE DRAGON, GHOST DRAGON AND BLOOD DRAGON chance to Sorrow his enemies are lowered to 30% instead of 50%.
 - BLOOD DRAGON Bite of the Death doesn't inflict Slow anymore.
+- WING OF MADNESS now have +2 attack and defence skills.
+- BEHOLDER now have +2 attack and +1 defence skills.
+- SACRED PHONIEX now Rebirth 70% of original stack size but only once. Fire Shield now reflect 30% of damage instead of 20%.
 
 **********CHANGELOG TUM LITE ENCHANTED EDITION 1.3**********
 

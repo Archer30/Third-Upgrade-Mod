@@ -1,3 +1,12 @@
+**********CHANGELOG TUM LITE ENCHANTED EDITION 1.5**********
+BUG FIXES:
+- Removed magic resistance chance to trigger on Supreme Archangel when autocasting Clone on himself.
+
+IMPROVEMENTS:
+- Landmine spell buff by doing these changes:
+   - Now the spell can be always cast (previously you can't if there are native terrain creatures on enemy stack)
+   - Native terrain creatures will see landmine as normal but will take damage from mines
+
 **********CHANGELOG TUM LITE ENCHANTED EDITION 1.4**********
 BUG FIXES:
 - Fixed Lords of Elements resisting the spell when autocasting Clone on himself.

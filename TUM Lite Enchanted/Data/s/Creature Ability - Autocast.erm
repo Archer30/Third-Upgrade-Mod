@@ -35,7 +35,9 @@ ZVSE2
 !!BM(currentStack):T?(monsterType:y) P?(monsterPosition:y);      [get monster type, position]
  
 !!if&(randomRoll1)<10; 10% Autocast
- !!FU(SpellCast)&(monsterType)=212:P(SPELL_CLONE)/(monsterPosition)/3/3/^AutocastC^; Supreme Archmage Expert Clone
+  !!FU(SetCheckResistenceForCreatureCast):P(FALSE);
+  !!FU(SpellCast)&(monsterType)=212:P(SPELL_CLONE)/(monsterPosition)/3/3/^AutocastC^; Supreme Archmage Expert Clone
+  !!FU(SetCheckResistenceForCreatureCast):P(TRUE);
 !!en;
 
  !!if&(randomRoll1)<20; 20% Autocast

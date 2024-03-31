@@ -1,3 +1,6 @@
+********************CHANGELOG TUM LITE 2.4*****************
+- Fixed non-flying creature with Strike&Return ability mistakenly returning back after hitting a Quicksand square
+
 ********************CHANGELOG TUM LITE 2.3*****************
 IMPROVEMENTS
 - You can now Ctrl+Click on any creature or artifact on the map to show description and attributes (thanks to Yuji Sakai).

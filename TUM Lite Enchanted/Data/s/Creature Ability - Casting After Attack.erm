@@ -60,7 +60,9 @@ ZVSE2
   !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(TRUE)/20/(TRUE)/(SPELL_BLIND);
 
 !!el|(type)=(MON_GREEN_DRAGON);
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/20/(TRUE)/71/80; Poison + Acid
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/100/(TRUE)/80; Acid
+
+  !*FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/20/(TRUE)/71/80; Poison + Acid
 
 !!el|(type)=(MON_GOLD_DRAGON);    
   !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/(TRUE)/70; Petrification
@@ -474,6 +476,11 @@ ZVSE2
 !?FU(casts_Battle_CanStackReceiveSpell);
 !#VA(stackId:x) (spellID:x) (castingSide:x) (result:x);
 
+!!if&(spellID)=80;   [Acid Breath must pass all immunity]
+   !!VR(result):S(TRUE);
+   !!FU:E;
+!!en;       
+
 !!BM(stackId):Z?(stack:y); I?(side:y);
 !!UN:C(COMBAT_MANAGER)/(UNC_INT)/?(cmbMgr:y);
 !!SN:E5914512/(CALLCONV_THISCALL)/(cmbMgr)/(spellID)/(castingSide)/(stack)/1/1; [can stack apply buff/debuff]
@@ -754,21 +761,21 @@ ZVSE2
 !!BM(defStack):N?(defNum:y);
 !!FU|(atkNum)<=0/(defNum)<=0:E;
 
-; Exit if not Alive
-!!BM(defStack):F?(flags:y);
-!!VR(isAlive:y):S(flags) &(MON_FLAG_ALIVE);
-!!FU&(isAlive)=(FALSE):E;
-
 ; Exit if the random number is not favoured
 !!VR(random:y):R0/0/99;
 !!FU&(random)>=(chance):E;
 
-!!VR(spellCast:y):S(FALSE);
+!!VR(wasSpellCasted:y):S(FALSE);
 
 !!VR(alreadySetBattleTag:y):S(FALSE);
 
 !!re i/(@spellList)/(numArgs);
   !!VR(spell:y):Sxi;
+
+  ; Exit if not Alive, except if it's Acid Breath
+  !!BM(defStack):F?(flags:y);
+  !!VR(isAlive:y):S(flags) &(MON_FLAG_ALIVE);
+  !!co&(isAlive)=(FALSE)/(spell)<>80;
 
   ; Exit if the targeted stack cannot receive the spell
   !!if&(atkStack)<>(defStack);
@@ -817,7 +824,7 @@ ZVSE2
     !!UN:C5903270/1/(patch2);
   !!en;
 
-  !!VR(spellCast):S(TRUE);
+  !!VR(wasSpellCasted):S(TRUE);
 !!en;
 
-!!FU(casts_CancelRetaliation)&(spellCast)/(noRetaliation):P(atkStack)/(defStack)/(TRUE);
+!!FU(casts_CancelRetaliation)&(wasSpellCasted)/(noRetaliation):P(atkStack)/(defStack)/(TRUE);

@@ -3,7 +3,7 @@ ZVSE2
 ; Engine:   ERM 2.0+
 ; Requires: ERA 3.3+, Third Upgrade Mod
 
-!?FU(OnBeforeBattleUniversal);
+!?FU(OnAfterTacticsPhase);
 
   !!VRi^logRWE^:S(FALSE);
 

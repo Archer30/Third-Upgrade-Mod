@@ -9,7 +9,7 @@ ZVSE2
 !!UN:P762/1; [Force enabling Zombie-Fleasheater ERA Script because it is used by TUM Enchanted]
 
 
-// Function to check if the targeted monster is eligible for flesh eating
+; Function to check if the targeted monster is eligible for flesh eating
 !?FU(ES_762_CheckIfMonIsEligible);
 !#VA(mon:x) (result:x);
 

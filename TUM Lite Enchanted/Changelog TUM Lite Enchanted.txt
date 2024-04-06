@@ -5,6 +5,15 @@ BUG FIXES:
 IMPROVEMENTS:
 - Spells Points is now set via ERM, some txt files are removed, no longer needed (thx to Yuji Sakai).
 
+BALANCE:
+
+- CERBERUS and BANE OF SOULS now have 7 speed instead of 8. Maxium damage is decreased at 6 instead of 7.
+- MAGE, ARCHMAGE and SUPREME ARCHMAGE now have 45 hp instead of 40.
+- SUPREME ARCHMAGE minium damage is now 9 instead of 7.
+- MASTER GENIE now have 50 hp instead of 45.
+- BATTLEMAGE OF THE CITY OF ICE AND STEEL now have 60 hp instead of 50. Attack skill is now 19 instead of 16.
+
+
 **********CHANGELOG TUM LITE ENCHANTED EDITION 1.4**********
 BUG FIXES:
 - Fixed Lords of Elements resisting the spell when autocasting Clone on himself.

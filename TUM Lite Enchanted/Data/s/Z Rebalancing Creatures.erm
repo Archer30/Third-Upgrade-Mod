@@ -921,7 +921,7 @@ FORCED
 !!MA:D34/10;                                                   Def
 !!MA:M34/5;                                                    Min Dam
 !!MA:E34/9;                                                    Max Dam
-!!MA:P34/40;                                                   Hp
+!!MA:P34/45;                                                   Hp
 !!MA:S34/6;                                                    Speed
 !!MA:N34/12;                                                   Shoot
 !!MA:B34/0;                                                    Spell Points
@@ -939,11 +939,11 @@ FORCED
 !!MA:D35/12;                                                   Zealot Def 7 to 12
 !!MA:M35/7;                                                   Zealot Min Dam 10 to 10
 !!MA:E35/12;                                                   Zealot Max Dam 12 to 13
-!!MA:P35/40;                                                  Zealot Hp 30 to 60
+!!MA:P35/45;                                                  Zealot Hp 30 to 60
 !!MA:S35/7;                                                    Zealot Speed 7 to 8
 !!MA:N35/16;                                                   Shoot
 !!MA:B35/0;                                                    Spell Points
-!!MA:G35/0;                                                    Zealot Growth 3 to 4
+!!MA:G35/3;                                                    Growth
 !!MA:F35/730;                                                  Zealot Fight value 485 to 300
 !!MA:I35/730;                                                  Zealot IA value 750 to 300
 !!MA:C35/6/350;                                                Cost Gold
@@ -953,13 +953,12 @@ FORCED
 !!SN:H^monname^/35/2/^Ranged. Hero's Combat Spell Cost -2. No Wall Penalty. {~f536bc}30% Powerful Magical Shoot.{~} {~33CCCC}30% Protection of the Master.{~}^;
 
 **************************SUPREME ARCHMAGE**********************
-!!MA:A212/16;                                                   Zealot Att 12 to 12
-!!MA:D212/14;                                                   Zealot Def 7 to 12
-!!MA:M212/7;                                                   Zealot Min Dam 10 to 10
+!!MA:A212/16;                                                  Att
+!!MA:D212/14;                                                  Def
+!!MA:M212/9;                                                   Min Dam
 !!MA:E212/14;                                                   Zealot Max Dam 12 to 13
-!!MA:P212/40;                                                  Zealot Hp 30 to 60
+!!MA:P212/45;                                                  Zealot Hp 30 to 60
 !!MA:S212/8;                                                    Zealot Speed 7 to 8
-!!MA:G212/0;                                                    Zealot Growth 3 to 4
 !!MA:N212/18;                                                   Shoot
 !!MA:B212/0;                                                    Spell Points
 !!MA:G212/3;                                                    Zealot Growth 3 to 4
@@ -994,7 +993,7 @@ FORCED
 !!MA:D37/13;                                                   Zealot Def 7 to 12
 !!MA:M37/13;                                                   Zealot Min Dam 10 to 10
 !!MA:E37/16;                                                   Zealot Max Dam 12 to 13
-!!MA:P37/45;                                                  Zealot Hp 30 to 60
+!!MA:P37/50;                                                  Zealot Hp 30 to 60
 !!MA:S37/10;                                                    Zealot Speed 7 to 8
 !!MA:G37/3;                                                    Zealot Growth 3 to 4
 !!MA:B37/3;                                                    Spell Points
@@ -1006,11 +1005,11 @@ FORCED
 !!SN:H^monname^/37/2/^Fly. Strongly Hates Efreeti. {~99CCFF}Cast 3 Random Buff Spells.{~}^;
 
 ************BATTLEMAGE OF THE CITY OF ICE AND STEEL*************
-!!MA:A213/18;                                                   Zealot Att 12 to 12
-!!MA:D213/16;                                                   Zealot Def 7 to 12
-!!MA:M213/12;                                                   Zealot Min Dam 10 to 10
+!!MA:A213/19;                                                   Zealot Att 12 to 12
+!!MA:D213/17;                                                   Zealot Def 7 to 12
+!!MA:M213/13;                                                   Zealot Min Dam 10 to 10
 !!MA:E213/16;                                                   Zealot Max Dam 12 to 13
-!!MA:P213/55;                                                  Zealot Hp 30 to 60
+!!MA:P213/60;                                                  Zealot Hp 30 to 60
 !!MA:S213/12;                                                    Zealot Speed 7 to 8
 !!MA:G213/3;                                                    Zealot Growth 3 to 4
 !!MA:B213/3;                                                    Spell Points
@@ -1278,9 +1277,9 @@ FORCED
 !!MA:A47/11;                                                   Att 
 !!MA:D47/9;                                                    Def 
 !!MA:M47/4;                                                    Min Dam 
-!!MA:E47/7;                                                    Max Dam
+!!MA:E47/6;                                                    Max Dam
 !!MA:P47/29;                                                   Hp 
-!!MA:S47/8;                                                    Speed
+!!MA:S47/7;                                                    Speed
 !!MA:G47/4;                                                    Growth
 !!MA:F47/390;                                                  Fight value 
 !!MA:I47/390;                                                  IA value 
@@ -1293,9 +1292,9 @@ FORCED
 !!MA:A217/11;                                                  Att 
 !!MA:D217/9;                                                   Def 
 !!MA:M217/4;                                                   Min Dam 
-!!MA:E217/7;                                                   Max Dam
+!!MA:E217/6;                                                   Max Dam
 !!MA:P217/29;                                                  Hp 
-!!MA:S217/9;                                                   Speed
+!!MA:S217/7;                                                   Speed
 !!MA:G217/4;                                                   Growth
 !!MA:F217/510;                                                 Fight value 
 !!MA:I217/510;                                                 IA value 

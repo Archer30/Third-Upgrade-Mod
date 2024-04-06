@@ -1,9 +1,12 @@
 **********CHANGELOG TUM LITE ENCHANTED EDITION 1.5**********
 BUG FIXES:
-- Fix Santa Gremlin attack.
+- Removed magic resistance chance to trigger on Supreme Archangel when autocasting Clone on himself.
+- Fixed Santa Gremlin's attack.
 
 IMPROVEMENTS:
-- Spells Points is now set via ERM, some txt files are removed, no longer needed (thx to Yuji Sakai).
+- Landmine spell buff by doing these changes:
+   - Now the spell can be always cast (previously you can't if there are native terrain creatures on enemy stack)
+   - Native terrain creatures will see landmine as normal but will take damage from mines
 
 BALANCE:
 
@@ -52,9 +55,6 @@ BALANCE:
 - DEATH KNIGHT cost is increased to 2600, up from 2500.
 - BONE DRAGON, GHOST DRAGON AND BLOOD DRAGON chance to Sorrow his enemies are lowered to 30% instead of 50%.
 - BLOOD DRAGON Bite of the Death doesn't inflict Slow anymore.
-- WING OF MADNESS now have +2 attack and defence skills.
-- BEHOLDER now have +2 attack and +1 defence skills.
-- SACRED PHONIEX now Rebirth 70% of original stack size but only once. Fire Shield now reflect 30% of damage instead of 20%.
 
 **********CHANGELOG TUM LITE ENCHANTED EDITION 1.3**********
 

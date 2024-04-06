@@ -1,4 +1,4 @@
-        Third Upgrade Mod Lite Enchanted Edition 1.4
+        Third Upgrade Mod Lite Enchanted Edition 1.5
 -----------------------------------------------------------------------------------------------------------------------
 
 Credits:

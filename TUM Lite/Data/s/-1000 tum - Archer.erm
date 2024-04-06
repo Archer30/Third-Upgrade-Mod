@@ -1471,7 +1471,7 @@ C(ebp)/16/4/d-i^tum_MonPlusLuckPower^ C(ebp)/20/4/di^tum_MonPlusLuckPower^;
 ************************************************************************
 **** Bad Fix: Fix casting taking super high priority in AI decision ****
 ************************************************************************
-; Monsters wih casting ability have high priority in casting, which doesn't make sense at all
+; Monsters with casting ability have high priority in casting, which doesn't make sense at all
 ; This script blocks casting with a chance
 ; This script currently works for TUM Reborn only (maybe it can be extended later)
 

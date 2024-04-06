@@ -35,7 +35,9 @@ ZVSE2
 !!BM(currentStack):T?(monsterType:y) P?(monsterPosition:y);      [get monster type, position]
  
 !!if&(randomRoll1)<10; 10% Autocast
- !!FU(SpellCast)&(monsterType)=212:P(SPELL_CLONE)/(monsterPosition)/3/3/^AutocastC^; Supreme Archmage Expert Clone
+  !!FU(SetCheckResistenceForCreatureCast):P(FALSE);
+  !!FU(SpellCast)&(monsterType)=212:P(SPELL_CLONE)/(monsterPosition)/3/3/^AutocastC^; Supreme Archmage Expert Clone
+  !!FU(SetCheckResistenceForCreatureCast):P(TRUE);
 !!en;
 
  !!if&(randomRoll1)<20; 20% Autocast
@@ -72,6 +74,13 @@ ZVSE2
     !!FU(SpellCast)&(monsterType)=247:P(SPELL_BLESS)/(monsterPosition)/2/3/^AutocastA^; Life Elemental Advanced Bless
     !!FU(SpellCast)&(monsterType)=248:P(SPELL_SLAYER)/(monsterPosition)/3/3/^AutocastA^; Plasma Elemental Expert Slayer
     !!FU(SpellCast)&(monsterType)=249:P(SPELL_SHIELD)/(monsterPosition)/2/3/^AutocastA^; Meteor Elemental Advanced Shield
+    
+    !!if&(monsterType)=250;                                                              Lords of the Elements
+      !!FU(SetCheckResistenceForCreatureCast):P(FALSE);
+      !!FU(SpellCast):P(SPELL_CLONE)/(monsterPosition)/3/3/^AutocastA^;  Cast Expert Clone
+      !!FU(SetCheckResistenceForCreatureCast):P(TRUE);
+    !!en;
+
     !!FU(SpellCast)&(monsterType)=(MON_PHOENIX):P(SPELL_BLOODLUST)/(monsterPosition)/2/3/^AutocastA^; Phoenix Advanced Boodlust
     !!FU(SpellCast)&(monsterType)=(MON_PHOENIX):P(SPELL_SLAYER)/(monsterPosition)/3/3/^^; Phoenix Expert Slayer
     !!FU(SpellCast)&(monsterType)=158:P(SPELL_BLOODLUST)/(monsterPosition)/2/3/^AutocastA^; Sacred Phoenix Advanced Bloodlust
@@ -82,14 +91,7 @@ ZVSE2
     !!FU(SpellCast)&(monsterType)=(MON_WAR_ZEALOT):P(SPELL_STONE_SKIN)/(monsterPosition)/3/3/^^; War Zealot Expert Stone Skin
     !!FU(SpellCast)&(monsterType)=(MON_SORCERESS):P(SPELL_MISFORTUNE)/(monsterPosition)/3/3/^AutocastA^; Sorceress Expert Misfortune
     !!FU(SpellCast)&(monsterType)=(MON_SORCERESS):P(SPELL_WEAKNESS)/(monsterPosition)/3/3/^^; Sorceress Expert Weakness
-   !!en;
-    
-   !!if&(randomRoll1)<20; 20% Autocast
-    !!if&(monsterType)=250; Lord of the Elements
-      !!FU(SetCheckResistenceForCreatureCast):P(FALSE);
-      !!FU(SpellCast):P(SPELL_CLONE)/(monsterPosition)/3/3/^AutocastA^; Cast Expert Clone
-      !!FU(SetCheckResistenceForCreatureCast):P(TRUE);
-    !!en;
+ !!en;
 
  !!if&(randomRoll1)<30; 30% Autocast
     !!FU(SpellCast)&(monsterType)=201:P(SPELL_PRAYER)/(monsterPosition)/2/3/^AutocastA^; High Priest Advanced Prayer

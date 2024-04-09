@@ -5,7 +5,7 @@ ZVSE2
 
 ; Creature Enchantments: Spell autocast at stack turn
 
-!?FU(OnBeforeBattleUniversal);
+!?FU(OnAfterTacticsPhase);
 
 !!re i/0/41; loop all battle stacks
   !!VRi^autocastAlreadyDone_%i^:S-1;

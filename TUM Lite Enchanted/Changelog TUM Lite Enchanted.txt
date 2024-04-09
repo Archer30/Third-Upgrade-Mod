@@ -2,6 +2,8 @@
 BUG FIXES:
 - Removed magic resistance chance to trigger on Lord of Elemental when autocasting Clone on himself.
 - Fixed Santa Gremlin's attack.
+- Fix some special poison ability which cause to partially activated with against immune creatures.
+- Fix Fire Wall attack which can't be cast agaist immune creatures.
 
 IMPROVEMENTS:
 - Landmine spell buff by doing these changes:
@@ -9,12 +11,12 @@ IMPROVEMENTS:
    - Native terrain creatures will see landmine as normal but will take damage from mines
 
 BALANCE:
-
 - CERBERUS and BANE OF SOULS now have 7 speed instead of 8. Maxium damage is decreased at 6 instead of 7.
 - MAGE, ARCHMAGE, SUPREME ARCHMAGE and ENCHANTER now have 100% of casting after shooting.
 - SUPREME ARCHMAGE minium damage is now 9 instead of 7.
 - MASTER GENIE now have 50 hp instead of 45.
 - BATTLEMAGE OF THE CITY OF ICE AND STEEL now have 60 hp instead of 50. Attack skill is now 19 instead of 16.
+- ENCHANTER now have 18 atk and 16 def skill instead of 15 and 14 respectly.
 
 
 **********CHANGELOG TUM LITE ENCHANTED EDITION 1.4**********

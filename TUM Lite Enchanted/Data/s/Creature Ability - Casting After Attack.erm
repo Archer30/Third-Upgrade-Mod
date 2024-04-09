@@ -777,12 +777,18 @@ ZVSE2
   !!BM(defStack):F?(flags:y);
   !!VR(isAlive:y):S(flags) &(MON_FLAG_ALIVE);
   !!if&(isAlive)=(FALSE)/(spell)<>80/(spell)<>(SPELL_FIRE_WALL);
+    !!FU&i=(@spellList):E;          ; if it's the first spell, skip other spells and exit
+    !!co;                           ; otherwise skip current spell
+  !!en;
 
   ; Exit if the targeted stack cannot receive the spell
   !!if&(atkStack)<>(defStack);
-    !!BM(atkStack):I?(atkSide:y);
-    !!FU(casts_Battle_CanStackReceiveSpell):P(defStack)/(spell)/(atkSide)/?(canReceive:y);
-    !!co&(canReceive)=(FALSE);
+     !!BM(atkStack):I?(atkSide:y);
+     !!FU(casts_Battle_CanStackReceiveSpell):P(defStack)/(spell)/(atkSide)/?(canReceive:y);
+     !!if&(canReceive)=(FALSE);
+        !!FU&i=(@spellList):E;          ; if it's the first spell, skip other spells and exit
+        !!co;                           ; otherwise skip current spell
+     !!en;
   !!en;
 
   ; Exit if the defending stack has been buffed with the same spell

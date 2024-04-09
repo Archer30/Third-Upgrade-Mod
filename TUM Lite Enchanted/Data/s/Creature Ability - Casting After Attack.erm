@@ -324,18 +324,21 @@ ZVSE2
 !!el|(type)=229;               Beholder       
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/40/(SPELL_MISFORTUNE)/3/?(result1:y);
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/30/(SPELL_WEAKNESS)/3/?(result1:y);
-  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/30/78/3/?(result1:y);
+  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/30/78/3/?(result1:y); Dispel
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/30/(SPELL_DISRUPTING_RAY)/3/?(result1:y);
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/20/(SPELL_CURSE)/3/?(result1:y);
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/10/(SPELL_SLOW)/3/?(result1:y);
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/10/(SPELL_SORROW)/3/?(result1:y);
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/10/(SPELL_FORGETFULNESS)/3/?(result1:y);
-  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/10/71/3/?(result1:y);
+  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/10/71/3/?(result1:y); Poison
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/5/(SPELL_BLIND)/5/?(result1:y);
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/5/(SPELL_EARTH_ELEMENTAL)/5/?(result1:y);
   !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/5/(TRUE)/(SPELL_FIRE_WALL); 
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/5/70/3/?(result1:y);
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/5/(SPELL_FIREBALL)/10/?(result1:y);
+  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/3/(SPELL_HYPNOTIZE)/10/?(result1:y);
+  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/3/75/10/?(result1:y); Age
+
 
 !!el|(type)=(MON_MEDUSA_QUEEN);
   !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(TRUE)/20/(TRUE)/71/70; Poison + Petrification

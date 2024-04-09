@@ -921,7 +921,7 @@ FORCED
 !!MA:D34/10;                                                   Def
 !!MA:M34/5;                                                    Min Dam
 !!MA:E34/9;                                                    Max Dam
-!!MA:P34/45;                                                   Hp
+!!MA:P34/40;                                                   Hp
 !!MA:S34/6;                                                    Speed
 !!MA:N34/12;                                                   Shoot
 !!MA:B34/0;                                                    Spell Points
@@ -932,14 +932,14 @@ FORCED
 !!MA:X34/d~(MON_FLAG_NO_MELEE_PENALTY);                        Remove No Melee Penalty
 !!MA:L34/3;                                                    Is Level 4
 !!MA:O34/2;                                                    Is a Tower Unit
-!!SN:H^monname^/34/2/^Ranged. Hero's Combat Spell Cost -2. No Wall Penalty. {~f536bc}30% Magical Shoot.{~} {~33CCCC}30% Air Shield.{~}^;
+!!SN:H^monname^/34/2/^Ranged. Hero's Combat Spell Cost -2. No Wall Penalty. {~f536bc}Magical Shoot.{~} {~33CCCC}30% Air Shield.{~}^;
 
 ***************************ARCHMAGE***************************
 !!MA:A35/15;                                                   Zealot Att 12 to 12
 !!MA:D35/12;                                                   Zealot Def 7 to 12
 !!MA:M35/7;                                                   Zealot Min Dam 10 to 10
 !!MA:E35/12;                                                   Zealot Max Dam 12 to 13
-!!MA:P35/45;                                                  Zealot Hp 30 to 60
+!!MA:P35/40;                                                  Zealot Hp 30 to 60
 !!MA:S35/7;                                                    Zealot Speed 7 to 8
 !!MA:N35/16;                                                   Shoot
 !!MA:B35/0;                                                    Spell Points
@@ -950,14 +950,14 @@ FORCED
 !!MA:X35/d~(MON_FLAG_NO_MELEE_PENALTY);                        Remove No Melee Penalty
 !!MA:L35/3;                                                    Is Level 4
 !!MA:O35/2;                                                    Is a Tower Unit
-!!SN:H^monname^/35/2/^Ranged. Hero's Combat Spell Cost -2. No Wall Penalty. {~f536bc}30% Powerful Magical Shoot.{~} {~33CCCC}30% Protection of the Master.{~}^;
+!!SN:H^monname^/35/2/^Ranged. Hero's Combat Spell Cost -2. No Wall Penalty. {~f536bc}Powerful Magical Shoot.{~} {~33CCCC}30% Protection of the Master.{~}^;
 
 **************************SUPREME ARCHMAGE**********************
 !!MA:A212/16;                                                  Att
 !!MA:D212/14;                                                  Def
 !!MA:M212/9;                                                   Min Dam
 !!MA:E212/14;                                                   Zealot Max Dam 12 to 13
-!!MA:P212/45;                                                  Zealot Hp 30 to 60
+!!MA:P212/40;                                                  Zealot Hp 30 to 60
 !!MA:S212/8;                                                    Zealot Speed 7 to 8
 !!MA:N212/18;                                                   Shoot
 !!MA:B212/0;                                                    Spell Points
@@ -970,7 +970,7 @@ FORCED
 !!MA:X212/d(MON_FLAG_RAY_SHOOT);                                Add Ray
 !!MA:L212/3;                                                    Is Level 4
 !!MA:O212/2;                                                    Is a Tower Unit
-!!SN:H^monname^/212/2/^Ranged. Hero's Combat Spell Cost -2. No Wall Penalty. {~f536bc}30% Supreme Magical Shoot.{~} {~33CCCC}30% Protection of the Master.{~} {~33CCCC}30% Magical Shields.{~} {~f536bc}10% Clone.{~}^;
+!!SN:H^monname^/212/2/^Ranged. Hero's Combat Spell Cost -2. No Wall Penalty. {~f536bc}Supreme Magical Shoot.{~} {~33CCCC}30% Protection of the Master.{~} {~33CCCC}30% Magical Shields.{~} {~f536bc}10% Clone.{~}^;
 
 *****************************GENIE*****************************
 !!MA:A36/12;                                                   Zealot Att 12 to 12
@@ -3537,7 +3537,7 @@ FORCED
 !!MA:X136/d~(MON_FLAG_NO_MELEE_PENALTY);                    Remove No Melee Penalty
 !!MA:L136/5;                                                Is Level 6
 !!MA:O136/8;                                                Is a Conflux Unit 
-!!SN:H^monname^/136/2/^Ranged. Random Mass Buff every 3 Turns. {~99CCFF}Cast 1 Magic Mirror.{~} {~f536bc}30% Powerful Magical Shoot.{~} {~33CCCC}30% Enchanter Protection{~}^;
+!!SN:H^monname^/136/2/^Ranged. Random Mass Buff every 3 Turns. {~99CCFF}Cast 1 Magic Mirror.{~} {~f536bc}Powerful Magical Shoot.{~} {~33CCCC}30% Enchanter Protection{~}^;
 
 ****************************PEASANT*************************
 !!MA:A139/1;                                                Att 

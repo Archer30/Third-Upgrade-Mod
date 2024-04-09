@@ -84,7 +84,7 @@ ZVSE2
   !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(FALSE)/20/(TRUE)/73/(SPELL_DISRUPTING_RAY); Disease
 
 !!el|(type)=(MON_EFREET_SULTAN);  
-  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/(SPELL_FIRE_WALL)/20/?(result:y);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/(TRUE)/(SPELL_FIRE_WALL); 
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/20/(SPELL_FIREBALL)/20/?(result:y);
   !!FU(casts_CancelRetaliation)&(result):P(atkStack)/(defStack);
 
@@ -173,17 +173,17 @@ ZVSE2
   !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(TRUE)/30/(TRUE)/74/80/78(SPELL_SLOW)/(SPELL_CURSE); Paralyze + Acid + Dispel
 
 !!el|(type)=(MON_RED_DRAGON);             
-  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/(SPELL_FIRE_WALL)/20/?(result:y);                   
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/(TRUE)/(SPELL_FIRE_WALL);                    
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/20/(SPELL_FIREBALL)/20/?(result:y);
   !!FU(casts_CancelRetaliation)&(result):P(atkStack)/(defStack);
  
 !!el|(type)=(MON_BLACK_DRAGON);  
-  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/80/30/?(result:y); Acid                      
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/(TRUE)/80; Acid                  
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/20/(SPELL_METEOR_SHOWER)/30/?(result:y);
   !!FU(casts_CancelRetaliation)&(result):P(atkStack)/(defStack);
 
 !!el|(type)=(MON_DARKNESS_DRAGON);  
-  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/80/30/?(result:y); Acid
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/(TRUE)/80; Acid  
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/20/(SPELL_IMPLOSION)/40/?(result:y);
   !!FU(casts_CancelRetaliation)&(result):P(atkStack)/(defStack);
 
@@ -237,7 +237,7 @@ ZVSE2
   !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/30/(TRUE)/71/(SPELL_WEAKNESS)/(SPELL_CURSE); Poison
 
 !!el|(type)=243; Acid Wyvern               
-  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/80/30/?(result:y); Acid
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/(TRUE)/80; Acid  
   !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/30/(FALSE)/71/73/(SPELL_WEAKNESS)/(SPELL_CURSE); Poison + Disease
    
 ************************************************CONFLUX*********************************************               
@@ -250,15 +250,15 @@ ZVSE2
 
 !!el|(type)=(MON_MAGMA_ELEMENTAL);                        
   !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/(TRUE)/70; Petrification  
-  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/(SPELL_FIRE_WALL)/5/?(result:y);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/(TRUE)/(SPELL_FIRE_WALL); 
 
 !!el|(type)=249; Meteor Elemental
   !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/(TRUE)/70; Petrification 
-  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/(SPELL_FIRE_WALL)/5/?(result:y);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/(TRUE)/(SPELL_FIRE_WALL); 
 
 ***********************************************NEUTRAL**********************************************   
 !!el|(type)=(MON_HELL_STEED);         
-  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/(SPELL_FIRE_WALL)/20/?(result:y);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/(TRUE)/(SPELL_FIRE_WALL); 
   
 !!el|(type)=(MON_MUMMY);         
   !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(FALSE)/100/(TRUE)/(SPELL_CURSE);
@@ -333,7 +333,7 @@ ZVSE2
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/10/71/3/?(result1:y);
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/5/(SPELL_BLIND)/5/?(result1:y);
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/5/(SPELL_EARTH_ELEMENTAL)/5/?(result1:y);
-  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/5/(SPELL_FIRE_WALL)/10/?(result1:y);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/5/(TRUE)/(SPELL_FIRE_WALL); 
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/5/70/3/?(result1:y);
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/5/(SPELL_FIREBALL)/10/?(result1:y);
 
@@ -355,7 +355,7 @@ ZVSE2
 
 !!el|(type)=240; Shadow of the Marshes
   !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/(TRUE)/71; Poison
-  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/30/80/10/?(result1:y); Acid
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/30/(TRUE)/80; Acid  
   !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(TRUE)/20/(FALSE)/(SPELL_WEAKNESS)/74; Weakness + Paralyze
 
 !!el|(type)=(MON_ENCHANTER);
@@ -366,7 +366,7 @@ ZVSE2
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/20/(SPELL_ICE_BOLT)/5/?(result1:y);
 
 !!el|(type)=(MON_LAVA_SHARPSHOOTER);                 
-  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/(SPELL_FIRE_WALL)/5/?(result1:y);
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/(TRUE)/(SPELL_FIRE_WALL); 
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/20/(SPELL_FIREBALL)/5/?(result1:y);
 
 ; Works for AOE shooters, like Magog or Lich
@@ -557,12 +557,12 @@ ZVSE2
 !!VR(random:y):R0/0/99;
 
 ; Check what spell it is by the random number
-!!if&(random)<20;
+!!if&(random)<80;
   !!VR(spell):S(SPELL_MAGIC_ARROW);
   !!VR(powerCoef):S5;
-!!el&(random)>=20/(random)<30;
+!!el&(random)>=80/(random)<100;
   !!VR(spell):S(SPELL_ICE_BOLT);
-  !!VR(powerCoef):S15;
+  !!VR(powerCoef):S10;
 !!el;
   !!FU:E;
 !!en;
@@ -606,13 +606,13 @@ ZVSE2
 !!VR(random:y):R0/0/99;
 
 ; Check what spell it is by the random number
-!!if&(random)<15;
+!!if&(random)<70;
   !!VR(spell):S(SPELL_MAGIC_ARROW);
   !!VR(powerCoef):S5;
-!!el&(random)>=15/(random)<23;
+!!el&(random)>=70/(random)<90;
   !!VR(spell):S(SPELL_ICE_BOLT);
   !!VR(powerCoef):S10;
-!!el&(random)>=23/(random)<30;
+!!el&(random)>=90/(random)<100;
   !!VR(spell):S(SPELL_LIGHTNING_BOLT);
   !!VR(powerCoef):S15;
 !!el;
@@ -653,21 +653,21 @@ ZVSE2
 !!VR(random:y):R0/0/99;
 
 ; Check what spell it is by the random number
-!!if&(random)<12;
+!!if&(random)<40;
   !!VR(spell):S(SPELL_MAGIC_ARROW);
-  !!VR(powerCoef):S10;
-!!el&(random)>=12/(random)<18;
+  !!VR(powerCoef):S5;
+!!el&(random)>=40/(random)<65;
   !!VR(spell):S(SPELL_ICE_BOLT);
-  !!VR(powerCoef):S15;
-!!el&(random)>=18/(random)<23;
+  !!VR(powerCoef):S10;
+!!el&(random)>=65/(random)<85;
   !!VR(spell):S(SPELL_LIGHTNING_BOLT);
-  !!VR(powerCoef):S20;
-!!el&(random)>=23/(random)<28;
+  !!VR(powerCoef):S15;
+!!el&(random)>=85/(random)<95;
   !!VR(spell):S(SPELL_FIREBALL);
-  !!VR(powerCoef):S25;
-!!el&(random)>=28/(random)<30;
+  !!VR(powerCoef):S20;
+!!el&(random)>=95/(random)<100;
   !!VR(spell):S(SPELL_METEOR_SHOWER);
-  !!VR(powerCoef):S40;
+  !!VR(powerCoef):S35;
 !!el;
   !!FU:E;
 !!en;

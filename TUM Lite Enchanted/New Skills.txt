@@ -25,9 +25,9 @@ BATTLECRY OF THE WARLORD: Bloodlust + Stone Skin.
 
 ******************************TOWER******************************
 
-MAGICAL SHOOT: 20% Magic Arrow or 10% Ice Bolt.
-POWERFUL MAGICAL SHOOT: 15% Magic Arrow or 8% Ice Bolt or 7% Lightning Bolt.
-SUPREME MAGICAL SHOOT: 12% Magic Arrow or 6% Ice Bolt or 5% Lightning Bolt or 5% Fireball or 3% Meteor Shower.
+MAGICAL SHOOT: 80% Magic Arrow or 20% Ice Bolt.
+POWERFUL MAGICAL SHOOT: 70% Magic Arrow or 20% Ice Bolt or 10% Lightning Bolt.
+SUPREME MAGICAL SHOOT: 40% Magic Arrow or 25% Ice Bolt or 20% Lightning Bolt or 10% Fireball or 5% Meteor Shower.
 PROTECTION OF THE MASTER: Air Shield + Stone Skin + Magic Mirror.
 MAGICAL SHIELDS: Shield + Fire Shield.
 

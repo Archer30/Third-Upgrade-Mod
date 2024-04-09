@@ -170,7 +170,7 @@ ZVSE2
 
 !!el|(type)=232; Chimera
   !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/(TRUE)/71; Poison
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(TRUE)/30/(TRUE)/74/80/78(SPELL_SLOW)/(SPELL_CURSE); Paralyze + Acid + Dispel
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(TRUE)/30/(TRUE)/74/80/78/(SPELL_SLOW)/(SPELL_CURSE); Paralyze + Acid + Dispel
 
 !!el|(type)=(MON_RED_DRAGON);             
   !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^^/(FALSE)/100/(TRUE)/(SPELL_FIRE_WALL);                    

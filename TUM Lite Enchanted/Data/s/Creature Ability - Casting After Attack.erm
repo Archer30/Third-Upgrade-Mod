@@ -60,9 +60,7 @@ ZVSE2
   !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/5/^^/(TRUE)/20/(TRUE)/(SPELL_BLIND);
 
 !!el|(type)=(MON_GREEN_DRAGON);
-  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/100/(TRUE)/80; Acid
-
-  !*FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/20/(TRUE)/71/80; Poison + Acid
+  !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/3/^a^/(FALSE)/20/(TRUE)/71/80; Poison + Acid
 
 !!el|(type)=(MON_GOLD_DRAGON);    
   !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^^/(TRUE)/20/(TRUE)/70; Petrification
@@ -476,7 +474,7 @@ ZVSE2
 !?FU(casts_Battle_CanStackReceiveSpell);
 !#VA(stackId:x) (spellID:x) (castingSide:x) (result:x);
 
-!!if&(spellID)=80;   [Acid Breath must pass all immunity]
+!!if|(spellID)=80/(spellID)=(SPELL_FIRE_WALL);   [Acid Breath must pass all immunity]
    !!VR(result):S(TRUE);
    !!FU:E;
 !!en;       
@@ -775,7 +773,7 @@ ZVSE2
   ; Exit if not Alive, except if it's Acid Breath
   !!BM(defStack):F?(flags:y);
   !!VR(isAlive:y):S(flags) &(MON_FLAG_ALIVE);
-  !!co&(isAlive)=(FALSE)/(spell)<>80;
+  !!if&(isAlive)=(FALSE)/(spell)<>80/(spell)<>(SPELL_FIRE_WALL);
 
   ; Exit if the targeted stack cannot receive the spell
   !!if&(atkStack)<>(defStack);

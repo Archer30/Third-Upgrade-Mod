@@ -26,11 +26,11 @@ ZVSE2
 
 !!VRi^autocastAlreadyDone_%(currentStack)^:Si^battle_round^;    [autocast already tried for this combat round for current stack]
 
-!!VR(randomRoll1:y):R0/0/99;
+!!VR(randomRoll1:y):S0T99;
 !*VR(randomRoll1):S0;
-!!VR(randomRoll2:y):R0/0/99; 
-!!VR(randomRoll3:y):R0/0/99;
-!!VR(randomRoll4:y):R0/0/99;
+!!VR(randomRoll2:y):S0T99; 
+!!VR(randomRoll3:y):S0T99;
+!!VR(randomRoll4:y):S0T99;
 
 !!BM(currentStack):T?(monsterType:y) P?(monsterPosition:y);      [get monster type, position]
  
@@ -74,10 +74,10 @@ ZVSE2
     !!FU(SpellCast)&(monsterType)=247:P(SPELL_BLESS)/(monsterPosition)/2/3/^AutocastA^; Life Elemental Advanced Bless
     !!FU(SpellCast)&(monsterType)=248:P(SPELL_SLAYER)/(monsterPosition)/3/3/^AutocastA^; Plasma Elemental Expert Slayer
     !!FU(SpellCast)&(monsterType)=249:P(SPELL_SHIELD)/(monsterPosition)/2/3/^AutocastA^; Meteor Elemental Advanced Shield
-    
-    !!if&(monsterType)=250;                                                              Lords of the Elements
+        
+    !!if&(monsterType)=250; Lords of the Elements
       !!FU(SetCheckResistenceForCreatureCast):P(FALSE);
-      !!FU(SpellCast):P(SPELL_CLONE)/(monsterPosition)/3/3/^AutocastA^;  Cast Expert Clone
+      !!FU(SpellCast):P(SPELL_CLONE)/(monsterPosition)/3/3/^AutocastA^; Cast Expert Clone
       !!FU(SetCheckResistenceForCreatureCast):P(TRUE);
     !!en;
 

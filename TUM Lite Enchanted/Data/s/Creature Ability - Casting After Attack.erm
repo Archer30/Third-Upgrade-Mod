@@ -339,7 +339,6 @@ ZVSE2
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/3/(SPELL_HYPNOTIZE)/10/?(result1:y);
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/3/75/10/?(result1:y); Age
 
-
 !!el|(type)=(MON_MEDUSA_QUEEN);
   !!FU(casts_CastSpecialPoison):P(atkStack)/(defStack)/4/^a^/(TRUE)/20/(TRUE)/71/70; Poison + Petrification
 
@@ -365,7 +364,7 @@ ZVSE2
   !!FU(casts_CastPowerfulMagicalShoot):P(atkStack)/(defStack)/(FALSE)/(FALSE)/(FALSE);
 
 !!el|(type)=(MON_ARCTIC_SHARPSHOOTER); 
-  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/78/10/?(result1:y);                
+  !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/100/78/10/?(result1:y); Dispel             
   !!FU(casts_CastSpellAfterAttack):P(atkStack)/(defStack)/20/(SPELL_ICE_BOLT)/5/?(result1:y);
 
 !!el|(type)=(MON_LAVA_SHARPSHOOTER);                 

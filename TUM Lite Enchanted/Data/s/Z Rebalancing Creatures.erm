@@ -327,7 +327,7 @@ ZVSE2
 !!MA:C12/5/1;                                                  Cost Gem
 !!MA:L12/6;                                                    Is Level 7
 !!MA:O12/0;                                                    Is a Castle Unit
-!!SN:H^monname^/12/2/^Fly. +1 Morale. Strongly Hates All Devils.^;
+!!SN:H^monname^/12/2/^Fly. +1 Morale to Army. Strongly Hates All Devils.^;
 
 ***************************ARCHANGEL***************************
 !!MA:A13/30;                                                   Att 
@@ -344,7 +344,7 @@ ZVSE2
 !!MA:C13/5/3;                                                  Cost Gem
 !!MA:L13/6;                                                    Is Level 7
 !!MA:O13/0;                                                    Is a Castle Unit
-!!SN:H^monname^/13/2/^Fly. +1 Morale. Strongly Hates All Devils. {~99CCFF}Cast 1 Resurrection.{~} {10% Shield Block.}^;
+!!SN:H^monname^/13/2/^Fly. +1 Morale to Army. Strongly Hates All Devils. {~99CCFF}Cast 1 Resurrection.{~} {10% Shield Block.}^;
 
 **********************SUPREME ARCHANGEL************************
 !!MA:A150/35;                                                   Att
@@ -3521,8 +3521,8 @@ FORCED
 ************************************************HUMAN***********************************************
 
 ***************************ENCHANTER************************
-!!MA:A136/15;                                               Att 
-!!MA:D136/12;                                               Def 
+!!MA:A136/18;                                               Att 
+!!MA:D136/16;                                               Def 
 !!MA:M136/14;                                               Min Dam 
 !!MA:E136/14;                                               Max Dam
 !!MA:P136/50;                                               Hp 

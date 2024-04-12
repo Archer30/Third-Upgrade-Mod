@@ -11,6 +11,7 @@ IMPROVEMENTS:
    - Native terrain creatures will see landmine as normal but will take damage from mines
 
 BALANCE:
+-DIAMOND DRAGON not have Stunning Attack anymore. 
 - CERBERUS and BANE OF SOULS now have 7 speed instead of 8. Maxium damage is decreased at 6 instead of 7.
 - MAGE, ARCHMAGE, SUPREME ARCHMAGE and ENCHANTER now have 100% of casting after shooting.
 - SUPREME ARCHMAGE minium damage is now 9 instead of 7.

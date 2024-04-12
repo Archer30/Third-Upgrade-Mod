@@ -11,7 +11,6 @@ ZVSE2
 !#VA(mon:x) (result:x);
 
 !!VR(result):S0;
-!!VR(result)&(mon)=(MON_DIAMOND_DRAGON):S20;
 !!VR(result)&(mon)=(MON_TROLL):S20;
 !!VR(result)&(mon)=(MON_GNOLL):S20; 
 !!VR(result)&(mon)=(MON_GNOLL_MARAUDER):S20; 

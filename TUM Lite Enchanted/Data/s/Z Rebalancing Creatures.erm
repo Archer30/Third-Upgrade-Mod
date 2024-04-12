@@ -753,7 +753,7 @@ FORCED
 !!MA:X151/d(MON_FLAG_WIDE_ATTACK);                               Add Breath Attack
 !!MA:L151/6;                                                     Is Level 7
 !!MA:O151/1;                                                     Is a Rampart Unit
-!!SN:H^monname^/151/2/^Dragon. Fly. {60% Magic Resistence.} +200 Gold/day. Hero's Combat Spell Cost -2. {~9746e3}20% Blinding Breath.{~} {~ffeb3b}30% Ultimate Defence.{~} {~33CCCC}20% Expert Stone Skin.{~} {~9746e3}20% Stunning Breath.{~} Fearless. Implosion Immunity.^;
+!!SN:H^monname^/151/2/^Dragon. Fly. {60% Magic Resistence.} +200 Gold/day. Hero's Combat Spell Cost -2. {~9746e3}20% Blinding Breath.{~} {~ffeb3b}30% Ultimate Defence.{~} {~33CCCC}20% Expert Stone Skin.{~} Fearless. Implosion Immunity.^;
 
 ***************************************************************************************************
 ********************************************** TOWER **********************************************

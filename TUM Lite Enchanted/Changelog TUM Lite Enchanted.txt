@@ -19,6 +19,22 @@ BALANCE:
 - BATTLEMAGE OF THE CITY OF ICE AND STEEL now have 60 hp instead of 50. Attack skill is now 19 instead of 16.
 - ENCHANTER now have 18 atk and 16 def skill instead of 15 and 14 respectly.
 
+- UPGRADED MAGE TOWER and ALTAR OF WHISHES now require Mage Guild Level 2.
+- SECOND UPGRADED VAMPIRE MANSION now require Spectral Tomb.
+- UPGRADED PILLAR OF EYES and CHAPEL OF STILLED VOICES now require Mage Guild Level 1.
+- SECOND UPGRADED WARREN PIT now require Mushuroom Rings and Mage Guild Level 1.
+- SECOND UPGRADED PILLAR OF EYES and CHAPEL OF STILLED VOICES now require Mage Guild Level 2.
+- SECOND UPGRADED LABYRINTH AND MANTICORE LAIR now require Dragon Cave, but price are lowered.
+- SECOND UPGRADED ORC FORTIFIED TOWER now require Hall of Valhalla.
+- SECOND UPGRADED GNOLL HUT AND LIZARD DEN now require Mage Guild Level 1.
+- UPGRADED GORGON LAIR now require Upgraded Gnoll Hunt.
+- UPGRADED WYVERN NEST now require Upgraded Lizard Den.
+- SECOND UPGRADED GORGON LAIR now require Second Upgraded Gnoll Hunt.
+- SECOND UPGRADED WYVERN NEST now require Second Upgraded Lizard Den.
+- CONFLUX Altars now need Mage Guild Level 1.
+- UPGRADED ALTAR OF THOUGHT now require Mage Guild Level 2 and all of the elemental altars.
+- SECOND UPGRADED ALTAR OF THOUGHT now require Mage Guild Level 3 and all of the elemental altars updgraded.
+
 
 **********CHANGELOG TUM LITE ENCHANTED EDITION 1.4**********
 BUG FIXES:

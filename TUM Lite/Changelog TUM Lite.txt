@@ -1,5 +1,6 @@
 ********************CHANGELOG TUM LITE 2.4*****************
 - Fixed non-flying creature with Strike&Return ability mistakenly returning back after hitting a Quicksand square
+- Fixed click on small creature portraits on bottom left on town screen showing sometimes wrong or missing creatures to recruit.
 
 ********************CHANGELOG TUM LITE 2.3*****************
 IMPROVEMENTS

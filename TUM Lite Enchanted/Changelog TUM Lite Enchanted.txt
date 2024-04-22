@@ -1,25 +1,21 @@
 **********CHANGELOG TUM LITE ENCHANTED EDITION 1.5**********
 BUG FIXES:
-- Removed magic resistance chance to trigger on Lord of Elemental when autocasting Clone on himself.
+- Removed magic resistance chance to trigger on Lord of Elementals when autocasting Clone on himself.
 - Fixed Santa Gremlin's attack.
 - Fix some special poison ability which cause to partially activated with against immune creatures.
-- Fix Fire Wall attack which can't be cast agaist immune creatures.
-
-IMPROVEMENTS:
-- Landmine spell buff by doing these changes:
-   - Now the spell can be always cast (previously you can't if there are native terrain creatures on enemy stack)
-   - Native terrain creatures will see landmine as normal but will take damage from mines
+- Fix Fire Wall attack which can't be cast against immune creatures.
 
 BALANCE:
--DIAMOND DRAGON not have Stunning Attack anymore. 
-- CERBERUS and BANE OF SOULS now have 7 speed instead of 8. Maxium damage is decreased at 6 instead of 7.
+- DIAMOND DRAGONS Stunning Attack removed. 
+- CERBERUS and BANE OF SOULS now have 7 speed instead of 8. Maximum damage is now 6, down from 7.
 - MAGE, ARCHMAGE, SUPREME ARCHMAGE and ENCHANTER now have 100% of casting after shooting.
-- SUPREME ARCHMAGE minium damage is now 9 instead of 7.
-- MASTER GENIE now have 50 hp instead of 45.
-- BATTLEMAGE OF THE CITY OF ICE AND STEEL now have 60 hp instead of 50. Attack skill is now 19 instead of 16.
-- ENCHANTER now have 18 atk and 16 def skill instead of 15 and 14 respectly.
+- SUPREME ARCHMAGE minimum damage is now 9, up from 7.
+- MASTER GENIE now have 50 hp, up from of 45.
+- BATTLEMAGE OF THE CITY OF ICE AND STEEL now have 60 hpm up from 50. Attack skill is now 19, up from 16.
+- ENCHANTER now have 18 ATK and 16 DEF skill, up from 15 and 14.
 
-- UPGRADED MAGE TOWER and ALTAR OF WHISHES now require Mage Guild Level 2.
+BUILDINGS REQUIREMENTS CHANGES:
+- UPGRADED MAGE TOWER and ALTAR OF WISHES now require Mage Guild Level 2.
 - SECOND UPGRADED VAMPIRE MANSION now require Spectral Tomb.
 - UPGRADED PILLAR OF EYES and CHAPEL OF STILLED VOICES now require Mage Guild Level 1.
 - SECOND UPGRADED WARREN PIT now require Mushuroom Rings and Mage Guild Level 1.
@@ -31,9 +27,9 @@ BALANCE:
 - UPGRADED WYVERN NEST now require Upgraded Lizard Den.
 - SECOND UPGRADED GORGON LAIR now require Second Upgraded Gnoll Hunt.
 - SECOND UPGRADED WYVERN NEST now require Second Upgraded Lizard Den.
-- CONFLUX Altars now need Mage Guild Level 1.
+- CONFLUX Altars now require Mage Guild Level 1.
 - UPGRADED ALTAR OF THOUGHT now require Mage Guild Level 2 and all of the elemental altars.
-- SECOND UPGRADED ALTAR OF THOUGHT now require Mage Guild Level 3 and all of the elemental altars updgraded.
+- SECOND UPGRADED ALTAR OF THOUGHT now requires Mage Guild Level 3 and all of the elemental altars upgraded.
 
 
 **********CHANGELOG TUM LITE ENCHANTED EDITION 1.4**********

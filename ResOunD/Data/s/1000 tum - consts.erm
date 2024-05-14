@@ -15,11 +15,14 @@ ZVSE2
 !#DC(MON_CROSSBOWMAN)              = 198;
 !#DC(MON_HOLY_CHAMPION)            = 201;
 !#DC(MON_SERAPH)                   = 202;
+!#DC(MON_BERSERKER_DWARF)          = 203;
 !#DC(MON_LEGENDARY_UNICORN)        = 206;
 !#DC(MON_PURE_DIAMOND_DRAGON)      = 207;
 !#DC(MON_ARCANE_GENIE)             = 210;
 !#DC(MON_NAGA_EMPRESS)             = 211;
 !#DC(MON_GUARDIAN_OF_ZEUS)         = 212;
+!#DC(MON_WINGED_MAGOG)             = 214;
+!#DC(MON_SHARP_HORNED_DEMON)       = 216;
 !#DC(MON_EFREETI_RAJAH)            = 218;
 !#DC(MON_ANTICHRIST)               = 219;
 !#DC(MON_LICH_KING)                = 222;
@@ -31,7 +34,9 @@ ZVSE2
 !#DC(MON_CYCLOPS_EMPEROR)          = 237;
 !#DC(MON_SPECTRAL_BEHEMOTH)        = 238;
 !#DC(MON_ELITE_LIZARD)             = 240;
+!#DC(MON_CHAOTIC_DRAGON_FLY)       = 241;
 !#DC(MON_ACID_WYVERN)              = 243;
+!#DC(MON_CATOBLEPAS)               = 244;
 !#DC(MON_NIGHTMARE_HYDRA)          = 245;
 !#DC(MON_FAERIE)                   = 246;
 !#DC(MON_HURRICANE_ELEMENTAL)      = 247;
@@ -47,6 +52,7 @@ ZVSE2
 !#DC(MON_PRIMAL_FAERIE_DRAGON)     = 258;
 !#DC(MON_SPELLWEAVER)              = 259;
 !#DC(MON_ASSASSIN)                 = 260;
+!#DC(MON_SPECTER)                  = 261;
 !#DC(MON_FANGARM)                  = 263;
 !#DC(MON_TOPAZ_CRYSTAL_DRAGON)     = 265;
 !#DC(MON_AMETHYST_CRYSTAL_DRAGON)  = 266;
@@ -81,6 +87,7 @@ ZVSE2
 !#DC(MON_SQUIRE)                   = 301;
 !#DC(MON_WILL_O_WISP)              = 317;
 !#DC(MON_HIGH_PRIEST)              = 320;
+!#DC(MON_GNOLL_SHAMAN)             = 321;
 !#DC(MON_SHADOW_DRAGON)            = 325;
 !#DC(MON_GHOUL)                    = 329;     
 ; =============  END MONSTERS  =============
@@ -88,7 +95,7 @@ ZVSE2
 
 ; ==============  ARTIFACTS  ===============
 !#DC(ART_RING_OF_ELEMENTS)         = 197;
-
+!#DC(ART_WAYFARERS_BOOTS)          = 260;
 !#DC(ART_HORN_OF_THE_ABYSS)        = 266;
 ; ============  END ARTIFACTS  =============
 

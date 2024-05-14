@@ -10,17 +10,58 @@ ZVSE2
 **** Set Up WoG Options ****
 ****************************
 
-!#UN:P67/0;                             [DISABLE Neutral Town]
-!#UN:P173/0;                            [DISABLE Extended Upgrades]
-!#UN:P174/0;                            [DISABLE Universal Upgrades]
-!#UN:P125/0;                            [DISABLE the rule if the rule upg level 7 become level 8]
-!#UN:P820/0;                            [DISABLE Adittional Uprades]
+!#UN:P0/1;                              [ENABLE Level 8 dwellings function as normal]
 !#UN:P37/0;                             [DISABLE Rebalanced Creatures]
 !#UN:P50/0;                             [DISABLE Enhanced Monsters]
-!#UN:P188/0;                            [Disable Rampart Farie Dragon]
-!#UN:P0/1;                              [ENABLE Level 8 dwellings function as normal]
+!#UN:P67/0;                             [DISABLE Neutral Town]
+!#UN:P125/0;                            [DISABLE Upg level 7 become level 8]
 !#UN:P137/1;                            [ENABLE Level 8 dwellings]
+!#UN:P173/0;                            [DISABLE Extended Upgrades]
+!#UN:P174/0;                            [DISABLE Universal Upgrades]
+!#UN:P188/0;                            [Disable Rampart Farie Dragon]
 !#UN:P281/0;                            [DISABLE buckler of Beelzebub]
+!#UN:P820/0;                            [DISABLE Adittional Uprades]
+
+**************************
+**** Create TUM Hooks ****
+**************************
+
+!?FU(OnStartOrLoad);
+!!SN:L^erm_hooker.era^/?(hooker:y);
+!!FU&(hooker)=0:E;
+
+!!SN:A(hooker)/^SetHook^/?(hookingFuncAddress:y);
+!!FU(tum_CreateERMHook):P(hookingFuncAddress);
+
+!?FU(tum_CreateERMHook);
+!#VA(address:x);
+
+!!SN:E(address)/1/4292703/(tum_OnSetActiveHero);
+!!SN:E(address)/1/4462998/(tum_HOOK_AfterAttackMainFunc); [Trigger after melee attack, before retaliation]
+!!SN:E(address)/1/4455129/(tum_HOOK_AfterAttackMainFunc); [Trigger after shooting]
+
+!?FU(tum_HOOK_AfterAttackMainFunc);      [by igrik]
+!!SN:X?(hook:y);
+!!UN:C(hook)/0/(UNC_INT)/?(stackStrucktDefender:y);   
+!!UN:C(hook)/4/(UNC_INT)/?(stackStrucktAttacker:y);  
+!!BG:A?(typeAttack:y);
+!!VR(stackAttackerID:y):S(NO_MON); 
+!!VR(stackDefenderID:y):S(NO_MON); 
+
+!!if&(stackStrucktAttacker)<>(FALSE); 
+  !!UN:C(stackStrucktAttacker)/244/(UNC_INT)/?(attakerSide:y); 
+  !!UN:C(stackStrucktAttacker)/248/(UNC_INT)/?(attakerStackIdInSide:y);
+  !!VR(stackAttackerID):S(attakerSide) *(BATTLE_STACKS_PER_SIDE) +(attakerStackIdInSide); 
+!!en;
+
+!!if&(stackStrucktDefender)<>(FALSE);
+  !!UN:C(stackStrucktDefender)/244/(UNC_INT)/?(defenderSide:y);
+  !!UN:C(stackStrucktDefender)/248/(UNC_INT)/?(defenderStackIdInSide:y);
+  !!VR(stackDefenderID):S(defenderSide) *(BATTLE_STACKS_PER_SIDE) +(defenderStackIdInSide);
+!!en;
+
+!!FU(tum_OnAfterMelee)&(typeAttack)=(BATTLE_ACTION_WALK_AND_ATTACK):P(stackAttackerID)/(stackDefenderID);
+!!FU(tum_OnAfterShoot)&(typeAttack)=(BATTLE_ACTION_SHOOT):P(stackAttackerID)/(stackDefenderID);
 
 *********************************
 **** Set up Global Variables ****
@@ -34,19 +75,23 @@ ZVSE2
 !#FU(tum_SetUpGlobalVars):P;
 
 ;  Set up global variable for whether Emerald is enabled. Note: Using On Start Or Load is not allowed as it is too late!
-!?FU(OnAfterErmInstructions);
+!?FU(tum_CheckPlugins);
 !!SN:L^emerald3_3.era^/?(emer3:y);
 !!SN:L^emerald3_3.dll^/?(emer3Var:y);
 !!SN:L^emerald_v202a.era^/?(emer2:y);
 
-!!VRi^tum_emerald_on^|(emer3)<>0/(emer3Var)<>0/(emer2)<>0:S(TRUE);
+!!if|(emer3)<>0/(emer3Var)<>0/(emer2)<>0;
+  !!VRi^tum_emerald_on^:S(TRUE);
+!!en;
+
+!!SN:L^wogcn.dll^/?(wogcn:y);
+!!VRi^tum_wogcn_on^&(wogcn)<>0:S(TRUE);
+
+!#FU(tum_CheckPlugins):P;
+!#VRi^tum_newCombiArts_on^&i^tum_emerald_on^:S(TRUE);
 
 !?FU(OnAfterLoadGame);
-!!SN:L^emerald3_3.era^/?(emer3:y);
-!!SN:L^emerald3_3.dll^/?(emer3Var:y);
-!!SN:L^emerald_v202a.era^/?(emer2:y);
-
-!!VRi^tum_emerald_on^|(emer3)<>0/(emer3Var)<>0/(emer2)<>0:S(TRUE);
+!!FU(tum_CheckPlugins):P;
 
 ; Set up town screen variable (to prevent triggering several events)
 !?FU(OnOpenTownScreen);
@@ -62,28 +107,66 @@ ZVSE2
 !?FU(OnKeyReleased)&i^key^=(KEY_A);
 !!VRi^key_a^:S(FALSE);
 
+; Generate Emerald AI report
+!?FU(OnAfterErmInstructions);
+!!SN:L^emerald3_3.era^/?(emerald:y);
+
+!!if&(emerald)<>0;
+  !!SN:A(emerald)/^art_AI_report^/?(aiReport:y);
+  !!SN&(aiReport)<>0:E(aiReport)/1;
+!!en;
+
 ************************************
 **** WoG Option Compatibilities ****
 ************************************
-
+; Disable the generation of Howling Hollow - must be executed sooner than 78 wog - wogify
 !?FU(OnAfterErmInstructions);
-; Disable the generation of Howling Hollow
 !!VRi^wog78_howlingHollow_on^:S(FALSE);
 
-; Increase the cost of third upgraded level 6 monsters if Battle Extender is enabled
-!!UN:P41/?(battExtender:y);
+*****************************
+**** Replace map objects ****
+*****************************
 
-!!if&(battExtender);
-  !!MA:C(MON_HOLY_CHAMPION)/(RES_ORE)/2;
-  !!MA:C(MON_LEGENDARY_UNICORN)/(RES_GEMS)/1;
-  !!MA:C(MON_NAGA_EMPRESS)/(RES_MERCURY)/1;
-  !!MA:C(MON_EFREETI_RAJAH)/(RES_SULFUR)/1;
-  !!MA:C(MON_DEATH_NIGHT)/(RES_CRYSTAL)/1;
-  !!MA:C(MON_CHIMERA)/(RES_ORE)/1;
-  !!MA:C(MON_CYCLOPS_EMPEROR)/(RES_GEMS)/1;
-  !!MA:C(MON_ACID_WYVERN)/(RES_MERCURY)/1;
-  !!MA:C(MON_VOID_ELEMENTAL)/(RES_SULFUR)/1;
+!?FU(OnAfterErmInstructions)&i^tum_replaceObj_on^;
+; deleting the sound in the delete object function
+; because it causes a crash
+!!UN:C4893167/2/?(patch:y);
+!!UN:C4893167/2/24555;
+; get size of the map
+!!UN:X?(mapSize:y)/?(hasUnderground:y); 
+; pass once through all cells of the map
+!!re l/0/(hasUnderground)/1;  coord z
+  !!re k/0/(mapSize)/1/-1;    coord y
+    !!re i/0/(mapSize)/1/-1;  coord x
+      !!OBi/k/l:T?(objType:y) U?(objSubtype:y);
+      !!TRi/k/l:E?(isYellowSquare:y) P?(isPassable:y); 
+      !!VR(isYellowSquare):X1;  reverse param isYellowSquare
+      !!FU(tum_OnIterateAllMapObjects):Pi/k/l/(objType)/(objSubtype)/(isYellowSquare)/(isPassable);
+    !!en;
+  !!en;
 !!en;
+; restoring the source code of the sound
+; in the delete objects function
+!!UN:C4893167/2/(patch);
+
+************************************************
+**** Disable unused artifacts from the game ****
+************************************************
+; All the blank artifacts would be disabled if ACM is not presented
+!?FU(tum_DisableUnusedArtifacts)&i^Advanced_Classes_Mod_Active^=(FALSE);
+!!re i/(ART_BLANK_HELMET)/(ART_BLANK_HORN);
+  !!UN:Ai/1;
+!!en;
+
+!#FU(tum_DisableUnusedArtifacts):P;
+
+**********************************************************
+**** Restore the original values of terrain penalties ****
+**********************************************************
+; The following lines must be executed ealier than option 739 - pathfinding.erm - OnGameLeave to be overriden.
+; Wayfarer's Boots Part 2
+!?FU(OnGameLeave)&i^tum_emerald_on^;
+!!FU(tum_SetTerrainPenaltyValues):P(FALSE);
 
 *******************************************************
 **** Function to get the latest creature ID of TUM ****

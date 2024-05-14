@@ -1,6 +1,6 @@
 ZVSE2
 
-; USED z958-z959, w121-w127, D61, TM94
+; USED z958-z959, w121-w127, D61
 
 ;10-19:Nothing
 ;20:Random stats bonus (1-4*month)
@@ -121,8 +121,9 @@ ZVSE2
 ;for human only
 !!FU&y3<>0:E;  [exit if AI]
 !!SN:W^dreams^/?y1;
+
 !!if&y1<99;
-!!SN:W^R99IDscourge^/-1;  initialize scourge
+  !!SN:W^R99IDscourge^/-1;  initialize scourge
 
 ; replace objects on first day
   !!SN:W^R97percentage^/?y3; den of thieves
@@ -224,17 +225,19 @@ ZVSE2
 ;x2 percentage
 !!UN:Ux1/-1/-1/1;
 !!VRy1:S1R9;
+
 !!if&x1<>57;
-!!UN&y1<=x2:Ov1/v2/v3; [delete]
-!!VRv1:+1; correction location
-!!UN&y1<=x2:Iv1/v2/v3/63/56;
+  !!UN&y1<=x2:Ov1/v2/v3; [delete]
+  !!VRv1:+1; correction location
+  !!UN&y1<=x2:Iv1/v2/v3/63/56;
 !!en;
+
 !!if&x1=57; [if obelisk]
-!!MTv1/v2/v3:N?y3; [get current obelisk index]
-!!UN&y1<=x2:L-2/y3/1; [set visited for all players]
-!!UN&y1<=x2:Ov1/v2/v3; [now delete it]
-!!VRv1:+1; correction location
-!!UN&y1<=x2:Iv1/v2/v3/63/56;
+  !!MTv1/v2/v3:N?y3; [get current obelisk index]
+  !!UN&y1<=x2:L-2/y3/1; [set visited for all players]
+  !!UN&y1<=x2:Ov1/v2/v3; [now delete it]
+  !!VRv1:+1; correction location
+  !!UN&y1<=x2:Iv1/v2/v3/63/56;
 !!en;
 
 !?FU32466132;
@@ -281,46 +284,68 @@ ZVSE2
 !!VRy1:S5R10;  [2500-7500 gold]
 !!CHv1/v2/v3:S0 By1;
 
+!?FU(OnEveryDay)&i^timerWeekday^=1;
+!!OW:C?y1; [get current player]
+!!OW:Iy1/?y2;  [get if AI or human]
+!!FU&y2<>0:E;  [exit if AI]
+;addition for scrolls**********
+!!UN:U93/-1/?y-1; [get scrolls number]
+!!VRv1:S-1;
+!!DO7549285/1/y-1/1:P93;  [run through each one]
+;end addition for scrolls********
+!!UN:P3/?y2; check if commanders enabled
+!!SN:W^Closed^/?y3;   percentage of visitable Caves
+!!UN:U63/56/?y-1; [get Caves number]
+!!VRv1:S-1;
+!!DO56789012/1/y-1/1:P63/56/y2/y3;  [run through each one and reinitialize PO]
+!!UN:U63/55/?y-1; [get Caves number]
+!!VRv1:S-1;
+!!DO56789012/1/y-1/1:P63/55/y2/y3;  [run through each one and reinitialize PO]
 
 !?OB63/56;
 !!HE-1:O?y3;  get owner
 !!OW:Iy3/?y4; get AI/human
-!!if&y4<>0; If AI
-!!PO998:N?v1;
-!!FU&v1>0:E;
-!!VRy1:S0R3;
-!!HE-1:F?y2/?y3/?y4/?y5;  check if stats not too high
-!!HE-1&y1=0/y2<110:Fd2/d/d/d;   if below 110 give a +2 bonus to random primary skill
-!!HE-1&y1=1/y3<110:Fd/d2/d/d;
-!!HE-1&y1=2/y4<110:Fd/d/d2/d;
-!!HE-1&y1=3/y5<110:Fd/d/d/d2;
-!!HE-1:B0/?z1;
-!*IF:L^%Z1 visited a Cave^;   test
-*!OB998:Hz959; set to visited for this week
-!!HT63/55:T959;
 
-!!PO998:N15;
-!!FU:E;
+!!if&y4<>0; If AI
+  !!PO998:N?v1;
+  !!FU&v1>0:E;
+
+  !!VRy1:S0R3;
+  !!HE-1:F?y2/?y3/?y4/?y5;  check if stats not too high
+  !!HE-1&y1=0/y2<110:Fd2/d/d/d;   if below 110 give a +2 bonus to random primary skill
+  !!HE-1&y1=1/y3<110:Fd/d2/d/d;
+  !!HE-1&y1=2/y4<110:Fd/d/d2/d;
+  !!HE-1&y1=3/y5<110:Fd/d/d/d2;
+  !!HE-1:B0/?z1;
+  !*IF:L^%Z1 visited a Cave^;   test
+  !!OB998:Hz959; set to visited for this week
+
+  !!PO998:N15;
+  !!FU:E;
 !!en;
 ;if Human
 !!PO998:N?v1;
-!!IF&v1>0:M^This Cave is forsaken for now, we should try again next week.^;
-!!VRz1&v1>0:S^Enter.wav^;
-!!SN&v1>0:Pz1;
-!!VRz2&v1>0:S^MaleG09a.wav^;
-!!SN&v1>0:Pz2;
-!!FU&v1>0:E;
-!!PO998:B0/?y10; check value
-!!IF&y10<20:M^This Cave is forsaken, we should try again next week.^;
-!!PO998&y10<20:N15;
-*!OB998&y10<20:Hz959;
-!!HT63/55&y10<20:T959;
 
-!!VRz1&y10<20:S^Enter.wav^;
-!!SN&y10<20:Pz1;
-!!VRz2&y10<20:S^MaleG09a.wav^;
-!!SN&y10<20:Pz2;
-!!FU&y10<20:E;
+!!if&v1>0;
+  !!IF:M^This Cave is forsaken for now, we should try again next week.^;
+  !!SN:P^Enter.wav^;
+  !!SN:P^MaleG09a.wav^;
+  !!FU:E;
+!!en;
+
+!!PO998:B0/?y10; check value
+
+!!if&y10<20;
+  !!IF:M^This Cave is forsaken, we should try again next week.^;
+  !!PO998:N15;
+  *!OB998:Hz959;
+  !!HT63/55:T959;
+
+  !!SN:P^Enter.wav^;
+  !!SN:P^MaleG09a.wav^;
+  !!FU:E;
+!!en;
+
 !!HE-1&y10=23:S2/?y2; get if he has logistic
 !!VRy10&y2=3:S25; set to different
 
@@ -751,7 +776,13 @@ PESTILENCE: no enemy will be able to approach %Z3 for 7 days^;
 !!VRw124:S7;
 !!SN:W^R99builderID^/y1;
 !!HEy1:X?y5/?y6/?y7/?y8/?y9/?y10/?y11;
-!!SN:W^R99ID5^/y5; !!SN:W^R99ID6^/y6; !!SN:W^R99ID7^/y7; !!SN:W^R99ID8^/y8; !!SN:W^R99ID9^/y9; !!SN:W^R99ID10^/y10;  !!SN:W^R99ID11^/y11;
+!!SN:W^R99ID5^/y5;
+!!SN:W^R99ID6^/y6;
+!!SN:W^R99ID7^/y7;
+!!SN:W^R99ID8^/y8;
+!!SN:W^R99ID9^/y9;
+!!SN:W^R99ID10^/y10; 
+!!SN:W^R99ID11^/y11;
 !!HEy1:X8/2; make him builder
 !!VRz1:S^Dragon.wav^;
 !!SN:Pz1;
@@ -783,9 +814,7 @@ PESTILENCE: no enemy will be able to approach %Z3 for 7 days^;
 !!VRv3:+1;
 !!UN:Ov3/v4/v5;
 !!UN:Iv3/v4/v5/63/55;
-*!OB998:Hz959; set to visited
-!!HT63/55:T959;
-
+!!OB998:Hz959; set to visited
 !!PO998:N15;
 
 !?FU45696539;
@@ -922,7 +951,13 @@ PESTILENCE: no enemy will be able to approach %Z3 for 7 days^;
 !!en;
 
 !!if&w124=1;
-  !!SN:W^R99ID5^/?y5; !!SN:W^R99ID6^/?y6; !!SN:W^R99ID7^/?y7; !!SN:W^R99ID8^/?y8; !!SN:W^R99ID9^/?y9; !!SN:W^R99ID10^/?y10;  !!SN:W^R99ID11^/?y11;
+  !!SN:W^R99ID5^/?y5;
+  !!SN:W^R99ID6^/?y6;
+  !!SN:W^R99ID7^/?y7;
+  !!SN:W^R99ID8^/?y8;
+  !!SN:W^R99ID9^/?y9;
+  !!SN:W^R99ID10^/?y10;
+  !!SN:W^R99ID11^/?y11;
   !!HEx16:Xy5/y6/y7/y8/y9/y10/y11;
   !!UN:G0/d/d/0; restore
   !!VRw124:-1;
@@ -936,6 +971,35 @@ PESTILENCE: no enemy will be able to approach %Z3 for 7 days^;
 ;x2 faction
 !!HOx1&x2<>x16:Dx16; exclude his faction
 
+!?FU56789012;
+;x1, x2 type/subtype
+;x3 commanders enabled/no
+;x4 percentage of Caves visitable (0=75%, 1=100%)
+!!if&x3=0:; commanders enabled
+!!VRy1&x4=0:S10 R54;  75%
+!!VRy1&x4=1:S20 R44;  100%
+!!en:;
+  !!if&x3=1:; commanders not enabled
+  !!VRy1&x4=0:S10 R44;   75%
+  !!VRy1&x4=1:S20 R34;   100%
+  !!en:;
+!!SN:W^R199counter^/?y2;   check if Watcher on/off
+!!VRy1&y1>43/y1<46/y2>0:S43;   set to 100 spell points instead
+!!UN:Ux1/x2/-1/1;
+!!POv1/v2/v3:N0;
+!!SN:W^R57percentage^/?y10; check if obelisks are all removed
+!!VRy1&y10=10/y1=36:S43; set to spell points
+!!POv1/v2/v3:B0/y1;
+!!OBv1/v2/v3:Hz958;
+!!VRy1:Sv1+1;
+!!UN:P904/1; turn errors off
+!!UN:P905/0; clear error flag
+!!HEv1/v2/v3:N?y8; get hero to y8, if any
+!!UN:P904/0; turn on errors showing
+!!UN:P905/?y9; get error flag to y9
+!!FU&y9=0:E; exit if hero on Cave (will crash if not)
+!!UN:Ov1/v2/v3;
+!!UN:Iy1/v2/v3/63/56;
 
 !?CM0;
 !!SN:L^user32.dll^/?y1 Ay1/^GetKeyState^/?y2 Ey2/1/17;
@@ -1160,25 +1224,6 @@ Instructions: Once he demolished the last building (Village Hall), a blacksmith 
 !!UN:C6918840/4/?y1; [pAdvManager]
 !!SN:E4302672/2/y1;  [ShowOracleMap]
 !!SN:W^R99obelisk^/-1;
-
-!?CM0;
-!!SN:L^user32.dll^/?y1 Ay1/^GetKeyState^/?y2 Ey2/1/17;
-!!VRy1:Sv1&65535;
-!!FU&y1<32768:E; exit if not ctrl hold
-!!CM:P?y1/?y2/?y3;
-!!OBy1/y2/y3:T?y4 U?y5;
-!!FU|y4<>63/y5<>56:E;
-!!UN:Oy1/y2/y3; delete
-!!VRy6:Sy1+1;
-!!UN:Iy6/y2/y3/63/55;
-*!OBy1/y2/y3:Hz959; set to visited
-!!HT63/55:T959;
-
-!!POy1/y2/y3:N15;
-!!IF:Q1/-1/-1/4^Cave set to visited^;
-!!VRz1:S^WoodDRClose.wav^;
-!!SN:Pz1;
-!!CM:R0;
 
 !?OB63/55&1000;
 !!IF:M^Come back next week!^;

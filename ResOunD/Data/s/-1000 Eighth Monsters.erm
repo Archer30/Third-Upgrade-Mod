@@ -988,7 +988,7 @@ ZVSE2
 
   ; give AI hero free banner if there is a visiting hero (high priority) /hero in town
   !!co|i^eighth_bannerOn^=(FALSE)/i^eighth_banner_%(townId)^=(FALSE); [next town if banner is not available or not even enabeld]
-  !!co&(owner)=(NO_OWNER);              [Next town if the town has no owner]
+  !!co&(owner)<=(NO_OWNER);             [Next town if the town has no owner]
 
   !!OW:I(owner)/?(isAi:y);              [check if the town belongs to AI]
   !!CA0/(townId):B3/22;                 [check if Banner Workshop (Portal of Summoning) is built]

@@ -1,7 +1,0 @@
-{
-  "opt759": {
-    "desc": " Can sacrifice allied units.",
-    "sacrifice": "{~r}Sacrifice: %Z2{~}",
-    "resurrect": "%Z3 sacrifices %Z2 and resurrects!"  
-  }
-}

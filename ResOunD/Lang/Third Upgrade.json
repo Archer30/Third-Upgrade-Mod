@@ -85,9 +85,11 @@
         "page0": {
             "name": "TUM, Game Enhancements \nand Hard-Coded Options",
 
-            "group0": { 
-                "name": "Third Upgrade Mod Options", 
-            }
+            "group1": { 
+                "name": "Third Upgrade Mod Options",
+				"hint": "Additional Options for Third Upgrades Mod.",
+				"popup": "THIRD UPGRADE MOD OPTIONS \n\nHere you can add or disable additional options from Third Upgrades Mod.",
+            },
         }
     },
     

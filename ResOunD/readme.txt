@@ -1,8 +1,9 @@
+ATTENTION: Third Upgrades Mod requires "Visual Studio Redistributable" download it in official Microsoft page.
 
 
-                   ************** Third Upgrades Mod *****************
-                ****************** Version: v2.15.3********************
-                 ***************** Amethyst Edition ******************
+                    ************** Third Upgrades Mod *****************
+                    *************** Version: v2.18.2******************
+                   **************** Amethyst Edition ******************
 
 --------------------------------------------------------------------------------------------------
 
@@ -16,6 +17,7 @@ Xericsin: Scripting.
 Majaczek: Plugins (Amethyst and Emerald).
 Strigo: Plugin (Resound).
 Moriarty89: Graphics.
+By003: Fallen/Death Angel and Dark Templar/Paladin graphics
 Avatar: Sounds and Graphics resources.
 FirePaladin: Graphics.
 ElfbI: New Pandora Boxes.

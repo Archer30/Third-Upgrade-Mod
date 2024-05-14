@@ -72,6 +72,7 @@ ZVSE2
   
   !!co&(mon)<=(NO_MON);
 
+  ; Convert level 1 monsters to Skeletons
   !!MA:L(mon)/?(lv:y);
 
   !!if&(lv)=0;
@@ -83,24 +84,9 @@ ZVSE2
   !!en;
 
   ; ERA conversions
-  !!HE(hero)|(mon)=(MON_GREEN_DRAGON)/(mon)=(MON_GOLD_DRAGON)/(mon)=(MON_DIAMOND_DRAGON):C0/i/(MON_BONE_DRAGON)/(qty)/(expLv)/12;
-  !!HE(hero)|(mon)=(MON_RED_DRAGON)/(mon)=(MON_BLACK_DRAGON)/(mon)=(MON_DARKNESS_DRAGON):C0/i/(MON_BONE_DRAGON)/(qty)/(expLv)/12;
-  !!HE(hero)|(mon)=(MON_HYDRA)/(mon)=(MON_CHAOS_HYDRA)/(mon)=(MON_HELL_HYDRA):C0/i/(MON_BONE_DRAGON)/(qty)/(expLv)/12;
-
-  ; Skeleton Archer
-  !!HE(hero)|(mon)=(MON_ARCHER)/(mon)=(MON_MARKSMAN)/(mon)=(MON_CROSSBOWMAN):C0/i/(MON_SKELETON_ARCHER)/(qty)/(expLv)/12;
-  !!HE(hero)|(mon)=(MON_WOOD_ELF)/(mon)=(MON_GRAND_ELF):C0/i/(MON_SKELETON_ARCHER)/(qty)/(expLv)/12;
-  !!HE(hero)|(mon)=(MON_LIZARDMAN)/(mon)=(MON_LIZARD_WARRIOR)/(mon)=(MON_ELITE_LIZARD):C0/i/(MON_SKELETON_ARCHER)/(qty)/(expLv)/12;
-  !!HE(hero)|(mon)=(MON_MEDUSA)/(mon)=(MON_MEDUSA_QUEEN)/(mon)=(MON_MEDUSA_EMPRESS):C0/i/(MON_SKELETON_ARCHER)/(qty)/(expLv)/12;
-  
-  ; Mana Skeleton
-  !!HE(hero)|(mon)=(MON_MAGE)/(mon)=(MON_ARCH_MAGE)/(mon)=(MON_SUPREME_ARCH_MAGE):C0/i/(MON_MANA_SKELETON)/(qty)/(expLv)/12;
-  !!HE(hero)|(mon)=(MON_GENIE)/(mon)=(MON_MASTER_GENIE)/(mon)=(MON_ARCANE_GENIE):C0/i/(MON_MANA_SKELETON)/(qty)/(expLv)/12;
-  !!HE(hero)|(mon)=(MON_LICH)/(mon)=(MON_POWER_LICH)/(mon)=(MON_LICH_KING):C0/i/(MON_MANA_SKELETON)/(qty)/(expLv)/12;
-  !!HE(hero)|(mon)=(MON_PSYCHIC_ELEMENTAL)/(mon)=(MON_MAGIC_ELEMENTAL)/(mon)=(MON_VOID_ELEMENTAL):C0/i/(MON_MANA_SKELETON)/(qty)/(expLv)/12;
-  !!HE(hero)|(mon)=(MON_ENCHANTER)/(mon)=(MON_SPELLWEAVER)/(mon)=(MON_SORCERESS):C0/i/(MON_MANA_SKELETON)/(qty)/(expLv)/12;
-  !!HE(hero)|(mon)=(MON_MONK)/(mon)=(MON_ZEALOT)/(mon)=(MON_WAR_ZEALOT)/(mon)=(MON_HIGH_PRIEST):C0/i/(MON_MANA_SKELETON)/(qty)/(expLv)/12;
-  !!HE(hero)&(mon)=(MON_WILL_O_WISP):C0/i/(MON_MANA_SKELETON)/(qty)/(expLv)/12;
+  !!HE(hero)|(mon)=(MON_GREEN_DRAGON)/(mon)=(MON_GOLD_DRAGON):C0/i/(MON_BONE_DRAGON)/(qty)/(expLv)/12;
+  !!HE(hero)|(mon)=(MON_RED_DRAGON)/(mon)=(MON_BLACK_DRAGON):C0/i/(MON_BONE_DRAGON)/(qty)/(expLv)/12;
+  !!HE(hero)|(mon)=(MON_HYDRA)/(mon)=(MON_CHAOS_HYDRA):C0/i/(MON_BONE_DRAGON)/(qty)/(expLv)/12;
 
   ; Sharp shoopter Skeleton
   !!HE(hero)|(mon)=(MON_SHARPSHOOTER)/(mon)=(MON_ARCTIC_SHARPSHOOTER)/(mon)=(MON_LAVA_SHARPSHOOTER)/(mon)=(MON_SHARPSHOOTER_ELF):C0/i/(MON_SHARPSHOOTER_SKELETON)/(qty)/(expLv)/12;
@@ -122,30 +108,6 @@ ZVSE2
 !!en;
 
 ****************************************************************************************************
-; Additional features that are not part of the skeleton transformer object
-// Skeleton Transformer Fix
-!?FU(OnGameEnter);
-!!UN:C5661880/4/?v2;
-
-!!FU(tum_FixSkeletonTransformer):P(MON_HELL_HYDRA)/(MON_BONE_DRAGON);
-!!FU(tum_FixSkeletonTransformer):P(MON_DRACOLICH)/(MON_DRACOLICH);
-!!FU(tum_FixSkeletonTransformer):P(MON_BONE_DRAGON)/(MON_BONE_DRAGON);
-!!FU(tum_FixSkeletonTransformer):P(MON_GHOST_DRAGON)/(MON_BONE_DRAGON);
-!!FU(tum_FixSkeletonTransformer):P(MON_DIAMOND_DRAGON)/(MON_BONE_DRAGON);
-
-; TUM conversions
-!!if&i^Typhon_Third_Upgrade_Mod_Active^;
-  !!FU(tum_FixSkeletonTransformer):P(MON_PURE_DIAMOND_DRAGON)/(MON_BONE_DRAGON);
-  !!FU(tum_FixSkeletonTransformer):P(MON_RED_BONES_DRAGON)/(MON_BONE_DRAGON);
-  !!FU(tum_FixSkeletonTransformer):P(MON_NIGHTMARE_HYDRA)/(MON_BONE_DRAGON);
-!!en;
-
-!?FU(tum_FixSkeletonTransformer);
-!#VA(monBefore:x) (monAfter:x);
-
-!!VR(add:y):S(monBefore) *4 +v2;
-!!UN:C(add)/4/(monAfter);
-
 // Visisting for AI players - in a town with Skeleton Transformer built
 !?OB(OBJ_TOWN)/(TOWN_NECROPOLIS)&-1000;
 ; Check if skeleton transformer is built, store the result in 1

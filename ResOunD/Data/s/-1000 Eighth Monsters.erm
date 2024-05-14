@@ -22,6 +22,7 @@ ZVSE2
 ; ============ END SETTINGS ============
 
 
+// Main Script
 !?FU(eighth_RestrainValues);
 !!VRi^eighth_build8thDwellIntervalAi^:F1/(INT_MAX);
 !!VRi^eighth_recruit8thMaxGoldPctAi^:F1/100;
@@ -60,7 +61,7 @@ ZVSE2
 !?FU(OnStartOrLoad);
 !!if&i^eighth_on^;
   !!FU(eighth_Patch):P;
-  !!FU(eighth_RenPortalOfSum):P;
+  !!FU(eighth_RenamePortalOfSummoning):P;
   *!FU(eighth_CreateTownScreenHook):P;    [Test code]
 
   ; Customise here
@@ -68,8 +69,8 @@ ZVSE2
   !!SN:Vi^eighth_dwellReqDwells^/0/36/33/36/33/33/34/35/34/32; [id of required buildings for each factions]
 !!en;
 
-!!SN:Vi^eighth_8thMons^/0/(MON_LIGHT_TEMPLAR)/(MON_LIGHT_PALADIN)/(MON_DRYAD)/(MON_OAK_DRYAD)/(MON_DRAKE_GOLEM)/(MON_DRAGON_GOLEM)/(MON_SUCCUBUS)/(MON_LILIM)/(MON_WEREWOLF_TOW)/(MON_DIRE_WEREWOLF)/(MON_ILLITHID)/(MON_AHOON);
-!!SN:Vi^eighth_8thMons^/12/(MON_COATL)/(MON_QUERZALCOATL)/(MON_TROLL_HAG)/(MON_TROLL_WITCH)/(MON_TRITON)/(MON_ABYSSAL_TRITON);
+!!SN:Vi^eighth_8thMons^/0/(MON_LIGHT_TEMPLAR)/(MON_LIGHT_PALADIN)/(MON_DRYAD)/(MON_OAK_DRYAD)/(MON_DRAKE_GOLEM)/(MON_DRAGON_GOLEM)/(MON_SUCCUBUS)/(MON_LILIM)/(MON_WEREWOLF_TOW)/(MON_DIRE_WEREWOLF)/(MON_ILLITHID)/(MON_ALHOON);
+!!SN:Vi^eighth_8thMons^/12/(MON_COATL)/(MON_QUETZALCOATL)/(MON_TROLL_HAG)/(MON_TROLL_WITCH)/(MON_TRITON)/(MON_ABYSSAL_TRITON);
 
 !?FU(eighth_Patch);                     [Hawaiing]
 !!UN:C5016381/2/9195;
@@ -88,12 +89,18 @@ ZVSE2
 !!UN:C6130652/2/10987;
 !!UN:C6130709/2/8427;
 
-!?FU(eighth_RenPortalOfSum);
+!?FU(eighth_RenamePortalOfSummoning);
 ; rename Portal of Summoning to Banner Workshop
-!!SN:E7824928/1/770018;                 [770018 - ert index]
-!!UN:C6968620/4/v1;                     [name of Portal of Summoning]
-!!SN:E7824928/1/770019;
-!!UN:C6977892/4/v1;                     [description of Portal of Summoning]
+!!UN:C6968620/(UNC_INT)/?(ptr:y);       [name of Portal of Summoning]
+*!SN:B(ptr)/d/?s^eighth_patchStr1^;
+!!SN:B(ptr)/d/z770018;
+!!UN:C6977892/(UNC_INT)/?(ptr);         [description of Portal of Summoning]
+*!SN:B(ptr)/d/?s^eighth_patchStr2^;
+!!SN:B(ptr)/d/z770019;
+; Rename Portal of Summoning on opening town hall (just in case OSOS did not work correctly)
+!?FU(OnEnterTownHall)&i^eighth_on^;
+!!CA(CURRENT_TOWN):T?(townType:y);
+!!FU(eighth_RenamePortalOfSummoning)&(townType)=(TOWN_DUNGEON):P;
 
 ; Test code
 !?FU(eighth_CreateTownScreenHook);
@@ -810,6 +817,7 @@ ZVSE2
   !!FU(eighth_ManageMonSlotHint):P;
 !!el&i^mouse_item^=v1;
   !!FU(eighth_Manage8thBtnHint):P;
+  !!FU(eighth_ShowTownHint):P;
 !!en;
 
 !?FU(eighth_ManageMonSlotHint);
@@ -850,8 +858,6 @@ ZVSE2
 !!en;
 
 !!VRs^eighth_townHint^:S(hint);
-
-!!FU(eighth_ShowTownHint):P;
 
 !?FU(eighth_ShowTownHint);              [daemon_n]
 !!FU(H3Dlg_GetCurrentDlg):P?(rootDlg:y);

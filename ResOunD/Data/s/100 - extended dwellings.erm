@@ -253,6 +253,8 @@ ZVSE
 ; x2 - flags/optionss
 !!RD:I?y1/?y2/?y3;      y1 - dlg ID, y2 - town ID, y3 - dwelling ID (0..13)
 !!FU|y2=-1/y3=-1:E;     town ID and dwelling ID must be set, we handle only normal dialog
+!!FU|y2<0/y2>48:E;                      [needed for 8th unit in Kingdom Overview]
+
 !!RD:C0/?y20/?t/?y21;   y20 - type of creatures in slot 0, y21 - source of creatures in slot 0
 !!CA0/y2:T?y4;          y4 - town type
 !!VRy5:Sy2 *14 +y3;     y5 - monsters source ID
@@ -445,4 +447,3 @@ ZVSE
     !!SN:Mi^dex.dwellingsPopulation^/y11/k; set new population amount
   !!en;
 !!en:;
-

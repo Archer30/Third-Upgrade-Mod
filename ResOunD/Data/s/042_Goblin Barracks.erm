@@ -97,12 +97,23 @@ At the end of the mod search for Check_Forbidden_Artifacts and remove the code t
 
 !#VRi^CB_042_Replace_Objects^:S1;       (1=yes, 0=no. You should only chose "No" if you plan to create a custom map and place your CB yourself. With "No" the replace settings below will have no effect)
 
-!#VRi^CB_042_Replace_0_Type_Number^:S17;(Write here type number of the objects you want to search and replace. Input 0-231. Check ERM Help OB)
-!#VRi^CB_042_Replace_0_SubType_Number^:S21; (Write here subtype number of the objects you want to search and replace. Input 0-max Subtype. Check ERM Help OB)
-!#VRi^CB_042_Replace_0_Percentage^:S50; (The chance in % by which each object is replaced by the new Creature Bank. Input 0-100)
-!#VRi^CB_042_Replace_0_X_Offset^:S0; (Offset for the yellow entrance +-)
+!#VRi^CB_042_Replace_On_0^:S1; Dirt     (1=yes object can be placed on this terrain, 0=no, this object will not be replaced if the object is on this particular terrain)
+!#VRi^CB_042_Replace_On_1^:S1; Sand
+!#VRi^CB_042_Replace_On_2^:S1; Grass
+!#VRi^CB_042_Replace_On_3^:S1; Snow
+!#VRi^CB_042_Replace_On_4^:S1; Swamp
+!#VRi^CB_042_Replace_On_5^:S1; Rough
+!#VRi^CB_042_Replace_On_6^:S1; Subterranean
+!#VRi^CB_042_Replace_On_7^:S1; Lava
+!#VRi^CB_042_Replace_On_8^:S1; Water
+!#VRi^CB_042_Replace_On_9^:S1; Rock
 
-!#VRi^CB_042_Replace_1_Type_Number^:S-1;    
+!#VRi^CB_042_Replace_0_Type_Number^:S17;   (Write here type number of the objects you want to search and replace. Input 0-231. Check ERM Help OB)
+!#VRi^CB_042_Replace_0_SubType_Number^:S21; (Write here subtype number of the objects you want to search and replace. Input 0-max Subtype. Check ERM Help OB)
+!#VRi^CB_042_Replace_0_Percentage^:S50;    (The chance in % by which each object is replaced by the new Creature Bank. Input 0-100)
+!#VRi^CB_042_Replace_0_X_Offset^:S0;       (Offset for the yellow entrance +-)
+
+!#VRi^CB_042_Replace_1_Type_Number^:S-1; 
 !#VRi^CB_042_Replace_1_SubType_Number^:S-1;
 !#VRi^CB_042_Replace_1_Percentage^:S0;     
 !#VRi^CB_042_Replace_1_X_Offset^:S0;
@@ -139,7 +150,8 @@ At the end of the mod search for Check_Forbidden_Artifacts and remove the code t
 
 ******Misc********
 !#VRi^CB_042_Revisit^:S7;               (Write here the number of days after which the CB can be visited again for example after 28 days, 0 means disabled)
-!#VRi^CB_042_Custom_Growth^:S15;         (Write here the number in percent% in which the CB should increase its guard EVERY week. If you write 10 the growth is exactly like neutrals grow)
+!#VRi^CB_042_Custom_Growth^:S0;         (Write here the number in percent% in which the CB should increase its guard EVERY week. If you write 10 the growth is exactly like neutrals grow. Linear and Exponential growth can be active at the same time)
+!#VRi^CB_042_Custom_Growth_Linear^:S15;  (Write here the number of untis the CB should increase its guard EVERY week. If you write 25, this will be added to every stack in the CB every week. Linear and Exponential growth can be active at the same time)
 !#VRi^CB_042_Custom_Sound^:S1;          (1=yes, 0=no, if activated you need to find the correct sound file of the object you want to replace, use the SN trigger for it. That is necessary so that it can be replaced and your custom file can be played.)
 !#VRs^CB_042_CB_Sound^:S^MILITARY.wav^;    (Set the name of the sound file that should be played when visiting the object, only works when CB_042_Custom_Sound is set active)
 !#VRi^CB_042_Guards_Type_Slot_Upgrade_0^:S85; (-1 means disabled. Type in the number of which the first creature (Slot 0) should upgrade to. Chance that the creature in slot 0 gets upgraded if possible. 20%)
@@ -171,7 +183,7 @@ At the end of the mod search for Check_Forbidden_Artifacts and remove the code t
 !!if&y1=1:;
   !!VRy1:Si^CB_042_Set_Flag_%V998_%V999_%V1000^; (Check of this object was replaced and should be a CB)
   *!FU&y1=0:E;
-  !!HE-1:O?y2;                          (Get Hero Owner)
+  !!HE-1:O?y2;                          (Get Hero Owner)  
   !!OB998&y1=1/y2>=0/1000:Dy2;          (Disable Object for current player)
 !!en:;
 
@@ -297,6 +309,7 @@ At the end of the mod search for Check_Forbidden_Artifacts and remove the code t
 !!UN&y40>=0:P68/1;                      (Activate New Battlefield mod again)
 
 !!BA:O?y20/?y21;                        (Check Owner before Battle)
+!!FU&y20=-1:E;                          (If no owner after fight that means hero was defeated)
 !!VRy30:Si^CB_042_Attacker_Owner^;
 !!VRy30&-1000:Sy20;                     (Make Exception for AI)
 !!if&y20=y30:;                          (If Hero has same owner after fight means he has not lost the battle)
@@ -418,7 +431,6 @@ At the end of the mod search for Check_Forbidden_Artifacts and remove the code t
 !!if&y4>=0/y4<=999/y9>0/y9<=10000:;     (Creature Reward)
   !!VRy8:Si^CB_042_Guards_Type_Slot_0^; !!VRy8&y8=-1:Si^CB_042_Guards_Type_Slot_1^; !!VRy8&y8=-1:Si^CB_042_Guards_Type_Slot_2^; !!VRy8&y8=-1:Si^CB_042_Guards_Type_Slot_3^; !!VRy8&y8=-1:Si^CB_042_Guards_Type_Slot_4^;
   !!UN:N3/1/y8/2;
-
   *!VRy4:R0/0/13;                       (Generate Creature in the Range from x1 to x2)
   *!VRy80:S0R8*14+y4;                   (possibly for a specific faction)
   *!VRy4:Sy80;
@@ -473,7 +485,7 @@ At the end of the mod search for Check_Forbidden_Artifacts and remove the code t
   !!VRy13&y14>-1:Sy14;                  (If specific artifact was set override random generated artifact)
   *!VRy13:R0/146/155;                   (Generate Artifact in the Range from x1 to x2)
   !!UN:N0/2/y13;                        (Get the name of the Artifact)
-  !!IF&1000:Q1/8/y13/1^Having defeated the %Z1, you discover:^;
+  !!IF&1000:Q1/8/y13/1^Having defeated the %Z1, you discover:^;   
   !!HE-1:Ay13;                          (Give Artifact to Hero)
 
   !!VRy6:Si^CB_042_Reward_2_Artifacts_Class^;
@@ -610,46 +622,54 @@ At the end of the mod search for Check_Forbidden_Artifacts and remove the code t
 !!VRy50:Si^CB_042_Guards_Type_Slot_Upgrade_0^; (1=yes 0=no chance to upgrade is 20%)
 !!VRy52:Si^CB_042_Upgrade_Flag_%V998_%V999_%V1000^; (Was Set 1=true, 2=false)
 !!if&y52=1/y50>0:;
-!!VRy1:Sy50;
+  !!VRy1:Sy50;                          (if upgrade option was selected the first creature is upgraded type)
 !!en:;
+!!VRy2&y2>0/-1000:S10;                  (If the computer player attacks the amount of creatures will be reduced to 10 because he does not know about the amount of troops inside the chamber)
 !!BU&y1>=0/y2>0:Sy1/y2/15/1/0/0;        (Summon First creature number and type at position)
 
 !!VRy1:Si^CB_042_Guards_Type_Slot_1^;      
 !!VRy2:Si^CB_042_Guards_Number_Slot_1^;   
 !!VRy2&y70=1:*y3;                       (Multiplay number if increased size)
+!!VRy2&y2>0/-1000:S10;                 
 !!BU&y1>=0/y2>0:Sy1/y2/185/1/1/0;       (Summon second guards)
 
 !!VRy1:Si^CB_042_Guards_Type_Slot_2^;     
 !!VRy2:Si^CB_042_Guards_Number_Slot_2^;    
 !!VRy2&y70=1:*y3;
+!!VRy2&y2>0/-1000:S10;                 
 !!BU&y1>=0/y2>0/y99=0:Sy1/y2/172/1/2/0;
 !!BU&y1>=0/y2>0/y99=1:Sy1/y2/174/1/2/0; (Fix for Quick Combat because he cant summon there, idk why)
 
 !!VRy1:Si^CB_042_Guards_Type_Slot_3^;     
 !!VRy2:Si^CB_042_Guards_Number_Slot_3^;   
 !!VRy2&y70=1:*y3;
+!!VRy2&y2>0/-1000:S10;                 
 !!BU&y1>=0/y2>0/y99=0:Sy1/y2/2/1/3/0;
 !!BU&y1>=0/y2>0/y99=1:Sy1/y2/12/1/3/0;  (Fix for Quick Combat because he cant summon there, idk why)
 
 !!VRy1:Si^CB_042_Guards_Type_Slot_4^;      
 !!VRy2:Si^CB_042_Guards_Number_Slot_4^;   
 !!VRy2&y70=1:*y3;
+!!VRy2&y2>0/-1000:S10;                 
 !!BU&y1>=0/y2>0:Sy1/y2/100/1/4/0;
 
 !!VRy1:Si^CB_042_Guards_Type_Slot_5^;      
 !!VRy2:Si^CB_042_Guards_Number_Slot_5^;    
 !!VRy2&y70=1:*y3;
+!!VRy2&y2>0/-1000:S10;                 
 !!BU&y1>=0/y2>0/y99=0:Sy1/y2/87/1/5/0;
 !!BU&y1>=0/y2>0/y99=1:Sy1/y2/133/1/5/0; (Fix for Quick Combat because he cant summon there, idk why)
 
 !!VRy1:Si^CB_042_Guards_Type_Slot_6^;     
 !!VRy2:Si^CB_042_Guards_Number_Slot_6^;   
 !!VRy2&y70=1:*y3;
+!!VRy2&y2>0/-1000:S10;                 
 !!BU&y1>=0/y2>0:Sy1/y2/8/1/6/0;
 
 !!VRy1:Si^CB_042_Guards_Type_Slot_7^;     
 !!VRy2:Si^CB_042_Guards_Number_Slot_7^;   
 !!VRy2&y70=1:*y3;
+!!VRy2&y2>0/-1000:S10;                 
 !!BU&y1>=0/y2>0:Sy1/y2/178/1/7/0;
 
 !!VRy1:Si^CB_042_Stack_Experience^;
@@ -1087,9 +1107,7 @@ Guarded by %Z1 {(%Y30-%Y31)} of %Z-1, %Z2 {(%Y32-%Y33)} of %Z-2, %Z3 {(%Y34-%Y35
 
 ****************************************************************************************************
 *Replace Objects when map starts
-!?FU(OnEveryDay)&i^tum_replaceObj_on^;
-!!UN:P302/?y30;                         [Check if Dwelling Banks option is enabled]
-!!FU&y30<>(TRUE):E;
+!?FU(OnEveryDay);
 
 !!if&x1=1/x3=1:;                   (Run once at day 1)
   !!VRy1:Si^CB_042_Replace_Objects^; !!FU&y1=0:E;
@@ -1106,7 +1124,7 @@ Guarded by %Z1 {(%Y30-%Y31)} of %Z-1, %Z2 {(%Y32-%Y33)} of %Z-2, %Z3 {(%Y34-%Y35
     !!VRy7:Si^CB_042_Replace_%Vi_X_Offset^;
     !!if&y3>=0/y4>=0/y5>0:;
     !!UN:Uy3/-1/?y6;
-    !!VRv2:S-1;
+    !!VRv1:S-1;
     !!DO(CB_042_Replace)/1/y6/1:Py3/y4/y1/y2/y5/y7;
     !!en:;
   !!en:;
@@ -1115,24 +1133,27 @@ Guarded by %Z1 {(%Y30-%Y31)} of %Z-1, %Z2 {(%Y32-%Y33)} of %Z-2, %Z3 {(%Y34-%Y35
 
 ********************************************************************************
 !?FU(CB_042_Replace);
+x1=Type to replace, x2=Subtype to replace, x3=Type of CB, x4=SubType of CB, x5=Chance to replace, x6=Offset
 
-!!UN:Ux1/-1/-1/2;
+!!UN:Ux1/-1/-1/1;
 
 !!VRy2:S0T99;                           (Calc chance to replace)
-!!if&x5>y2:;
-!!OBv2/v3/v4:T?y5 U?y6;                 (Get Type and Subtype)
+!!if&x5>y2:;                            (if chance is higher than roll replace object
+!!OBv1/v2/v3:T?y5 U?y6;                 (Get Type and Subtype)
+!!TRv1/v2/v3:T?y40;                     (get type of terrain of object on coordinates)
+!!VRy50:Si^CB_042_Replace_On_%Y40^; !!FU&y50=0:E; (Exit if the replacement on this terrain is no allowed)
 
-!!VRy30:Sv2+x6;                         (Offset in x) 
-!!UN:X?y10/?y20; !!VRy10:-1;            Get Map size to prevent wrong placement of x-coordinate
+!!VRy30:Sv1+x6;                         (Offset in x) 
+!!UN:X?y10/?y20; !!VRy10:-1;            (Get Map size to prevent wrong placement of x-coordinate
 
-!!if&x1=y5/x2=y6/y30<=y10/y30>=0:;      If type and subtype match and if object is not outside of map
-  *!OBv2/v3/v4&x1=y5/x2=y6:B;           (Remove a description hint for an object.)
-  !!UN:Ov2/v3/v4/0/0;                   (delete old object)
-  !!OBv2/v3/v4:C-1;                     (Clear Control Word of deleted Object)
-  !!VRv2:+x6;                           (Offset in x)
-  !!UN:Iv2/v3/v4/x3/x4/x3/x4/-1/0;      place new object
-  !!POv2/v3/v4:N0;                      Set Control word of object to zero  
-  !!VRi^CB_042_Set_Flag_%v2_%v3_%v4^:S1;           
+!!if&x1=y5/x2=y6/y30<=y10/y30>=0:;      (If type and subtype match and if object is not outside of map)
+  *!OBv1/v2/v3&x1=y5/x2=y6:B;           (Remove a description hint for an object.)
+  !!UN:Ov1/v2/v3/0/0;                   (delete old object)
+  !!OBv1/v2/v3:C-1;                     (Clear Control Word of deleted Object)
+  !!VRv1:+x6;                           (Offset in x)
+  !!UN:Iv1/v2/v3/x3/x4/x3/x4/-1/0;      (place new object
+  !!POv1/v2/v3:N0;                      (Set Control word of object to zero  
+  !!VRi^CB_042_Set_Flag_%V1_%V2_%V3^:S1;           
 !!en:;
 !!en:;
 
@@ -1173,15 +1194,25 @@ Guarded by %Z1 {(%Y30-%Y31)} of %Z-1, %Z2 {(%Y32-%Y33)} of %Z-2, %Z3 {(%Y34-%Y35
 
 !?FU(OnEveryDay);
 *Trigger every day once to possibly reset the creature bank*
-*Every Week increase the number of the creatures by %value
+*Every Week increase the number of the creatures by %value with Exponentail Growth AND OR Linear
 
 !!if&x3=1/x1>1/x5=0:;                   (Run every day once)
   !!VRy20:Si^CB_042_Custom_Growth^;     (check if option is enabled)
-  !!if&x2=7/y20>0:;     
+  !!if&x2=7/y20>0:;                     (if the exponential growth option is active and it is the last day of the week)
+    !!VRy20:+100;                       (make percentage based)
     !!re i/0/7/1:;                      (loop through all slots)
-    !!VRy1:Si^CB_042_Guards_Number_Slot_%Vi^;   
-    !!VRy1:+y20; NEW!
-    !!VRi^CB_042_Guards_Number_Slot_%Vi^:Sy1; (set increased guards)
+      !!VRy1:Si^CB_042_Guards_Number_Slot_%Vi^;
+      !!VRy1:*y20:100;                  (multiply guards by percentag value
+      !!VRi^CB_042_Guards_Number_Slot_%Vi^:Sy1; (set increased guards)
+    !!en:; 
+  !!en:;
+
+  !!VRy20:Si^CB_042_Custom_Growth_Linear^; (check if option is enabled)
+  !!if&x2=7/y20>0:;                     (if the linear growth option is active and it is the last day of the week)
+    !!re i/0/7/1:;                      (loop through all slots)
+      !!VRy1:Si^CB_042_Guards_Number_Slot_%Vi^;
+      !!VRy1:+y20;                      (add number to guards)
+      !!VRi^CB_042_Guards_Number_Slot_%Vi^:Sy1; (set increased guards)
     !!en:; 
   !!en:;
 
@@ -1193,20 +1224,20 @@ Guarded by %Z1 {(%Y30-%Y31)} of %Z-1, %Z2 {(%Y32-%Y33)} of %Z-2, %Z3 {(%Y34-%Y35
   !!VRy5:Sc;
          
   !!UN:Uy1/-1/?y6;                        (Get amount of objects on the map)
-  !!VRv2:S-1;
+  !!VRv1:S-1;
   !!DO(CB_042_Revisit)/1/y6/1:Py1/y2/y10/y5/y7; (Pass Type and Subtype and intervall in days and current gameday)
 !!en:;
 
 
 !?FU(CB_042_Revisit);
 
-!!UN:Ux1/-1/-1/2;
-!!OBv2/v3/v4:T?y5 U?y6;                 (Get Type and Subtype)
+!!UN:Ux1/-1/-1/1;
+!!OBv1/v2/v3:T?y5 U?y6;                 (Get Type and Subtype)
 !!if&x1=y5/x2=y6:;                      (If same type and at that coordinate was a replace, and cleared at least once)
-  !!VRy1:Si^CB_042_Day_Cleared_%v2_%v3_%v4^; (get day on which the CB was cleared)
+  !!VRy1:Si^CB_042_Day_Cleared_%V1_%V2_%V3^; (get day on which the CB was cleared)
   !!VRy1:Sy1+x3;                        (Set to day on which was cleared + resetting intervall)
-  !!POv2/v3/v4:N?y3;                    (Check PO:N value  1 means visited)
-  !!POv2/v3/v4&y1<=x4/y3=1:N0;          (Reset PO value to 0, means not taken)
+  !!POv1/v2/v3:N?y3;                    (Check PO:N value  1 means visited)
+  !!POv1/v2/v3&y1<=x4/y3=1:N0;          (Reset PO value to 0, means not taken)
 !!en:;                                      
 
 !#VA(x:x) (y:x) (z:x) (objType:x) (objSubtype:x);

@@ -9,11 +9,12 @@ ZVSE2
 !#SN:W^Hero_level_90^/1;                                init
 !#SN:W^init_pandora_90^/-1;                             [haven't initialized boxes]
 
-; Enable new pandora only when object replacement is enabled
+; Enable new pandora only when object replacement is enabled, the map is a random map
 !#UN:P195/?(wogOption:y);
-!#VRi^pandora_enabled^&(wogOption):S(TRUE);
+!#FU(tum_CheckRandMap):P?(isRandomMap:y);
+!#VRi^pandora_enabled^&(wogOption)/(isRandomMap):S(TRUE);
 
-!?FU(OnStartOrLoad);
+!?FU(OnStartOrLoad)&i^pandora_enabled^;
 !!SN:L^erm_hooker.era^/?(hooker:y);
 !!FU&(hooker)=0:E;
 
@@ -73,9 +74,8 @@ ZVSE2
 **************************
 *****************************значение y34=6, игрок получает ресурсы каждого вида
 !?FU(Pandora90_main);
-!!VRi^Box_variant_90^:S12;
-
 !!SN:W^opt_149_mythril^/?y1 W^Box_variant_90^/?y34 W^Bless_variant_90^/?y35;
+
 !!if&203/y34=6;
  !!HE-1:S13/?y61;                                                               check estates
  !!VRy62:S7 R6;
@@ -350,6 +350,7 @@ ZVSE2
 **************************
 *****************************значение y34=16, игрок получает артефакты
 !!SN:W^Box_variant_90^/?y34 W^Bless_variant_90^/?y35;                           reget var (if was changed in var 12)
+
 !!if&203/y34=16;
  !!FU(pandora90_art_disp):P3/0;                                                 Give 3 art
  !!HE-1:S11/?y61;                                                               check eagle eye -> y61
@@ -396,10 +397,10 @@ ZVSE2
 !!en;
 **************************
 ************************** Battlefield round trigger**********************
-!?BR&203/1000/i^pandora_enabled^;
+!?FU(OnAfterTacticsPhase)&203/1000/i^pandora_enabled^;
 !!SN:W^Box_variant_90^/?y34 W^Bless_variant_90^/?y35 W^Hero_level_90^/?y36;
+
 !!if&y34=12;
- !!if&v997=0;                    Round Zero
   !!BU:S183/1/159/1/-1/0;         set pal
   !!BU:E159/?y61;
   !!if&y35=0;
@@ -428,7 +429,7 @@ ZVSE2
   !!el;
    !!BMy61:A30 D60 E3 H5100 S18 U1/250 U2/370 U3/0;
   !!en;
-  !!MA:X164/?i;
+  !!MA:X184/?i;
   !!VRi:-2;
   !!VRi:+4326416; +16 +1024 +131072 +4194304;
   !!BMy61:Fi;
@@ -532,10 +533,18 @@ ZVSE2
   !!MA:X191/?i;
   !!VRi:+4379652; +4 +1024 +4096 +16384 +32768 +131072 +4194304;
   !!BMy61:Fi;
- !!en;
+
+  ; Disable commander spells
+  !!re i/(BATTLE_DEFENDER_STACK_FIRST)/(BATTLE_DEFENDER_STACK_LAST);
+    !!BMi:T?(type:y);
+
+    !!if&(type)>=(MON_COMMANDER_FIRST_D)/(type)<=(MON_COMMANDER_LAST_D);
+      !!BMi:E0;
+    !!en;
+  !!en;
 !!en;
 *****************************Post-battle trigger**************************
-!?BA53&203/i^pandora_enabled^;
+!?FU(OnAfterBattleUniversal)&203/i^pandora_enabled^;
 !!SN:W^Box_variant_90^/?y34 W^Bless_variant_90^/?y35 W^Hero_level_90^/?y36;
 !!if&y34=12;
  !!HE-1:O?t;           Выясняем, жив ли герой, в переменную t
@@ -576,7 +585,8 @@ ZVSE2
     !!IF&1000:Q1/8/y36/8/y37/8/y38/1/z4;
    !!en;
   !!en;
-  !!SN:W^Box_variant_90^/16;                             Set variant to 16 for additional artifacts
+  ; Disabled by Archer30 - the reward is already good enough
+  *!SN:W^Box_variant_90^/16;                             Set variant to 16 for additional artifacts
 *****Asking for money or experience*****
   !!SN&1000:T^ep.battle_box_q1^/?z2;
   !!IF&1000:Q1/6/50000/17/40000/7/z2;                    Displaying choise
@@ -595,8 +605,21 @@ ZVSE2
 *
 *****************************Functions to set box************************************
 !?FU(pandora90_give_abil);           [for ability to give - значение y34=12 герой атакован and y35=1 *Azure dragons*]
-!!VRk:S0 R6;                         [random slot # to start from]
-!!DO(pandora90_slot)/0/6/1:P;        [find a slot with a creature]
+; Get a random valid monster from the hero's army
+!!FU(NewIntArray):P?(heroMons:y);
+
+!!re i/(ARMY_SLOT_FIRST)/(ARMY_SLOT_LAST);
+  !!HE(CURRENT_HERO):C0/i/?(mon:y)/?(num:y);
+
+  !!FU(Array_Push)&(mon)>(NO_MON)/(num)>0:P(heroMons)/i;
+!!en;
+
+!!SN:M(heroMons)/?(size:y);
+!!FU&(size)=0:E;
+
+!!VR(lastIndex:y):S(size) -1;
+!!VRl:R0/0/(lastIndex);
+
 *
 !!HE-1:C0/l/?j/?i;        [get j type i q-ty of our random slot creature]
 !!UN&j>=0/i>0:N3/1/j/1;   [get plural name of creature into z1]
@@ -633,9 +656,11 @@ ZVSE2
 !!VRy1:&524288;
 !!VRy5:Sy11;    [Check for Extended Attack]
 !!VRy5:&8;
+!!FU(WOG_44_CheckIfMonDrainsLife):Pj/?y30;
 !!SN&y1=0/y5=0:T^ep.newabil_box_m3^/?z4;
 !!VRz4&y1=524288:S^^;
 !!VRz4&y5=8:S^^;
+!!VRz4&y30:S^^;
 !!VRy4&y1=524288/y4=3/-1000:S4;
 !!VRy4&y1=8/y4=3:S4;
 !!VRy99|y1=8/y1=524288:+1;
@@ -668,10 +693,14 @@ ZVSE2
 !!VRy4&y1=262144/y4=7/-1000:S0;
 !!VRy99&y1=262144:+1;
 
+!!SN:T^era.buttons.cancel^/?z11;
+
 !!FU&y99>6:E;     If all abilities counted -> exit
 !!SN&203/1000:T^ep.newabil_box_m8^/?z10/^mon1^/z1;
 !!IF&203/1000:M1/10;
-!!IF&1000:G1/2/0/9/2/3/4/5/6/7/8/0/0/0/0/0;         диалог с выбором
+!!IF&1000:G1/2/128/9/2/3/4/5/6/7/8/11/0/0/0/0;         диалог с выбором
+!!FU&v2=128:E;
+
 *таблица способностей*
 !!VRy4&v2=1:S1; !!VRy4&v2=2:S2; !!VRy4&v2=4:S3; !!VRy4&v2=8:S4; !!VRy4&v2=16:S5; !!VRy4&v2=32:S6; !!VRy4&v2=64:S7;
 *
@@ -683,10 +712,11 @@ ZVSE2
 !!VRy2&y4=4:S16384;             [Immunity to Fire Spells: y2]
 !!VRy2&y4=5:S1024;              [Immunity to Mind Spells: y2]
 !!VRy2&y4=6:S2;                 [Flying: y2]
-!!VRy2&y4=7:S262144;            [Undead: y2]
+!!VRy2&y4=7:S(MON_FLAG_UNDEAD) +(MON_FLAG_NO_MORALE) +(MON_FLAG_ALIVE);            [Undead: y2]
 *установка способностей*
-!!if&y4>0/y4<8; 1
+!!if&y4>0/y4<8;
              !!VRy11:|y2;                              [OR Creature Flags (y11) with Special Ability bit (y2): y11]
+             !!VRy11&y4=7:- (MON_FLAG_ALIVE);          [Remove possible Alive flag if Undead was chosen]
              !!MA:Xj/y11;                              [Set updated Creature Flags: y11]
                         ; Disable renaming feature as it could conflict with Emerald Tower / It adds up all the prefixes
                          *!VRy10:Sv5;
@@ -768,14 +798,6 @@ ZVSE2
 !!VRy1:Sx1 +x3;  !!VRy2:Sx2 +x4;
 !!MA&y1>0/y2>0:Ij/y1 Fj/y2; unit_level y6 AI_Value y7 AI_fight_value y8
 ******************
-* function to find a slot
-!?FU(pandora90_slot);28091;
-!!VRy1:Sk;
-!!VRy1:%7;                         [now we have a usable slot number]
-!!HE-1:C0/y1/?i/?j;                [get i type j qty]
-!!VRl&i<>-1/j>0:Sy1;               [it's got something!]
-!!VRk:+1;                          [next slot]
-******************
 * function to give artifacts and display text
 !?FU(pandora90_art_disp);
 !!DO(pandora90_art_12)/1/x1/1:P2/7;[Loop for minor/major artifacts]    1-3
@@ -827,5 +849,5 @@ ZVSE2
 ****************
 !?FU(OnAfterLoadGame)&i^pandora_enabled^;    [Fix battle save compatibility - Archer]
 !!VRi^Box_variant_90^:S-1;                              init
+!!IF:V203/0;
 *****************************************************End******************************************************************
-

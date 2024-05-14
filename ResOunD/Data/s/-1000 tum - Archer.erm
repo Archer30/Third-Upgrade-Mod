@@ -26,28 +26,90 @@ ZVSE2
   !!MA:C(MON_VOID_ELEMENTAL)/(RES_SULFUR)/1;
 !!en;
 
-// Berserker Chaotic Flies
-!!UN:P(WOG_OPT_STACK_EXPERIENCE)/?(stackExp:y) P46/?(berserkerFlies:y);
-
-!!if&(stackExp)/(berserkerFlies);
-  !!VR(availSlot:y):S(NULL);
-  !!EA(MON_CHAOTIC_DRAGON_FLY):F0/?(availSlot:y);
-  !!EA(MON_CHAOTIC_DRAGON_FLY)&(availSlot)>-1:B(availSlot)/1/102/98/1/1/1/1/1/1/1/1/1/1/1;
-  !!EA(MON_CHAOTIC_DRAGON_FLY):F0/?(availSlot);
-  !!EA(MON_CHAOTIC_DRAGON_FLY)&(availSlot)>-1:B(availSlot)/1/99/59/20/25/30/35/40/45/50/55/60/65/70;
-!!en;
-
 // Emerald Tower
+; Third upgrade Vampire has been included in the original script
 !?FU(WOG_44_CheckIfMonDrainsLife);
 !#VA(mon:x) (result:x);
 
+!!VR(result)&(mon)=(MON_RED_BONES_DRAGON):S(TRUE);
+!!VR(result)&(mon)=(MON_RED_SKELETON):S(TRUE);
 !!VR(result)&(mon)=(MON_SHADOW_DRAGON):S(TRUE);
+
+; Fourth upgrade Devil has been included in the original script
+!?FU(WOG_44_CheckIfMonCanTeleport);
+!#VA(mon:x) (result:x);
+
+!!VR(result)|(mon)=(MON_FALLEN_ANGEL)/(mon)=(MON_ANGEL_OF_DEATH):S(TRUE);
+
+// Berserker Chaotic Flies
+!?FU(WOG_46_CheckIfMonIsEligible);
+!#VA(mon:x) (result:x);
+
+!!VR(result)&(mon)=(MON_CHAOTIC_DRAGON_FLY):S(TRUE);
+
+!?FU(OnAfterErmInstructions);
+; The code has to be in this way as Majaczek hooked my address
+!!UN:P46/?(berserkerFlies:y);
+
+!!if&(berserkerFlies);
+  !!SN:L^amethyst2_4.dll^/?(amethyst:y);
+
+  !!if&(amethyst)<>0;
+    !!SN:A(amethyst)/^ChangeCreatureTable^/?(address:y);
+
+    !!if&(address)<>0;
+      !!SN:E(address)/1/(MON_DRAGON_FLY)/^StrikeAndReturn=1^ E(address)/1/(MON_CHAOTIC_DRAGON_FLY)/^StrikeAndReturn=1^;
+    !!en;
+  !!en;
+!!en;
+
+// Enhanced Artifact II
+!?FU(WOG_71_GetDiploBonus);
+!#VA(hero:x) (result:x);
+
+!!HE(hero):A2/(ART_DIPLOMATS_CLOAK)/?(has:y)/?(equipped:y);
+!!VR(result)&(equipped)>0:+3;
+
+// Enhanced Artifact I
+!?FU(WOG_102_GetSurcoatBonus);
+!#VA(hero:x) (artBonus:x);
+
+!!HE(hero):A2/(ART_PENDANT_OF_REFLECTION)/?(has:y)/?(equipped:y);
+!!VR(artBonus)&(equipped)>0:S1;
+
+// Enable TUM dwelling revisiting only when Neutral Town and Creature Bank Growth is enabled
+!?FU(OnAfterErmInstructions);
+!!UN:P235/?(bankGrowth:y);
+
+; Disable TUM CB revisiting if Neutral Town and Creature Bank Growth is not enabled
+; Skip Dwelling Banks as they are determined to be reset every week
+!!if&(bankGrowth)<>(TRUE);
+  !!re i/0/99;                          [99 - the max number to loop, currently TUM has 62 banks, this should be enough for a while]
+    !!if&i<10;
+      !!VRi^CB_00%i_Revisit^&i^CB_00%i_Revisit^>7:S0;
+    !!el&i>=10/i<100;
+      !!VRi^CB_0%i_Revisit^&i^CB_0%i_Revisit^>7:S0;
+    !!en;
+  !!en;
+!!en;
 
 *************************************
 **** Era Scripts Compatibilities ****
 *************************************
 // The following lines must be executed later than WoG Scripts
 !?FU(OnAfterErmInstructions);
+// Elite Lizards Ranged Retaliation
+!!UN:P350/?(lizardRangedRetal:y);
+
+!!if&(lizardRangedRetal);
+  !!SN:H^monname^/(MON_ELITE_LIZARD)/2/?(desc:z);
+  !!SN:H^monname^/(MON_ELITE_LIZARD)/2/^%(desc)%T(es.350.desc)^;
+
+  !!MA:F(MON_ELITE_LIZARD)/?(fv:y);
+  !!VR(fv):*105 :100;
+  !!MA:F(MON_ELITE_LIZARD)/(fv);
+!!en;
+
 // Demonic Rage
 !!UN:P750/?(demonicRage:y);
 
@@ -58,6 +120,20 @@ ZVSE2
   !!MA:F(MON_SHARP_HORNED_DEMON)/?(fv:y);
   !!VR(fv):*110 :100;
   !!MA:F(MON_SHARP_HORNED_DEMON)/(fv);
+!!en;
+
+// Cutthroats (TUM Reborn only)
+!!if&i^tum_reborn_on^;
+  !!UN:P758/?(cutthroat:y);
+
+  !!if&(cutthroat);
+    !!SN:H^monname^/(MON_ASSASSIN)/2/?(desc);
+    !!SN:H^monname^/(MON_ASSASSIN)/2/^%(desc)%T(es.758.desc)^;
+
+    !!MA:F(MON_ASSASSIN)/?(fv) X(MON_ASSASSIN)/d|(MON_FLAG_NO_MORALE);
+    !!VR(fv):*105 :100;
+    !!MA:F(MON_ASSASSIN)/(fv);
+  !!en;
 !!en;
 
 // Devils Sacrificing
@@ -73,24 +149,38 @@ ZVSE2
 !!UN:P761/?(dwarvesReinforcement:y);
 
 !!if&(dwarvesReinforcement);
-  !!SN:H^monname^/(MON_BERSERKER_DWARF)/2/?(desc:z);
+  !!SN:H^monname^/(MON_BERSERKER_DWARF)/2/?(desc);
   !!SN:H^monname^/(MON_BERSERKER_DWARF)/2/^%(desc)%T(es.761.desc)^;
 
-  !!MA:F(MON_BERSERKER_DWARF)/?(fv:y);
+  !!MA:F(MON_BERSERKER_DWARF)/?(fv);
   !!VR(fv):*105 :100;
   !!MA:F(MON_BERSERKER_DWARF)/(fv);
 !!en;
 
-// Blocking Spectres
-!!UN:P(WOG_OPT_STACK_EXPERIENCE)/?(stackExp:y) P822/?(specterBlock:y);
+// Ghoul-Flesheaters (TUM Reborn only)
+!!if&i^tum_reborn_on^;
+  !!UN:P762/?(ghoulFleshEater:y);
 
-!!if&(stackExp)/(specterBlock);
-  !!EA(MON_SPECTER):F0/?(availSlot:y);
-  !!EA(MON_SPECTER)&(availSlot)>-1:B(availSlot)/1/76/99/0/5/10/15/20/25/30/35/40/45/50/50;
+  !!if&(ghoulFleshEater);
+    !!SN:H^monname^/(MON_GHOUL)/2/?(desc);
+    !!SN:H^monname^/(MON_GHOUL)/2/^%(desc)%T(es.762.desc)^;
 
-  !!MA:P(MON_SPECTER)/?(hp:y);
+    !!MA:F(MON_GHOUL)/?(fv);
+    !!VR(fv):*105 :100;
+    !!MA:F(MON_GHOUL)/(fv);
+  !!en;
+!!en;
+
+// Blocking Specters
+!!UN:P822/?(wraithBlock:y);
+
+!!if&(wraithBlock);
+  !!SN:H^monname^/(MON_SPECTRE)/2/?(desc);
+  !!SN:H^monname^/(MON_SPECTRE)/2/^%(desc)%T(es.822.wraithDesc)^;
+
+  !!MA:P(MON_SPECTRE)/?(hp:y);
   !!VR(newHp:y):S(hp) :6 *5;
-  !!MA:P(MON_SPECTER)/(newHp);
+  !!MA:P(MON_SPECTRE)/(newHp);
 !!en;
 
 // Conflux Balancing
@@ -115,15 +205,41 @@ ZVSE2
   !!FU(ES_781_ConvertMonToElem):P(MON_DIVINE_PHOENIX);
 !!en;
 
-// Inferno Balancing
-!!UN:P825/?(infernoBalancing:y);
-!!MA&(infernoBalancing):F(MON_WINGED_MAGOG)/d|(MON_FLAG_ATTACKS_TWICE);
+// Gnoll Shamans Strike First
+!!UN:P996/?(gnollStrikeFirst:y);
+
+!!if&(gnollStrikeFirst);
+  !!SN:H^monname^/(MON_GNOLL_SHAMAN)/2/?(desc);
+  !!SN:H^monname^/(MON_GNOLL_SHAMAN)/2/^%(desc)%T(es.996.desc)^;
+
+  !!MA:F(MON_GNOLL_SHAMAN)/?(fv);
+  !!VR(fv):*105 :100;
+  !!MA:F(MON_GNOLL_SHAMAN)/(fv);
+!!en;
+
+// Elite Lizards Ranged Retaliation
+!?FU(ES_350_CheckIfMonIsEligible);
+!#VA(mon:x) (result:x);
+
+!!VR(result)&(mon)=(MON_ELITE_LIZARD):S(TRUE);
+
+// Chasm Dragon new Veil of Darkness
+!?FU(ES_351_CheckIfMonIsEligible);
+!#VA(mon:x) (result:x);
+
+!!VR(result)&(mon)=(MON_CHASM_DRAGON):S(TRUE);
 
 // Demonic Rage
 !?FU(ES_750_CheckIfMonIsEligible);
 !#VA(mon:x) (result:x);
 
 !!VR(result)&(mon)=(MON_SHARP_HORNED_DEMON):S(TRUE);
+
+// Cutthroats (TUM Reborn only)
+!?FU(ES_758_CheckIfMonIsEligible)&i^tum_reborn_on^;
+!#VA(mon:x) (result:x);
+
+!!VR(result)&(mon)=(MON_ASSASSIN):S(TRUE);
 
 // Devils Sacrificing
 !?FU(ES_759_CheckIfMonIsEligible);
@@ -137,13 +253,39 @@ ZVSE2
 
 !!VR(result)&(mon)=(MON_BERSERKER_DWARF):S(TRUE);
 
+// Ghoul-Flesheaters (TUM Reborn only)
+!?FU(ES_762_CheckIfMonIsEligible)&i^tum_reborn_on^;
+!#VA(mon:x) (result:x);
+
+!!VR(result)&(mon)=(MON_GHOUL):S(TRUE);
+
+// Strong Resistance
+!?FU(ES_777_GetArtifactBonus);
+!#VA(hero:x) (bonus:x);
+
+!!HE(hero):A2/(ART_PENDANT_OF_REFLECTION)/?(has:y)/?(equipped:y);
+!!VR(bonus)&(equipped):+6;
+
+// Diplomatic Bargain
+!?FU(ES_786_GetDiscountLevel);
+!#VA(discount:x);
+
+!!HE(CURRENT_HERO):A2/(ART_DIPLOMATS_CLOAK)/?(has:y)/?(equipped:y);
+!!VR(discount)&(equipped)>0:+3;
+
+// Blocking Specters
+!?FU(ES_822_CheckIfMonHasBlock);
+!#VA(mon:x) (result:x);
+
+!!VR(result)&(mon)=(MON_SPECTRE):S(TRUE);
+
 // Ranged Death Stare
 !?FU(ES_995_CheckIfMonIsEligible);
 !#VA(mon:x) (result:x);
 
 !!VR(result)&(mon)=(MON_CATOBLEPAS):S(TRUE);
 
-// Gnoll Shamans Stike First
+// Gnoll Shamans Strike First
 !?FU(ES_996_CheckIfMonIsEligible);
 !#VA(mon:x) (result:x);
 
@@ -162,48 +304,6 @@ ZVSE2
 !?FU(OnAfterErmInited);
 !!MA:O(MON_DIRE_WEREWOLF)/(TOWN_NECROPOLIS);
 
-********************************************************
-**** Enable Horn of the Abyss (artifact) for Utopia ****
-********************************************************
-; Allows HotA to be generated as one of the Utopia reward
-!?OB(OBJ_DRAGON_UTOPIA);
-!!FU(tum_SetHotAAvailability):P(TRUE);
-
-!$OB(OBJ_DRAGON_UTOPIA);
-!!FU(tum_SetHotAAvailability):P(FALSE);
-
-; Rotton Dragon Valley
-!?OB(OBJ_NEW_WOG_OBJECTS)/83;
-!!FU(tum_SetHotAAvailability):P(TRUE);
-
-!$OB(OBJ_NEW_WOG_OBJECTS)/83;
-!!FU(tum_SetHotAAvailability):P(FALSE);
-
-; Magic Utopia
-!?OB(OBJ_NEW_WOG_OBJECTS)/84;
-!!FU(tum_SetHotAAvailability):P(TRUE);
-
-!$OB(OBJ_NEW_WOG_OBJECTS)/84;
-!!FU(tum_SetHotAAvailability):P(FALSE);
-
-; Ultimate Dragon Utopia
-!?OB(OBJ_NEW_WOG_OBJECTS)/115;
-!!FU(tum_SetHotAAvailability):P(TRUE);
-
-!$OB(OBJ_NEW_WOG_OBJECTS)/115;
-!!FU(tum_SetHotAAvailability):P(FALSE);
-
-!?FU(tum_SetHotAAvailability)&i^tum_emerald_on^;
-!#VA(isAvail:x);
-
-!!if&(isAvail);
-  !!UN:A(ART_HORN_OF_THE_ABYSS)/0;
-  !!UN:A(ART_HORN_OF_THE_ABYSS)/3/(ART_LEVEL_RELIC);
-!!el;
-  !!UN:A(ART_HORN_OF_THE_ABYSS)/1;
-  !!UN:A(ART_HORN_OF_THE_ABYSS)/3/(ART_LEVEL_SPECIAL);
-!!en;
-
 ***************************************************
 **** Match new monsters with their lower forms ****
 ***************************************************
@@ -220,6 +320,10 @@ ZVSE2
 !!MA:O(MON_FAERIE_DRAGON)/?(faction);
 !!MA:O(MON_PRIMAL_FAERIE_DRAGON)/(faction);
 
+; Rust Dragon
+!!MA:O(MON_RUST_DRAGON)/?(faction);
+!!MA:O(MON_SULFIDE_DRAGON)/(faction);
+
 ; Enchanter
 !!MA:O(MON_ENCHANTER)/?(faction);
 !!MA:O(MON_SPELLWEAVER)/(faction);
@@ -227,7 +331,6 @@ ZVSE2
 ; Peasant
 !!MA:O(MON_PEASANT)/?(faction);
 !!MA:O(MON_CONSCRIPT)/(faction);
-!!MA:O(MON_SQUIRE)/(faction);
 
 ; Rogue
 !!MA:O(MON_ROGUE)/?(faction);
@@ -255,95 +358,275 @@ ZVSE2
   !!EAi&(fightValue)>=(bloodFightValue):L(r10Exp) P(topExp);
 !!en;
 
-*******************************************************
-**** Fix Astral Spirit summoning massive Air Elem. ****
-*******************************************************
-; Remove spells of Astral Spirits without a hero
-!?FU(OnBattleRound)&i^battle_round^=0/i^battle_hero_1^=(NO_HERO)/i^battle_ai_1^;
-!!re i/(BATTLE_DEFENDER_STACK_FIRST)/(BATTLE_DEFENDER_STACK_LAST);
-  !!BMi:T?(type:y);
+***************************************************
+**** Bad fix: Fix Artifact levels and bannings ****
+***************************************************
+// Fix UN:A not bannings arifacts (emerald problem) by setting banned artifacts to "special" level to ban them
+// This script must be executed later than 53 map options with ! #
+!?FU(tum_FixArtifactBanning);
+; Fix WoG artifact levels
+; Note that this function doesn't work 100% so we have another one executed OnEveryDay
+*!FU(tum_FixWoGArtifactLevels):P;
 
-  !!BMi&(type)=(MON_ASTRAL_SPIRIT_D):E0;
+; Fix Highlight slot and lock not being disabled
+!!UN:A(ART_HIGHLIGHTED_SLOT)/(TRUE);
+!!UN:A(ART_ARTIFACT_LOCK)/(TRUE);
+
+!!FU(GetMaxArtifactId):P?(lastArt:y);
+
+!!re i/(ART_FIRST)/(lastArt);
+  !!if&i<=(ART_FIRST_AID_TENT);
+    !!UN:Ai/3/?(level:y);
+    !!UN&(level)=(ART_LEVEL_SPECIAL):Ai/(TRUE);
+    ; Set artifacts as special if banned
+  !!el&i>(ART_FIRST_AID_TENT)/i<=(ART_LAST_WOG);
+    !!UN:Ai/?(isBanned:y);
+    !!UN&(isBanned):Ai/3/(ART_LEVEL_SPECIAL);
+  ; Set all the TUM artifacts to unbanned
+  !!el&i>(ART_LAST_WOG);
+    !!UN:Ai/3/?(level:y);
+
+    !!if&(level)=(ART_LEVEL_SPECIAL);
+      !!UN:Ai/(TRUE);
+    !!el;
+     !!UN:Ai/(FALSE);
+    !!en;
+  !!en;
 !!en;
+
+!#FU(tum_FixArtifactBanning)&i^tum_emerald_on^:P;
+
+// Fix some levels and banning of WoG artifacts messing up
+// This script must be executed later than OnAfterErmInstructions (OnAfterErmInited)
+!?FU(OnEveryDay)&i^timerDay^;
+!!FU(tum_FixWoGArtifactLevels):P;
+
+!?FU(tum_FixWoGArtifactLevels);
+; Fix WoG artifact banning and levels
+; Note: Magic Want, Gold Tower Arrow and Monsters' Power can be disabled from Map Editor
+*!UN:P176/?(artBanned:y);
+*!UN&(artBanned)<>(TRUE):A(ART_MAGIC_WAND)/(FALSE);
+*!UN:P226/?(artBanned);
+*!UN&(artBanned)<>(TRUE):A(ART_GOLD_TOWER_ARROW)/(FALSE);
+*!UN:P227/?(artBanned);
+*!UN&(artBanned)<>(TRUE):A(ART_MONSTERS_POWER)/(FALSE);
+
+!!UN:P238/?(commArtBanned:y);
+
+!!if&(commArtBanned)<>(TRUE);
+  !!re i/(ART_AXE_OF_SMASHING)/(ART_HARDENED_SHIELD);
+    !!UN:Ai/(FALSE);
+  !!en;
+!!en;
+
+!!UN:P177/?(artBanned:y);
+!!UN&(artBanned)<>(TRUE)/(commArtBanned)<>(TRUE):A(ART_SLAVAS_RING_OF_POWER)/(FALSE);
+!!UN:P234/?(artBanned);
+!!UN&(artBanned)<>(TRUE):A(ART_WARLORDS_BANNER)/(FALSE);
+!!UN:P236/?(artBanned);
+!!UN&(artBanned)<>(TRUE):A(ART_CRIMSON_SHIELD_OF_RETRIBUTION)/(FALSE);
+!!UN:P241/?(artBanned);
+!!UN&(artBanned)<>(TRUE):A(ART_DRAGONHEART)/(FALSE);
+!!UN:P243/?(artBanned);
+!!UN&(artBanned)<>(TRUE):A(ART_GATE_KEY)/(FALSE);
+
+; Set up correct level for WoG artifacts
+!!re i/(ART_MAGIC_WAND)/(ART_CRIMSON_SHIELD_OF_RETRIBUTION);
+  !!UN:Ai/?(isBanned:y);
+  ; Set the rank of Wog artifacts as special if banned
+  !!if&(isBanned);
+    !!UN:Ai/3/(ART_LEVEL_SPECIAL);
+  ; Correct the level of WoG artifacts if not banned
+  !!el&i>=(ART_MAGIC_WAND)/i<=(ART_GATE_KEY);
+    !!if&i>=(ART_MAGIC_WAND)/i<=(ART_MONSTERS_POWER);
+      !!UN:Ai/3/(ART_LEVEL_RELIC);
+    !!el&i>=(ART_AXE_OF_SMASHING)/i<=(ART_SLAVAS_RING_OF_POWER);
+      !!UN:Ai/3/(ART_LEVEL_RELIC);
+    !!el&i=(ART_WARLORDS_BANNER);
+      !!UN:Ai/3/(ART_LEVEL_TREASURE);
+    !!el&i=(ART_CRIMSON_SHIELD_OF_RETRIBUTION);
+      !!UN:Ai/3/(ART_LEVEL_MAJOR);
+    !!en;
+  !!en;
+!!en;
+
+***************************************************
+**** Bad fix: Disable spells to prevent issues ****
+***************************************************
+; Tell me Yuji, how many more years do you need to fix? :)
+!?FU(OnSetupBattlefield_Quit);
+!!re i/(BATTLE_DEFENDER_STACK_FIRST)/(BATTLE_DEFENDER_STACK_LAST);
+  !!BMi:T?(type:y) N?(num:y);
+  !!co&(num)<=0;
+
+  ; Fix Astral Spirit without a hero summoning massive Air Elem. 
+  !!BMi&i^battle_hero_1^=(NO_HERO)/i^battle_ai_1^/(type)=(MON_ASTRAL_SPIRIT_D):E0;
+
+  ; Fix AI Soul Eater's animate dead resulting in a crash
+  !!if|(type)=(MON_SOUL_EATER_A)/(type)=(MON_SOUL_EATER_D);
+    !!BMi:I?(side:y);
+
+    !!if&i^battle_owner_%(side)^=(NO_PLAYER);
+      !!BMi:E0;
+    !!el;
+      !!OW:Ii^battle_owner_%(side)^/?(isAi:y);
+      !!BMi&(isAi):E0;
+    !!en;
+  !!en;
+!!en;
+
+*********************************************************
+**** Bad fix: Fix AI crashes with Devilish Sacrifice ****
+*********************************************************
+; Prevent Ai from casting Devilish Sacrifice until Majaczek sorted out his crap
+!?FU(ES_759_GetAiVictim);
+!!VRx3:S(NO_STACK);
+
+**********************************************************************************
+**** Bad fix: Fix Winged Magog getting super high Fight Value for some reason ****
+**********************************************************************************
+; Restore Winged Magog's fight value every day
+; The reason is yet to be found...but we all know it's Majaczek's crap :)
+!?FU(OnEveryDay)&i^timerOnce^;
+!!if&i^timerDay^=1;
+  !!MA:F(MON_WINGED_MAGOG)/?i^tum_wingedMagogFightValue^;
+!!el&i^timerDay^>1;
+  !!MA:F(MON_WINGED_MAGOG)/i^tum_wingedMagogFightValue^;
+!!en;
+
+*****************************************************
+**** Bad fix: Fix calling invalid creature sound ****
+*****************************************************
+; Fix sometimes Amethyst calls invalid creature sound (#122/126/128) by redirecting bad sound to slient sound
+; Fix sometimes calling invalid war machine sound
+; Yuji, when to fix?
+!?FU(OnAfterErmInstructions);
+!!VR(notUsedMons[3]:y):C(MON_NOT_USED_1)/(MON_NOT_USED_3)/(MON_NOT_USED_4);
+!!UN:C4697553/4/?(monInfoTable:y);
+
+!!re i/0/2;
+  !!VR(soundPointer:y):S116 *(notUsedMons[i]) +(monInfoTable) +8;
+  !!UN:C(soundPointer)/4/?(value:y);
+  !!SN:K4/^bad2^/(value)/1;
+!!en;
+
+!?FU(OnGameEnter);
+!!VR(silenceSound:z):S^S197SHOT.82m^;
+
+; Redirect bad sound
+!!SN:R^bad2attk.82m^/(silenceSound) R^bad2dfnd.82m^/(silenceSound) R^bad2kill.82m^/(silenceSound) R^bad2move.82m^/(silenceSound) R^bad2shot.82m^/(silenceSound) R^bad2wnce.82m^/(silenceSound);
+; Redirect invalid war machine sound
+!!SN:R^cataattk.82m^/(silenceSound) R^catadfnd.82m^/(silenceSound) R^catamove.82m^/(silenceSound);
+!!SN:R^ballattk.82m^/(silenceSound) R^balldfnd.82m^/(silenceSound) R^ballmove.82m^/(silenceSound);
+!!SN:R^faidattk.82m^/(silenceSound) R^faiddfnd.82m^/(silenceSound) R^faidmove.82m^/(silenceSound) R^faidshot.82m^/(silenceSound);
+!!SN:R^cartattk.82m^/(silenceSound) R^cartdfnd.82m^/(silenceSound) R^cartmove.82m^/(silenceSound) R^cartshot.82m^/(silenceSound);
 
 *******************************
 **** Manage Creature Stats ****
 *******************************
 ; Managing creature stats for gameplay or mod compatibility reasons
-!?FU(OnAfterErmInited);
-; Rebalance Centaur Stack Exp Bonus
-; For some reason, Centaur has stronger growth on stack exp bonus damage than Centaur Captain, this script intended to nerf it
+!?FU(OnEveryDay)&i^timerDay^=1/i^timerOnce^;
 !!UN:P(WOG_OPT_STACK_EXPERIENCE)/?(stackExp:y);
 
 !!if&(stackExp);
-  ; Max Damage
+  ; Rebalance Centaur damage bonuses
+  ; For some reason, Centaur has stronger growth on stack exp bonus damage than Centaur Captain, this script nerfs it
   !!EA(MON_CENTAUR_CAPTAIN):B2/1/77/43/?(r0:y)/?(r1:y)/?(r2:y)/?(r3:y)/?(r4:y)/?(r5:y)/?(r6:y)/?(r7:y)/?(r8:y)/?(r9:y)/?(r10:y);
   !!EA(MON_CENTAUR):B2/1/77/43/(r0:y)/(r1:y)/(r2:y)/(r3:y)/(r4:y)/(r5:y)/(r6:y)/(r7:y)/(r8:y)/(r9:y)/(r10:y);
-  ; Min Damage
   !!EA(MON_CENTAUR_CAPTAIN):B3/1/109/43/?(r0:y)/?(r1:y)/?(r2:y)/?(r3:y)/?(r4:y)/?(r5:y)/?(r6:y)/?(r7:y)/?(r8:y)/?(r9:y)/?(r10:y);
   !!EA(MON_CENTAUR):B3/1/109/43/(r0:y)/(r1:y)/(r2:y)/(r3:y)/(r4:y)/(r5:y)/(r6:y)/(r7:y)/(r8:y)/(r9:y)/(r10:y);
 !!en;
 
-************************************************
-**** Fix AI crashes with Devilish Sacrifice ****
-************************************************
-; Dirty Fix: Prevent Ai from casting Devilish Sacrifice until Majaczek sorted out his crap
-!?FU(ES_759_GetAiVictim);
-!!VRx3:S(NO_STACK);
+**********************************************************
+**** Bad Fix: Fix first stack turn on the battlefield ****
+**********************************************************
+; For some reason the first stack of the battlefield is frequently wrong. This script fixes it.
+!?FU(OnSetupBattlefield);
+!!VRi^tum_firstStackFixed^:S(FALSE);
 
+!?FU(OnBeforeBattleStackTurn)&i^tum_firstStackFixed^<>(TRUE);
+!#VA(activeStack:x);
 
-********************* The following code would only be applied to TUM Chinese *********************
+; Initialise tactics levels and tactics status
+!!VR(tacticsLevel[2]:y)C(SKILL_NOT_LEARNED)/(SKILL_NOT_LEARNED);
+!!VR(tacticsEnabled[2]:y):C(FALSE)/(FALSE);
 
-
-********************************
-**** Disable Emissary Banks ****
-********************************
-; Bad fix: Temporarily disable Emissary CBs as they appear to be buggy
-!?FU(tum_DisableEmissaryCreatureBanks)&i^tum_wogcn_on^;
-!!re i/119/122;
-  !!VRi^CB_%i_Replace_Objects^:S(FALSE);
+; Loop through two (or one) side to get the tactics levels and tactics status
+!!re i/(BATTLE_LEFT)/i^battle_hero_vs_hero^;
+  !!HEi^battle_hero_%i^:S(SKILL_TACTICS)/?(tacticsLevel[i]);
+  !!HEi^battle_hero_%i^:R4/?(tacticsEnabled[i]);
 !!en;
 
-!#FU(tum_DisableEmissaryCreatureBanks):P;
+; Check if there is a tactics phase in this battle
+!!re i/(BATTLE_LEFT)/(BATTLE_RIGHT);
+  !!VR(oppSide:y):Si X(TRUE);
 
-*************************************************
-**** Replace Dens of Thieves with Treehouses ****
-*************************************************
-; Here we uses Den of Thieves for the replacement of Treehouses as the original repalcent - Mage Schools does not fit in tiles
-!?FU(OnAfterErmInstructions)&i^tum_wogcn_on^;
-!!VRi^CB_133_Replace_0_Type_Number^:S(OBJ_DEN_OF_THIEVES);
-!!VRi^CB_133_Replace_0_Percentage^:S15;
+  !!br&(tacticsEnabled[i])/(tacticsLevel[i])>(tacticsLevel[oppSide]);
+!!en;
 
-*******************************************************************
-**** Rebalance the growth of Sacred Phoenix and Divine Phoenix ****
-*******************************************************************
-; Reduce the growth of Firebird and Phoenix but gives one extra to be recruited if Castle is built in the town
-!?FU(OnAfterErmInstructions)&i^tum_wogcn_on^;
-; Set all the growth of phoenix to 1
-!!MA:G(MON_FIREBIRD)/1;
-!!MA:G(MON_PHOENIX)/1;
+; If there is a tactics phase, set up the first stack from the side with higher level tactics
+!!if&i<=(BATTLE_RIGHT);
+  !!VR(startStack:y):S(BATTLE_STACKS_PER_SIDE) *i;
+  !!VR(endStack:y):Si +20;
 
-!?FU(OnEveryDay)&i^timerWeekday^=1/i^timerOnce^/i^tum_wogcn_on^; 
-; Loop though all the towns and give one extra Phoenix to towns with Castle Built
-!!VR(x:y):S-1;
+  !!FU(tum_GetMaxSpeedStack):P(startStack)/(endStack)/?(activeStack);
 
-!!re i;
-  !!UN:U(OBJ_TOWN)/(ANY_OBJ)/-1/(x)/(y:y)/(z:y);
-  !!br&(x)<0;
+; If there is no tactics phase, check the siege type
+!!el;
+  !!BA:S?(siegeType:y);
 
-  ; Check the town type and if Castle is built, add one extra if castle is built
-  !!CA(x)/(y)/(z):T?(townType:y) B3/9;
+  ; Set up the first stack from the whole battlefield if not siege (no walls)
+  !!if&(siegeType)=0;
+    !!VR(startStack):S(BATTLE_STACK_FIRST);
+    !!VR(endStack):S(BATTLE_STACK_LAST);
 
-  !!if&1/(townType)=(TOWN_CONFLUX);
-    !!CA(x)/(y)/(z):M1/6/d/d1;
+    !!FU(tum_GetMaxSpeedStack):P(startStack)/(endStack)/?(activeStack);
+  ; Set up the first stack as the Catapult if the battlefield has walls (but no Arrow Towers)
+  !!el&(siegeType)=1;
+    !!re i/(BATTLE_ATTACKER_STACK_FIRST)/(BATTLE_ATTACKER_STACK_LAST);
+      !!BMi:T?(type:y) N?(num:y);
+
+      ; Correct the first stack as the Catapult
+      !!if&(type)=(MON_CATAPULT)/(num)>0;
+        !!VR(activeStack):Si;
+        !!br;
+      !!en;
+    !!en;
+  ; Set up the first stack as the main arrow tower if the battlefield has one or more arrow towers
+  !!el&(siegeType)>=2;
+    !!re i/(BATTLE_DEFENDER_STACK_FIRST)/(BATTLE_DEFENDER_STACK_LAST);
+      !!BMi:T?(type:y) P?(pos:y);
+
+      ; Correct the first stack as the main arrow tower
+      !!if&(type)=(MON_ARROW_TOWERS)/(pos)=254;
+        !!VR(activeStack):Si;
+        !!br;
+      !!en;
+    !!en;
   !!en;
 !!en;
 
-********************************************************
-**** Disable Illithids and Alhoons' ability to cast ****
-********************************************************
-; Bad Fix: Temporarily disable these creature's ability to cast until Majaczek fix them
-!?FU(OnAfterErmInstructions)&i^tum_wogcn_on^;
-!!SN:L^amethyst2_4.dll^/?(amethyst:y) A(amethyst)/^ChangeCreatureTable^/?(address:y);
-!!SN:E(address)/1/274/^Spell 1=9^ E(address)/1/274/^Spell 2=8^ E(address)/1/274/^Spell 3=3^;
-!!SN:E(address)/1/282/^Spell 1=9^ E(address)/1/282/^Spell 2=8^ E(address)/1/282/^Spell 3=3^;
+!!VRi^tum_firstStackFixed^:S(TRUE);
+
+!?FU(tum_GetMaxSpeedStack);
+!#VA(startStack:x) (endStack:x) (result:x);
+
+; Get the fastest stack from either one side or the whole battlefield depending on whether tactics phase is active
+!!VR(maxSpeed:y):S0;
+!!VR(maxSpeedStack:y):S(NO_STACK);
+
+!!re i/(startStack)/(endStack);
+  !!BMi:T?(mon:y) N?(num:y);
+
+  !!if&(mon)>(NO_MON)/(mon)<>(MON_ARROW_TOWERS)/(num)>0;
+    !!BMi:S?(speed:y);
+
+    !!if&(speed)>(maxSpeed);
+      !!VR(maxSpeed):S(speed);
+      !!VR(maxSpeedStack):Si;
+    !!en;
+  !!en;
+!!en;
+
+; Correct the first stack as the stack with max speed
+!!VR(result):S(maxSpeedStack);

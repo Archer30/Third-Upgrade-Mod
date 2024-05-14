@@ -1,4 +1,4 @@
-Fourth Upgrades in Town	0	0	0	-1	0	0	300	Fourth Upgrades in Towns	Fourth upgraded level 7 monsters may be recuited in towns if the third upgrade buildings have been built.	FOURTH UPGRADES IN TOWN
+Fourth Upgrades in Town	0	0	1	-1	0	0	300	Fourth Upgrades in Towns	Fourth upgraded level 7 monsters may be recuited in towns if the third upgrade buildings have been built.	FOURTH UPGRADES IN TOWN
 
 Option 300 by Archer30
 
@@ -17,7 +17,7 @@ Darkness Dragon --> Chasm Dragon
 Ghost Behemoth --> Spectral Behemoth
 Hell Hydra --> Nightmare Hydra
 Sacred Phoenix --> Divine Phoenix
-Eighth Monsters	0	0	0	-1	1	1	301	Eighth Monsters	Every town now has a eighth dwelling, where you may recruite the eighth monsters originally from The Tides of War expansion.	EIGHTH MONSTERS
+Eighth Monsters	0	0	1	-1	1	1	301	Eighth Monsters	Every town now has a eighth dwelling, where you may recruite the eighth monsters originally from The Tides of War expansion.	EIGHTH MONSTERS
 
 Option 301 by Archer30
 
@@ -38,7 +38,7 @@ Dungeon: Illithid --> Alhoon
 Stonghold: Coatl --> Quetzalcoatl
 Fortress: Troll Hag --> Troll Witch
 Conflux: Triton --> Abyssal Triton
-Dwelling Banks	0	0	0	-1	1	1	302	Dwelling Banks	Some external dwellings become "dwelling banks".	DWELLING BANKS
+Dwelling Banks	0	0	1	-1	1	1	302	Dwelling Banks	Some external dwellings become "dwelling banks".	DWELLING BANKS
 
 Option 302 by Perry R
 

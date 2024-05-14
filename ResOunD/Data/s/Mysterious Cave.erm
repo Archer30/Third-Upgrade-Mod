@@ -276,14 +276,6 @@ ZVSE2
 !!VRy1:Sy2*30+8630976+12;
 !!UN:Cy1/4/-7;
 
-;replace scrolls with chests
-!?FU7549285;
-!!UN:Ux1/-1/-1/1;
-!!UN:Ov1/v2/v3;
-!!UN:Iv1/v2/v3/101/0;
-!!VRy1:S5R10;  [2500-7500 gold]
-!!CHv1/v2/v3:S0 By1;
-
 !?FU(OnEveryDay)&i^timerWeekday^=1;
 !!OW:C?y1; [get current player]
 !!OW:Iy1/?y2;  [get if AI or human]
@@ -291,7 +283,6 @@ ZVSE2
 ;addition for scrolls**********
 !!UN:U93/-1/?y-1; [get scrolls number]
 !!VRv1:S-1;
-!!DO7549285/1/y-1/1:P93;  [run through each one]
 ;end addition for scrolls********
 !!UN:P3/?y2; check if commanders enabled
 !!SN:W^Closed^/?y3;   percentage of visitable Caves
